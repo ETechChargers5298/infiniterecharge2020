@@ -24,11 +24,17 @@ public class Motors extends SubsystemBase {
   private CANSparkMax backRight;
 
   public Motors() {
-    // Configurations 
+    // Sets motors to their corresponding configurations
     frontLeft = new CANSparkMax(Constants.MOTOR_FRONT_LEFT, MotorType.kBrushless);
     frontRight = new CANSparkMax(Constants.MOTOR_FRONT_RIGHT, MotorType.kBrushless);
     backLeft = new CANSparkMax(Constants.MOTOR_BACK_LEFT, MotorType.kBrushless);
     backRight = new CANSparkMax(Constants.MOTOR_BACK_RIGHT, MotorType.kBrushless);
+    
+    // Inverts motors
+    frontLeft.setInverted(Constants.LEFT_INVERSION);
+    frontRight.setInverted(Constants.RIGHT_INVERSION);
+    backLeft.setInverted(Constants.LEFT_INVERSION);
+    backRight.setInverted(Constants.RIGHT_INVERSION);
   }
 
 /* @Override

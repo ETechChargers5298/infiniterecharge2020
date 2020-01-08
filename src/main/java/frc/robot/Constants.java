@@ -16,8 +16,13 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // Holds CAN IDs from SparkMax speed controllers
     public static final int MOTOR_FRONT_LEFT = 0;
     public static final int MOTOR_FRONT_RIGHT = 1;
     public static final int MOTOR_BACK_LEFT = 2;
     public static final int MOTOR_BACK_RIGHT = 3;
+
+    // Holds wheel inversion boolean (One should be true and the other one should be false)
+    public static final boolean LEFT_INVERSION = true;
+    public static final boolean RIGHT_INVERSION = false;
 }
