@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Motors;
 
 public class Drive extends CommandBase {
   /**
@@ -15,6 +16,7 @@ public class Drive extends CommandBase {
    */
   public Drive() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(new Motors());
   }
 
   // Called when the command is initially scheduled.
