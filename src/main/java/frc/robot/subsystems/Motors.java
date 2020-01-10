@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.Drive;
 
 /**
  * Add your docs here.
@@ -37,9 +38,30 @@ public class Motors extends SubsystemBase {
     backRight.setInverted(Constants.RIGHT_INVERSION);
   }
 
-/* @Override
+  // Moves motors based on speed
+  public void driveSpeed(double leftSpeed, double rightSpeed) {
+    // Sets speed within range of -1 and 1
+    if(leftSpeed > 1) {
+      leftSpeed = 1;
+    }
+    if(rightSpeed > 1) {
+      rightSpeed = 1;
+    }
+
+    // Sets power of left motors
+    frontLeft.set(leftSpeed);
+    backLeft.set(leftSpeed);
+
+    // Sets power of right motors
+    frontRight.set(rightSpeed);
+    backRight.set(rightSpeed);
+  }
+
+/*
+  @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
       setDefaultCommand(new Drive());
-  } */
+  } 
+*/
 }
