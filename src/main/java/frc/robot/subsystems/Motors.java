@@ -36,6 +36,12 @@ public class Motors extends SubsystemBase {
     frontRight.setInverted(Constants.RIGHT_INVERSION);
     backLeft.setInverted(Constants.LEFT_INVERSION);
     backRight.setInverted(Constants.RIGHT_INVERSION);
+
+    // Sets all motors to zero
+    frontLeft.set(0);
+    frontRight.set(0);
+    backLeft.set(0);
+    backRight.set(0);
   }
 
   // Moves motors based on speed
