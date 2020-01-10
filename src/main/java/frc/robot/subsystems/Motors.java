@@ -40,12 +40,12 @@ public class Motors extends SubsystemBase {
 
   // Moves motors based on speed
   public void driveSpeed(double leftSpeed, double rightSpeed) {
-    // Sets speed within range of -1 and 1
-    if(leftSpeed > 1) {
-      leftSpeed = 1;
+    // Sets speed within -1 and 1
+    if(Math.abs(leftSpeed) > 1) {
+      leftSpeed = leftSpeed / Math.abs(leftSpeed);
     }
-    if(rightSpeed > 1) {
-      rightSpeed = 1;
+    if(Math.abs(rightSpeed) > 1) {
+      rightSpeed = rightSpeed / Math.abs(rightSpeed);
     }
 
     // Sets power of left motors
