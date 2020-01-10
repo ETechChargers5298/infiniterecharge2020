@@ -46,7 +46,7 @@ public class Motors extends SubsystemBase {
     }
     if(Math.abs(rightSpeed) > 1) {
       rightSpeed = rightSpeed / Math.abs(rightSpeed);
-    }
+    }   
 
     // Sets power of left motors
     frontLeft.set(leftSpeed);
@@ -55,6 +55,15 @@ public class Motors extends SubsystemBase {
     // Sets power of right motors
     frontRight.set(rightSpeed);
     backRight.set(rightSpeed);
+  }
+
+  // Stops all motors
+  public void stopSpeed() {
+    // Sets all motor power to zero
+    frontLeft.set(0);
+    frontRight.set(0);
+    backLeft.set(0);
+    backRight.set(0);
   }
 
 /*
