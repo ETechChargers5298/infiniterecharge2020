@@ -19,57 +19,80 @@ import frc.robot.commands.Drive;
  */
 public class Motors extends SubsystemBase {
   // These fields will hold motor values
-  private CANSparkMax frontLeft;
-  private CANSparkMax frontRight;
-  private CANSparkMax backLeft;
-  private CANSparkMax backRight;
+  private CANSparkMax motorLeft0;
+  private CANSparkMax motorLeft1;
+  private CANSparkMax motorLeft2;
+  private CANSparkMax motorRight0;
+  private CANSparkMax motorRight1;
+  private CANSparkMax motorRight2;
 
   public Motors() {
-    // Sets motors to their corresponding configurations
-    frontLeft = new CANSparkMax(Constants.MOTOR_FRONT_LEFT, MotorType.kBrushless);
-    frontRight = new CANSparkMax(Constants.MOTOR_FRONT_RIGHT, MotorType.kBrushless);
-    backLeft = new CANSparkMax(Constants.MOTOR_BACK_LEFT, MotorType.kBrushless);
-    backRight = new CANSparkMax(Constants.MOTOR_BACK_RIGHT, MotorType.kBrushless);
+    // Sets left motors to their corresponding configurations
+    motorLeft0 = new CANSparkMax(Constants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
+    motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_ONE, MotorType.kBrushless);
+    motorLeft2 = new CANSparkMax(Constants.MOTOR_LEFT_TWO, MotorType.kBrushless);
+
+    // Sets left motors to their corresponding configurations
+    motorRight0 = new CANSparkMax(Constants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
+    motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
+    motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_TWO, MotorType.kBrushless);
     
-    // Inverts motors
-    frontLeft.setInverted(Constants.LEFT_INVERSION);
-    frontRight.setInverted(Constants.RIGHT_INVERSION);
-    backLeft.setInverted(Constants.LEFT_INVERSION);
-    backRight.setInverted(Constants.RIGHT_INVERSION);
+    // Inverts left motors
+    motorLeft0.setInverted(Constants.LEFT_INVERSION);
+    motorLeft1.setInverted(Constants.LEFT_INVERSION);
+    motorLeft2.setInverted(Constants.LEFT_INVERSION);
+
+    // Inverts right motors
+    motorRight0.setInverted(Constants.RIGHT_INVERSION);
+    motorRight1.setInverted(Constants.RIGHT_INVERSION);
+    motorRight2.setInverted(Constants.RIGHT_INVERSION);
 
     // Sets all motors to zero
-    frontLeft.set(0);
-    frontRight.set(0);
-    backLeft.set(0);
-    backRight.set(0);
+  }
+
+  // Boilerplates speed to avoid errors
+  public double boilerSpeed(double speed) {
+    // Sets speed within -1 and 1
+    if(Math.abs(speed) > 1) {
+      speed = speed / Math.abs(speed);
+    }
+    return speed;
+  }
+  
+  // Groups left motors
+  public void leftMotor(double speed) {
+    // Keeps speed within -1 and 1
+    speed = boilerSpeed(speed);
+
+    // Sets all left motors to same speed
+    motorLeft0.set(speed);
+    motorLeft1.set(speed);
+    motorLeft2.set(speed);
+  }
+
+  // Groups right motors
+  public void rightMotor(double speed) {
+    // Keeps speed within -1 and 1
+    speed = boilerSpeed(speed);
+
+    // Sets all right motors to same speed
+    motorRight0.set(speed);
+    motorRight1.set(speed);
+    motorRight2.set(speed);
   }
 
   // Moves motors based on speed
   public void driveSpeed(double leftSpeed, double rightSpeed) {
-    // Sets speed within -1 and 1
-    if(Math.abs(leftSpeed) > 1) {
-      leftSpeed = leftSpeed / Math.abs(leftSpeed);
-    }
-    if(Math.abs(rightSpeed) > 1) {
-      rightSpeed = rightSpeed / Math.abs(rightSpeed);
-    }   
-
-    // Sets power of left motors
-    frontLeft.set(leftSpeed);
-    backLeft.set(leftSpeed);
-
-    // Sets power of right motors
-    frontRight.set(rightSpeed);
-    backRight.set(rightSpeed);
+    // Sets power of motors
+    leftMotor(leftSpeed);
+    rightMotor(rightSpeed);
   }
 
   // Stops all motors
   public void stopSpeed() {
     // Sets all motor power to zero
-    frontLeft.set(0);
-    frontRight.set(0);
-    backLeft.set(0);
-    backRight.set(0);
+    leftMotor(0);
+    rightMotor(0);
   }
 
 /*
