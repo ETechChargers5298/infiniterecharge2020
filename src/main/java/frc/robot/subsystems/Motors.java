@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.Drive;
@@ -18,13 +20,17 @@ import frc.robot.commands.Drive;
  * Add your docs here.
  */
 public class Motors extends SubsystemBase {
-  // These fields will hold motor values
+  // These fields will hold motors
   private CANSparkMax motorLeft0;
   private CANSparkMax motorLeft1;
   private CANSparkMax motorLeft2;
   private CANSparkMax motorRight0;
   private CANSparkMax motorRight1;
   private CANSparkMax motorRight2;
+
+  // These fields hold grouped motors
+  private SpeedControllerGroup motorLeft;
+  private SpeedControllerGroup motorRight;
 
   public Motors() {
     // Sets left motors to their corresponding configurations
@@ -37,17 +43,17 @@ public class Motors extends SubsystemBase {
     motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
     motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_TWO, MotorType.kBrushless);
     
-    // Inverts left motors
-    motorLeft0.setInverted(Constants.LEFT_INVERSION);
-    motorLeft1.setInverted(Constants.LEFT_INVERSION);
-    motorLeft2.setInverted(Constants.LEFT_INVERSION);
+    // Groups motors together
+    motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1, motorLeft2);
+    motorRight = new SpeedControllerGroup(motorRight0, motorRight1, motorRight2);
 
-    // Inverts right motors
-    motorRight0.setInverted(Constants.RIGHT_INVERSION);
-    motorRight1.setInverted(Constants.RIGHT_INVERSION);
-    motorRight2.setInverted(Constants.RIGHT_INVERSION);
+    // Inverts left motors
+    motorLeft.setInverted(Constants.LEFT_INVERSION);
+    motorRight.setInverted(Constants.RIGHT_INVERSION);
 
     // Sets all motors to zero
+    motorLeft.set(0);
+    motorRight.set(0);
   }
 
   // Boilerplates speed to avoid errors
@@ -59,26 +65,22 @@ public class Motors extends SubsystemBase {
     return speed;
   }
   
-  // Groups left motors
+  // Sets up left motors
   public void leftMotor(double speed) {
     // Keeps speed within -1 and 1
     speed = boilerSpeed(speed);
 
     // Sets all left motors to same speed
-    motorLeft0.set(speed);
-    motorLeft1.set(speed);
-    motorLeft2.set(speed);
+    motorLeft.set(speed);
   }
 
-  // Groups right motors
+  // Sets up right motors
   public void rightMotor(double speed) {
     // Keeps speed within -1 and 1
     speed = boilerSpeed(speed);
 
     // Sets all right motors to same speed
-    motorRight0.set(speed);
-    motorRight1.set(speed);
-    motorRight2.set(speed);
+    motorRight.set(speed);
   }
 
   // Moves motors based on speed
