@@ -19,7 +19,7 @@ import frc.robot.commands.Drive;
 /**
  * Add your docs here.
  */
-public class Motors extends SubsystemBase {
+public class DriveTrain extends SubsystemBase {
   // These fields will hold motors
   private CANSparkMax motorLeft0;
   private CANSparkMax motorLeft1;
@@ -32,7 +32,10 @@ public class Motors extends SubsystemBase {
   private SpeedControllerGroup motorLeft;
   private SpeedControllerGroup motorRight;
 
-  public Motors() {
+  // Differential drive method
+  DifferentialDrive drive;
+
+  public DriveTrain() {
     // Sets left motors to their corresponding configurations
     motorLeft0 = new CANSparkMax(Constants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
     motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_ONE, MotorType.kBrushless);
@@ -50,6 +53,12 @@ public class Motors extends SubsystemBase {
     // Inverts left motors
     motorLeft.setInverted(Constants.LEFT_INVERSION);
     motorRight.setInverted(Constants.RIGHT_INVERSION);
+
+    // Differential Drive must be set after inversion
+    drive = new DifferentialDrive(motorLeft, motorRight);
+
+    // Sets deadband for better joystick performance
+    drive.setDeadband(Constants.DEADBAND);
 
     // Sets all motors to zero
     motorLeft.set(0);
@@ -93,8 +102,14 @@ public class Motors extends SubsystemBase {
   // Stops all motors
   public void stopSpeed() {
     // Sets all motor power to zero
-    leftMotor(0);
-    rightMotor(0);
+    drive.stopMotor();
+  }
+
+  // Arcade Drive
+  public void drive(double linVelocity, double rotVelocity) {
+    /* Uses arcade drive and squares input by stating 
+       true in other to obtain better movement */
+    drive.arcadeDrive(linVelocity, rotVelocity, true);
   }
 
 /*

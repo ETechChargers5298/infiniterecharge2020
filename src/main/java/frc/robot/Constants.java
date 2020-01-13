@@ -27,4 +27,7 @@ public final class Constants {
     // Holds wheel inversion boolean (One should be true and the other one should be false)
     public static final boolean LEFT_INVERSION = true;
     public static final boolean RIGHT_INVERSION = false;
+
+    // Deadbands ignore smaller inputs from joystick for smoother driving
+    public static final double DEADBAND = 0.2;
 }
