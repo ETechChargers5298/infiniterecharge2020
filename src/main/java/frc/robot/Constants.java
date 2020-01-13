@@ -28,6 +28,9 @@ public final class Constants {
     public static final boolean LEFT_INVERSION = true;
     public static final boolean RIGHT_INVERSION = false;
 
+    // Constant that is multiplied to power to lower max possible power
+    public static final double SPEED_MULTIPLIER = 1.0;
+
     // Deadbands ignore smaller inputs from joystick for smoother driving
     public static final double DEADBAND = 0.2;
 }

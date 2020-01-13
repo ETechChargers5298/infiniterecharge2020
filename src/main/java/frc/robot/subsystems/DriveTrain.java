@@ -80,7 +80,7 @@ public class DriveTrain extends SubsystemBase {
     speed = boilerSpeed(speed);
 
     // Sets all left motors to same speed
-    motorLeft.set(speed);
+    motorLeft.set(speed * Constants.SPEED_MULTIPLIER);
   }
 
   // Sets up right motors
@@ -89,7 +89,7 @@ public class DriveTrain extends SubsystemBase {
     speed = boilerSpeed(speed);
 
     // Sets all right motors to same speed
-    motorRight.set(speed);
+    motorRight.set(speed * Constants.SPEED_MULTIPLIER);
   }
 
   // Moves motors based on speed
