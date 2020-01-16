@@ -25,12 +25,21 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
+<<<<<<< HEAD
   private final DriveTrain dtn = new DriveTrain ();
   private final Drive drive  = new Drive ();
+=======
+  private final DriveTrain dtn = new DriveTrain();
+>>>>>>> c3e5d713c7d9c6e487fcdb97bb90c1cba21da574
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
+  private final Drive drive = new Drive();
+
+  XboxController drivecontroller = new XboxController(1);
+  XboxController operatController = new XboxController(2);
 
 
   XboxController driveController = new XboxController(Constants.DRIVECCONTROLLER);
