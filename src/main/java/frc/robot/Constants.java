@@ -33,4 +33,7 @@ public final class Constants {
 
     // Deadbands ignore smaller inputs from joystick for smoother driving
     public static final double DEADBAND = 0.2;
+
+    public static final int DRIVECONTROLLER = 1;
+    public static final int OPERATORCONTROLLER = 2;
 }
