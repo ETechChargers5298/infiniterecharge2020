@@ -12,7 +12,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.Drive;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,24 +25,19 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-<<<<<<< HEAD
   private final DriveTrain dtn = new DriveTrain ();
-  private final Drive drive  = new Drive ();
-=======
-  private final DriveTrain dtn = new DriveTrain();
->>>>>>> c3e5d713c7d9c6e487fcdb97bb90c1cba21da574
+  private final DriveCommand drive  = new DriveCommand();
+  
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final Drive drive = new Drive();
-
   XboxController drivecontroller = new XboxController(1);
   XboxController operatController = new XboxController(2);
 
 
-  XboxController driveController = new XboxController(Constants.DRIVECCONTROLLER);
+  XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
   XboxController operatorcontroller = new XboxController(Constants.OPERATORCONTROLLER);
 
 
@@ -54,7 +49,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    dtn.setDefaultCommand(new Drive());
+    dtn.setDefaultCommand(new DriveCommand());
   }
 
   /**

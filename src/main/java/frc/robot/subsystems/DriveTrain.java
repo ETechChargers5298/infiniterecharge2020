@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.Drive;
+import frc.robot.commands.DriveCommand;
 
 /**
  * Add your docs here.
@@ -63,6 +63,8 @@ public class DriveTrain extends SubsystemBase {
     // Sets all motors to zero
     motorLeft.set(0);
     motorRight.set(0);
+
+
   }
 
   // Boilerplates speed to avoid errors
@@ -116,7 +118,8 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-      setDefaultCommand(new Drive());
+      this.setDefaultCommand(new DriveCommand());
   } 
 */
+
 }
