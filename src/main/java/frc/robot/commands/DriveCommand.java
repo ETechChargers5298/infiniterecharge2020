@@ -7,15 +7,26 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ExampleSubsystem;
 
 public class DriveCommand extends CommandBase {
   /**
    * Creates a new Drive.
    */
+
+  private Joystick linVelocity;
+  private Joystick rotVelocity;
+  private ExampleSubsystem m_exampleSubsystem;
+
+
   public DriveCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
+
     addRequirements(new DriveTrain());
   }
 
@@ -40,3 +51,4 @@ public class DriveCommand extends CommandBase {
     return true;
   }
 }
+
