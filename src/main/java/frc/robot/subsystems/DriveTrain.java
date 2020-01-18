@@ -20,42 +20,27 @@ import frc.robot.commands.DriveCommand;
  * Add your docs here.
  */
 public class DriveTrain extends SubsystemBase {
-  // These fields will hold motors
-  private CANSparkMax motorLeft0;
-  private CANSparkMax motorLeft1;
-  private CANSparkMax motorLeft2;
-  private CANSparkMax motorRight0;
-  private CANSparkMax motorRight1;
-  private CANSparkMax motorRight2;
+  // Sets left motors to their corresponding configurations
+  private CANSparkMax motorLeft0 = new CANSparkMax(Constants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
+  private CANSparkMax motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_ONE, MotorType.kBrushless);
+  private CANSparkMax motorLeft2 = new CANSparkMax(Constants.MOTOR_LEFT_TWO, MotorType.kBrushless);
+  
+  // Sets right motors to their corresponding configurations
+  private CANSparkMax motorRight0 = new CANSparkMax(Constants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
+  private CANSparkMax motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
+  private CANSparkMax motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_TWO, MotorType.kBrushless);
 
   // These fields hold grouped motors
-  private SpeedControllerGroup motorLeft;
-  private SpeedControllerGroup motorRight;
+  private SpeedControllerGroup motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1, motorLeft2);
+  private SpeedControllerGroup motorRight = new SpeedControllerGroup(motorRight0, motorRight1, motorRight2);
 
   // Differential drive method
-  DifferentialDrive drive;
+  DifferentialDrive drive = new DifferentialDrive(motorLeft, motorRight);
 
-  public DriveTrain() {
-    // Sets left motors to their corresponding configurations
-    motorLeft0 = new CANSparkMax(Constants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
-    motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_ONE, MotorType.kBrushless);
-    motorLeft2 = new CANSparkMax(Constants.MOTOR_LEFT_TWO, MotorType.kBrushless);
-
-    // Sets left motors to their corresponding configurations
-    motorRight0 = new CANSparkMax(Constants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
-    motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
-    motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_TWO, MotorType.kBrushless);
-    
-    // Groups motors together
-    motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1, motorLeft2);
-    motorRight = new SpeedControllerGroup(motorRight0, motorRight1, motorRight2);
-
+  public DriveTrain() { 
     // Inverts left motors
     motorLeft.setInverted(Constants.LEFT_INVERSION);
     motorRight.setInverted(Constants.RIGHT_INVERSION);
-
-    // Differential Drive must be set after inversion
-    drive = new DifferentialDrive(motorLeft, motorRight);
 
     // Sets deadband for better joystick performance
     drive.setDeadband(Constants.DEADBAND);
@@ -63,8 +48,6 @@ public class DriveTrain extends SubsystemBase {
     // Sets all motors to zero
     motorLeft.set(0);
     motorRight.set(0);
-
-
   }
 
   // Boilerplates speed to avoid errors
