@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
@@ -18,14 +20,19 @@ public class DriveCommand extends CommandBase {
    * Creates a new Drive.
    */
 
-  private double linVelocity;
-  private double rotVelocity;
+  private final DoubleSupplier linVelocity;
+  private final DoubleSupplier rotVelocity;
   private final DriveTrain driveTrain;
 
 
-  public DriveCommand(DriveTrain m_driveTrain) {
+  public DriveCommand(DoubleSupplier linear, DoubleSupplier rotational, DriveTrain m_driveTrain) {
     // Sets the DriveTrain Subsystem as a field;
     driveTrain = m_driveTrain;
+
+    // Sets the DoubleSuppliers
+    linVelocity = linear;
+    rotVelocity = rotational;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(new DriveTrain());
   }
@@ -38,7 +45,7 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.drive(linVelocity, rotVelocity);
+    driveTrain.drive(linVelocity.getAsDouble(), rotVelocity.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
