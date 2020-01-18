@@ -26,7 +26,6 @@ public class DriveCommand extends CommandBase {
 
   public DriveCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-
     addRequirements(new DriveTrain());
   }
 

@@ -35,7 +35,7 @@ public final class Constants {
     public static final double DEADBAND = 0.2;
 
     //Numbers for the 2 Xbox controllers
-    public static final int DRIVECONTROLLER = 1;
-    public static final int OPERATORCONTROLLER = 2;
+    public static final int DRIVECONTROLLER = 0;
+    public static final int OPERATORCONTROLLER = 1;
     
 }
