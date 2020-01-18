@@ -25,22 +25,14 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
-  private final DriveTrain dtn = new DriveTrain();
-  private final DriveCommand drive  = new DriveCommand();
-  
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final DriveTrain driveTrain = new DriveTrain();
 
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  
-  
-
-
+  // Creates a Driver Controller Varibale
   XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
-
-
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -49,9 +41,9 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    new RunCommand(() -> dtn 
+    new RunCommand(() -> driveTrain
         .drive(driveController.getY(GenericHID.Hand.kLeft),
-                     driveController.getX(GenericHID.Hand.kRight)), dtn);
+                     driveController.getX(GenericHID.Hand.kLeft)));
   }
 
   /**

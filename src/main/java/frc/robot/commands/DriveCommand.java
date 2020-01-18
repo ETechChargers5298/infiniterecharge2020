@@ -12,19 +12,20 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 
 public class DriveCommand extends CommandBase {
   /**
    * Creates a new Drive.
    */
 
-  private Joystick linVelocity;
-  private Joystick rotVelocity;
-  private ExampleSubsystem m_exampleSubsystem;
+  private double linVelocity;
+  private double rotVelocity;
+  private final DriveTrain driveTrain;
 
 
-  public DriveCommand() {
+  public DriveCommand(DriveTrain m_driveTrain) {
+    // Sets the DriveTrain Subsystem as a field;
+    driveTrain = m_driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(new DriveTrain());
   }
@@ -37,17 +38,21 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    driveTrain.drive(linVelocity, rotVelocity);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // Sets motors to zero when command ends
+    driveTrain.stopSpeed();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    // Runs until interrupted
+    return false;
   }
 }
 
