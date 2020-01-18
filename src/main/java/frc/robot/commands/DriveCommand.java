@@ -21,17 +21,24 @@ public class DriveCommand extends CommandBase {
   private final DriveTrain driveTrain;
 
 
-  public DriveCommand(DoubleSupplier linear, DoubleSupplier rotational, DriveTrain m_driveTrain) {
+  public DriveCommand(DoubleSupplier linear, DoubleSupplier rotational, DriveTrain driveTrain) {
     // Sets the DriveTrain Subsystem as a field;
-    driveTrain = m_driveTrain;
+    this.driveTrain = driveTrain;
 
     // Sets the DoubleSuppliers
     linVelocity = linear;
     rotVelocity = rotational;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(new DriveTrain());
+    addRequirements(this.driveTrain);
   }
+
+
+
+  // @Override
+  // public void execute() {
+
+  // }
 
   // Called when the command is initially scheduled.
   @Override
@@ -41,6 +48,7 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+      //   m_drive.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
     driveTrain.drive(linVelocity.getAsDouble(), rotVelocity.getAsDouble());
   }
 
