@@ -31,7 +31,7 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   // Creates a Driver Controller Varibale
-  XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
+  public static XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

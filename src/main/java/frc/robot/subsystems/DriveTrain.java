@@ -9,11 +9,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import static edu.wpi.first.wpilibj.XboxController.Button;
+
 
 /**
  * Add your docs here.
@@ -93,7 +95,8 @@ public class DriveTrain extends SubsystemBase {
   public void drive(double linVelocity, double rotVelocity) {
     /* Uses arcade drive and squares input by stating 
        true in other to obtain better movement */
-    drive.arcadeDrive(linVelocity, rotVelocity, true);
+   //drive.arcadeDrive(linVelocity, rotVelocity, true);
+     drive.curvatureDrive(linVelocity, rotVelocity, RobotContainer.driveController.getAButton());
   }
 
 /*
