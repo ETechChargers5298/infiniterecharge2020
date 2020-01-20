@@ -34,8 +34,17 @@ public final class Constants {
     // Deadbands ignore smaller inputs from joystick for smoother driving
     public static final double DEADBAND = 0.2;
 
-    //Numbers for the 2 Xbox controllers
+    // Numbers for the 2 Xbox controllers
     public static final int DRIVECONTROLLER = 0;
     public static final int OPERATORCONTROLLER = 1;
+
+    // PID Constants for Turning
+    public static final double TURN_P = 1;
+    public static final double TURN_I = 0;
+    public static final double TURN_D = 0;
+
+    // Turning Tolerance
+    public static final double TURN_TOLERANCE = 5; // Degrees
+    public static final double TURN_RATE_TOLERANCE = 10; // Degrees per Second
     
 }
