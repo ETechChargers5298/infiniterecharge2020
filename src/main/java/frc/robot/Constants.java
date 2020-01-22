@@ -26,7 +26,7 @@ public final class Constants {
 
     // Holds wheel inversion boolean (One should be true and the other one should be false)
     public static final boolean LEFT_INVERSION = true;
-    public static final boolean RIGHT_INVERSION = false;
+    public static final boolean RIGHT_INVERSION = true;
 
     // Constant that is multiplied to power to lower max possible power
     public static final double SPEED_MULTIPLIER = 1.0;

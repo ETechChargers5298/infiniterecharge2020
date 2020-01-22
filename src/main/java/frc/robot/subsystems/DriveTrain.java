@@ -36,7 +36,7 @@ public class DriveTrain extends SubsystemBase {
   private SpeedControllerGroup motorRight = new SpeedControllerGroup(motorRight0, motorRight1, motorRight2);
 
   // Differential drive method
-  DifferentialDrive drive = new DifferentialDrive(motorLeft, motorRight);
+  DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
 
   public DriveTrain() { 
     // Inverts left motors
@@ -44,7 +44,7 @@ public class DriveTrain extends SubsystemBase {
     motorRight.setInverted(Constants.RIGHT_INVERSION);
 
     // Sets deadband for better joystick performance
-    drive.setDeadband(Constants.DEADBAND);
+    diffDrive.setDeadband(Constants.DEADBAND);
 
     // Sets all motors to zero
     motorLeft.set(0);
@@ -88,15 +88,15 @@ public class DriveTrain extends SubsystemBase {
   // Stops all motors
   public void stopSpeed() {
     // Sets all motor power to zero
-    drive.stopMotor();
+    diffDrive.stopMotor();
   }
 
   // Arcade Drive
   public void drive(double linVelocity, double rotVelocity) {
     /* Uses arcade drive and squares input by stating 
        true in other to obtain better movement */
-   //drive.arcadeDrive(linVelocity, rotVelocity, true);
-     drive.curvatureDrive(linVelocity, rotVelocity, RobotContainer.driveController.getAButton());
+   diffDrive.arcadeDrive(linVelocity, rotVelocity, true);
+     //diffDrive.curvatureDrive(linVelocity, rotVelocity, RobotContainer.driveController.getAButton());
   }
 
 /*

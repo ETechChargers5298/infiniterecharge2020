@@ -1,12 +1,14 @@
+package frc.robot;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
-public class ShuffleBoard {
+public class EtechShuffleBoard {
     // This first tab creates a field holding a title.
     String title;
     ShuffleboardTab tab;
     //This is creating a ShuffleBoard object, where it creates a base for other ShuffleBoard objects.
-    public ShuffleBoard(String title) {
+    public EtechShuffleBoard(String title) {
         
         //This saves the title from before, in which case, is "title".
         this.title = title;
@@ -20,7 +22,7 @@ public class ShuffleBoard {
     public void printDouble(String key, double number) {
         tab.add(key, number);
     }
-    public void printBoolean(String key, Boolean number) {
-        tab.add(key, number);
+    public void printBoolean(String key, Boolean logic) {
+        tab.add(key, logic);
     }
 }
