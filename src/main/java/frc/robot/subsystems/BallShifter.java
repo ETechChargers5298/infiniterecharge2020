@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -15,9 +16,25 @@ public class BallShifter extends SubsystemBase {
   /**
    * Creates a new BallShifter.
    */
-  private DoubleSolenoid shifter = new DoubleSolenoid (Constants.SHIFTER_MODULE, Constants.SHIFTER_PORT_ONE, Constants.SHIFTER_PORT_TWO)
+
+   // Create objects in DoubleSolenoid.
+  private DoubleSolenoid shifter = new DoubleSolenoid (Constants.SHIFTER_MODULE,
+   Constants.SHIFTER_PORT_ONE, Constants.SHIFTER_PORT_TWO);
+  
   public BallShifter() {
 
+  }
+
+  // Goes innto high torque mode using the shifter.
+
+  public void highTorque() {
+    shifter.set(Value.kForward);
+  }
+
+  // Goes into high speed mode using the shifter.
+
+  public void highSpeed() {
+    shifter.set(Value.kReverse);
   }
 
   @Override
