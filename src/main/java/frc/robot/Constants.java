@@ -46,5 +46,10 @@ public final class Constants {
     // Turning Tolerance
     public static final double TURN_TOLERANCE = 5; // Degrees
     public static final double TURN_RATE_TOLERANCE = 10; // Degrees per Second
+
+    // Ball Shifters on Gearbox.
+    public static final int SHIFTER_MODULE = 0;
+    public static final int SHIFTER_PORT_ONE = 0;
+    public static final int SHIFTER_PORT_TWO = 1;
     
 }
