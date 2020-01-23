@@ -22,7 +22,7 @@ public class BallShifter extends SubsystemBase {
    Constants.SHIFTER_PORT_ONE, Constants.SHIFTER_PORT_TWO);
 
   // Starts at High Torque
-  boolean driveMode = false;
+  private boolean driveMode = false;
 
   public BallShifter() {
 
@@ -40,15 +40,19 @@ public class BallShifter extends SubsystemBase {
     shifter.set(Value.kReverse);
   }
 
- private void toggleDriveMode() {
+ public void toggleDriveMode() {
    driveMode = !driveMode;
    if(driveMode) {
-     highTorque();
-   }''
-   else {
      highSpeed();
    }
+   else {
+     highTorque();
+   }
  }
+
+  public boolean getDriveMode(){
+    return driveMode;
+  }
 
 
   @Override

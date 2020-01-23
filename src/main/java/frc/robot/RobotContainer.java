@@ -12,10 +12,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GearShift;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.BallShifter;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import static edu.wpi.first.wpilibj.XboxController.Button;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -26,12 +31,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
+  private final BallShifter gearShift = new BallShifter();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   // Creates a Driver Controller Varibale
-  public static XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
+  XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -54,7 +60,8 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-  
+    // Button Y when pressed changes Gear Shifts
+    new JoystickButton(driveController, Button.kY.value).whenPressed(new GearShift(gearShift));
 }
 
 
