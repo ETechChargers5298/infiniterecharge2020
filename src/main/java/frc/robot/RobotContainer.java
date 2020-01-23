@@ -11,6 +11,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.TurnToAngle;
@@ -24,11 +28,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import static edu.wpi.first.wpilibj.XboxController.Button;
 
+import java.util.Map;
+
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -43,11 +50,20 @@ public class RobotContainer {
   XboxController driveController = new XboxController(Constants.DRIVECONTROLLER);
 
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    updateShuffleboard();
+
+    ShuffleboardLayout BallShifterCommands = Shuffleboard.getTab("Commands")
+        .getLayout("Gear Shift", BuiltInLayouts.kList)
+    .withSize(2,2) 
+    .withProperties(Map.of("Label Postion","HIDDEN"));   //hide labels for commands
+
+    BallShifterCommands.add(new GearShift(gearShift));
+    
 
     driveTrain.setDefaultCommand(new DriveCommand(
       () -> driveController.getY(GenericHID.Hand.kLeft), 
@@ -73,6 +89,13 @@ public class RobotContainer {
     .whenPressed(new TurnToAngle(-90.0, driveTrain, navX));
 }
 
+  private void updateShuffleboard() {
+      SmartDashboard.putBoolean("Drive Mode", gearShift.getDriveMode());
+      SmartDashboard.putNumber("Robot Heading", navX.getHeading());
+
+      Shuffleboard.getTab("Drive Mode").add("Status of Drive Mode", gearShift.getDriveMode());
+      Shuffleboard.getTab("Robot Heading").add("navX", navX.getHeading());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
