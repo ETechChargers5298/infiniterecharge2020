@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GearShift;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.BallShifter;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +34,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final BallShifter gearShift = new BallShifter();
+  private final NavX navX = new NavX();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -47,7 +50,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveTrain.setDefaultCommand(new DriveCommand(
-      () -> driveController.getY(GenericHID.Hand.kLeft), 
+      () -> -1 * driveController.getY(GenericHID.Hand.kLeft), 
       () -> driveController.getX(GenericHID.Hand.kLeft),
       driveTrain));
   }
@@ -62,6 +65,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Button Y when pressed changes Gear Shifts
     new JoystickButton(driveController, Button.kY.value).whenPressed(new GearShift(gearShift));
+
+    // Bumpers for Turn to Angle
+    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new TurnToAngle(-90, driveTrain, navX));
+    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new TurnToAngle(90, driveTrain, navX));
 }
 
 

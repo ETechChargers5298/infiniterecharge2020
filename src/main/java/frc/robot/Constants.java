@@ -17,12 +17,10 @@ package frc.robot;
  */
 public final class Constants {
     // Holds CAN IDs from SparkMax speed controllers
-    public static final int MOTOR_LEFT_ZERO = 6;
-    public static final int MOTOR_LEFT_ONE = 5;
-    public static final int MOTOR_LEFT_TWO = 4;
-    public static final int MOTOR_RIGHT_ZERO = 1;
-    public static final int MOTOR_RIGHT_ONE = 2;
-    public static final int MOTOR_RIGHT_TWO = 3;
+    public static final int MOTOR_LEFT_ZERO = 1;
+    public static final int MOTOR_LEFT_ONE = 4;
+    public static final int MOTOR_RIGHT_ZERO = 2;
+    public static final int MOTOR_RIGHT_ONE = 6;
 
     // Holds wheel inversion boolean (One should be true and the other one should be false)
     public static final boolean LEFT_INVERSION = true;

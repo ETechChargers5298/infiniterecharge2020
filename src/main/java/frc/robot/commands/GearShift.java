@@ -42,6 +42,6 @@ public class GearShift extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveMode != gearShift.getDriveMode();
+    return true;
   }
 }

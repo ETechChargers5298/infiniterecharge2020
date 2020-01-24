@@ -16,9 +16,9 @@ public class BallShifter extends SubsystemBase {
   /**
    * Creates a new BallShifter.
    */
-
+  
    // Create objects in DoubleSolenoid.
-  private DoubleSolenoid shifter = new DoubleSolenoid (Constants.SHIFTER_MODULE,
+  private DoubleSolenoid shifter = new DoubleSolenoid(
    Constants.SHIFTER_PORT_ONE, Constants.SHIFTER_PORT_TWO);
 
   // Starts at High Torque

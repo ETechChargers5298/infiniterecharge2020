@@ -33,7 +33,7 @@ public class TurnToAngle extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         targetAngleDegrees,
         // This uses the output
-        output -> drive.driveSpeed(-output, output),
+        output -> drive.driveSpeed(output, output),
         // Subsystems that are used
         drive, gyro);
     

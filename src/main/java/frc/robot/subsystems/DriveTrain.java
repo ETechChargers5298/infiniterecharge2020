@@ -22,16 +22,14 @@ public class DriveTrain extends SubsystemBase {
   // Sets left motors to their corresponding configurations
   private CANSparkMax motorLeft0 = new CANSparkMax(Constants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
   private CANSparkMax motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_ONE, MotorType.kBrushless);
-  private CANSparkMax motorLeft2 = new CANSparkMax(Constants.MOTOR_LEFT_TWO, MotorType.kBrushless);
   
   // Sets right motors to their corresponding configurations
   private CANSparkMax motorRight0 = new CANSparkMax(Constants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
   private CANSparkMax motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
-  private CANSparkMax motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_TWO, MotorType.kBrushless);
 
   // These fields hold grouped motors
-  private SpeedControllerGroup motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1, motorLeft2);
-  private SpeedControllerGroup motorRight = new SpeedControllerGroup(motorRight0, motorRight1, motorRight2);
+  private SpeedControllerGroup motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
+  private SpeedControllerGroup motorRight = new SpeedControllerGroup(motorRight0, motorRight1);
 
   // Differential drive method
   DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);

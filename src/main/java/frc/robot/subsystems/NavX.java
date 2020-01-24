@@ -25,6 +25,7 @@ public class NavX extends SubsystemBase {
     } catch(RuntimeException ex) {
       DriverStation.reportError("Error instantiating navX MXP: " + ex.getMessage(), true);
     }
+    navXAhrs.reset();
   }
   
   // Returns the angle that the robot is at
