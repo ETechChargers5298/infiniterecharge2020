@@ -15,7 +15,6 @@ public class GearShift extends CommandBase {
    * Creates a new GearShift.
    */
   private final BallShifter gearShift;
-  private final boolean driveMode;
   public GearShift(BallShifter gearShift) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gearShift = gearShift;

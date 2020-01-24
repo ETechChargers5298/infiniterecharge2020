@@ -21,9 +21,6 @@ public class BallShifter extends SubsystemBase {
   private DoubleSolenoid shifter = new DoubleSolenoid(
    Constants.SHIFTER_PORT_ONE, Constants.SHIFTER_PORT_TWO);
 
-  // Starts at High Torque
-  private boolean driveMode = false;
-
   public BallShifter() {
 
   }
@@ -49,11 +46,6 @@ public class BallShifter extends SubsystemBase {
      highTorque();
    }
  }
-
-  public boolean getDriveMode(){
-    return driveMode;
-  }
-
 
   @Override
   public void periodic() {
