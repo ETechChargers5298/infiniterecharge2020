@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,100 +7,173 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.robot.Constants.DriveConstants;
+import frc.robot.robot.Constants.JoystickConstants;
 
-
-/**
- * Add your docs here.
- */
 public class DriveTrain extends SubsystemBase {
-  // Sets left motors to their corresponding configurations
-  private CANSparkMax motorLeft0 = new CANSparkMax(Constants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
-  private CANSparkMax motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_ONE, MotorType.kBrushless);
-  
-  // Sets right motors to their corresponding configurations
-  private CANSparkMax motorRight0 = new CANSparkMax(Constants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
-  private CANSparkMax motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
+  /**
+   * Contains the Differential Drive capabilties our robot has
+   */
 
-  // These fields hold grouped motors
-  private SpeedControllerGroup motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
-  private SpeedControllerGroup motorRight = new SpeedControllerGroup(motorRight0, motorRight1);
+  // Hold the Left Motors
+  private CANSparkMax motorLeft0;
+  private CANSparkMax motorLeft1;
 
-  // Differential drive method
-  DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
+  // Hold the Right Motors
+  private CANSparkMax motorRight0;
+  private CANSparkMax motorRight1;
 
-  public DriveTrain() { 
-    // Inverts left motors
-    motorLeft.setInverted(Constants.LEFT_INVERSION);
-    motorRight.setInverted(Constants.RIGHT_INVERSION);
+  // Holds Grouped Motors
+  private SpeedControllerGroup motorLeft;
+  private SpeedControllerGroup motorRight;
 
-    // Sets deadband for better joystick performance
-    diffDrive.setDeadband(Constants.DEADBAND);
+  // Uses Motors as Differential Drive
+  private DifferentialDrive diffDrive;
 
-    // Sets all motors to zero
-    motorLeft.set(0);
-    motorRight.set(0);
-  }
+  // Holds GearShifting Solenoids
+  private DoubleSolenoid gearShift;
 
-  // Boilerplates speed to avoid errors
-  public double boilerSpeed(double speed) {
-    // Sets speed within -1 and 1
-    if(Math.abs(speed) > 1) {
-      speed = speed / Math.abs(speed);
+  // Holds Data For Current DriveMode
+  private boolean isHighTorque;
+
+  // Holds Navigation Board (IMU)
+  private AHRS navX;
+
+  public DriveTrain() {
+    // Constructs Left Motors
+    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
+    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ONE, MotorType.kBrushless);
+
+    // Constructs Right Motors
+    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
+    motorRight1 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
+
+    // Groups Motors Together for Differential Drive
+    motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
+    motorRight = new SpeedControllerGroup(motorRight0, motorRight1);
+
+    // Inverts Motors
+    motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
+    motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
+
+    // Creates a Differential Drive Object Using Grouped Motors
+    diffDrive = new DifferentialDrive(motorLeft, motorRight);
+
+    // Sets Deadband for Better Joystick Performance
+    diffDrive.setDeadband(JoystickConstants.DEADBAND);
+
+    // Stops All Motors for Safety
+    diffDrive.stopMotor();
+
+    // Creates DoubleSolonoid to Shift Gears in GearBox
+    gearShift = new DoubleSolenoid(DriveConstants.SHIFTER_PORT_ONE, DriveConstants.SHIFTER_PORT_TWO);
+
+    // Begins with High Torque Everytime
+    highTorque();
+
+    // Updates DriveMode
+    isHighTorque = true;
+
+    // Connects to NavX
+    try {
+      navX = new AHRS(SPI.Port.kMXP);
+    } catch(RuntimeException ex) {
+      // Error Printed to Driver Station
+      DriverStation.reportError("Error instantiating NavX MXP: " + ex.getMessage(), true);
     }
-    return speed;
-  }
-  
-  // Sets up left motors
-  public void leftMotor(double speed) {
-    // Keeps speed within -1 and 1
-    speed = boilerSpeed(speed);
 
-    // Sets all left motors to same speed
-    motorLeft.set(speed * Constants.SPEED_MULTIPLIER);
+    // Resets Yaw to Start Heading of Robot During GamePlay
+    navX.reset();
   }
 
-  // Sets up right motors
-  public void rightMotor(double speed) {
-    // Keeps speed within -1 and 1
-    speed = boilerSpeed(speed);
-
-    // Sets all right motors to same speed
-    motorRight.set(speed * Constants.SPEED_MULTIPLIER);
+  // For Arcade Drive Joysticks
+  public void arcadeDrive(double linVelocity, double rotVelocity) {
+    // Changes Speed to Match Sensitivity 
+    linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
+    rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
+    
+    // Drives Robot
+    diffDrive.arcadeDrive(linVelocity, rotVelocity);
   }
 
-  // Moves motors based on speed
+  // Moves Motors Based on Speed Given
   public void driveSpeed(double leftSpeed, double rightSpeed) {
-    // Sets power of motors
-    leftMotor(leftSpeed);
-    rightMotor(rightSpeed);
+    // Clamps Values to Acceptable Range
+    leftSpeed = MathUtil.clamp(leftSpeed, -1.0, 1.0);
+    rightSpeed = MathUtil.clamp(rightSpeed, -1.0, 1.0);
+
+    // Sets Speed Which is Impacted by Speed Multiplier
+    motorLeft.set(leftSpeed * DriveConstants.SPEED_MULTIPLIER);
+    motorRight.set(rightSpeed * DriveConstants.SPEED_MULTIPLIER);
   }
 
-  // Stops all motors
-  public void stopSpeed() {
-    // Sets all motor power to zero
+  // Stops All Motors
+  public void stopDrive() {
     diffDrive.stopMotor();
   }
 
-  // Arcade Drive
-  public void drive(double linVelocity, double rotVelocity) {
-    /* Uses arcade drive and squares input by stating 
-       true in other to obtain better movement */
-   diffDrive.arcadeDrive(linVelocity, rotVelocity, true);
-     //diffDrive.curvatureDrive(linVelocity, rotVelocity, RobotContainer.driveController.getAButton());
+  // Gear Shifts to High Torque
+  public void highTorque() {
+    // Sends Air to High Torque Pipes
+    gearShift.set(Value.kForward);
+
+    // Prints Current DriveMode
+    SmartDashboard.putString("DriveMode", "High Torque");
   }
 
-/*
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-      this.setDefaultCommand(new DriveCommand());
-  } 
-*/
+  // Gear Shifts to High Speed
+  public void highSpeed() {
+    // Sends Air to High Speed Pipes
+    gearShift.set(Value.kReverse);
 
+    // Prints Current DriveMode
+    SmartDashboard.putString("DriveMode", "High Speed");
+  }
+
+  // Toggles Between Gear Shifts
+  public void toggleDriveMode() {
+    // Alternates Between True and False
+    isHighTorque = !isHighTorque;
+
+    // Calls Method to Match isHighTorque
+    if(isHighTorque) {
+      highTorque();
+    }
+    else {
+      highSpeed();
+    }
+  }
+
+  // Returns if Robot is at High Torque
+  public boolean isHighTorque() {
+    return isHighTorque;
+  }
+
+  // Returns the Angle The Robot is Facing
+  public double getHeading() {
+    return Math.IEEEremainder(navX.getAngle(), 360);
+  }
+
+  // Returns the Degrees per Second of Rotation
+  public double getTurnRate() {
+    return navX.getRate();
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 }
