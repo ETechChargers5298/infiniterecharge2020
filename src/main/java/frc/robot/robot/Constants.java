@@ -40,7 +40,7 @@ public final class Constants {
         public static final double DEADBAND = 0.2;
 
         // Sets JoyStick Sensitivity (Even Numbers ONLY)
-        public static double JOYSTICK_SENSITIVITY = 4;
+        public static double JOYSTICK_SENSITIVITY = 2;
 
         // Numbers for the 2 Xbox controllers
         public static final int DRIVECONTROLLER = 0;

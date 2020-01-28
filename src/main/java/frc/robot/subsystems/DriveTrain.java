@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -56,7 +57,7 @@ public class DriveTrain extends SubsystemBase {
     // Constructs Left Motors
     motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
     motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ONE, MotorType.kBrushless);
-
+    
     // Constructs Right Motors
     motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
     motorRight1 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
@@ -71,6 +72,9 @@ public class DriveTrain extends SubsystemBase {
 
     // Creates a Differential Drive Object Using Grouped Motors
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
+
+    // Sets Safety to the Motors
+    diffDrive.setSafetyEnabled(true);
 
     // Sets Deadband for Better Joystick Performance
     diffDrive.setDeadband(JoystickConstants.DEADBAND);
@@ -102,18 +106,22 @@ public class DriveTrain extends SubsystemBase {
   // For Arcade Drive Joysticks
   public void arcadeDrive(double linVelocity, double rotVelocity) {
     // Changes Speed to Match Sensitivity 
-    linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
-    rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
+    //linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
+    //rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
     
     // Drives Robot
-    diffDrive.arcadeDrive(linVelocity, rotVelocity);
+    diffDrive.arcadeDrive(linVelocity, rotVelocity, true);
+    SmartDashboard.putData("Differential Drive", diffDrive);
   }
 
   // Moves Motors Based on Speed Given
   public void driveSpeed(double leftSpeed, double rightSpeed) {
     // Clamps Values to Acceptable Range
-    leftSpeed = MathUtil.clamp(leftSpeed, -1.0, 1.0);
-    rightSpeed = MathUtil.clamp(rightSpeed, -1.0, 1.0);
+    leftSpeed = MathUtil.clamp(leftSpeed, -0.5, 0.5);
+    rightSpeed = MathUtil.clamp(rightSpeed, -0.5, 0.5);
+
+    SmartDashboard.putNumber("LeftWheel", leftSpeed);
+    SmartDashboard.putNumber("RightWheel", rightSpeed);
 
     // Sets Speed Which is Impacted by Speed Multiplier
     motorLeft.set(leftSpeed * DriveConstants.SPEED_MULTIPLIER);
@@ -164,6 +172,8 @@ public class DriveTrain extends SubsystemBase {
 
   // Returns the Angle The Robot is Facing
   public double getHeading() {
+    SmartDashboard.putData("Gyro", navX);
+    SmartDashboard.putNumber("GyroTime", navX.getAngle());
     return Math.IEEEremainder(navX.getAngle(), 360);
   }
 
