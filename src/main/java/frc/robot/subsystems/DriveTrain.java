@@ -13,7 +13,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -106,22 +105,21 @@ public class DriveTrain extends SubsystemBase {
   // For Arcade Drive Joysticks
   public void arcadeDrive(double linVelocity, double rotVelocity) {
     // Changes Speed to Match Sensitivity 
-    //linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
-    //rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
+    linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
+    rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
     
     // Drives Robot
-    diffDrive.arcadeDrive(linVelocity, rotVelocity, true);
+    diffDrive.arcadeDrive(linVelocity, rotVelocity);
+
+    // Prints Velocity of Wheels
     SmartDashboard.putData("Differential Drive", diffDrive);
   }
 
   // Moves Motors Based on Speed Given
   public void driveSpeed(double leftSpeed, double rightSpeed) {
     // Clamps Values to Acceptable Range
-    leftSpeed = MathUtil.clamp(leftSpeed, -0.5, 0.5);
-    rightSpeed = MathUtil.clamp(rightSpeed, -0.5, 0.5);
-
-    SmartDashboard.putNumber("LeftWheel", leftSpeed);
-    SmartDashboard.putNumber("RightWheel", rightSpeed);
+    leftSpeed = MathUtil.clamp(leftSpeed, -1 * DriveConstants.MAX_SPEED, DriveConstants.MAX_SPEED);
+    rightSpeed = MathUtil.clamp(rightSpeed, -1 * DriveConstants.MAX_SPEED, DriveConstants.MAX_SPEED);
 
     // Sets Speed Which is Impacted by Speed Multiplier
     motorLeft.set(leftSpeed * DriveConstants.SPEED_MULTIPLIER);
@@ -139,7 +137,7 @@ public class DriveTrain extends SubsystemBase {
     gearShift.set(Value.kForward);
 
     // Prints Current DriveMode
-    SmartDashboard.putString("DriveMode", "High Torque");
+    SmartDashboard.putString("DriveMode", "Torque");
   }
 
   // Gear Shifts to High Speed
@@ -148,7 +146,7 @@ public class DriveTrain extends SubsystemBase {
     gearShift.set(Value.kReverse);
 
     // Prints Current DriveMode
-    SmartDashboard.putString("DriveMode", "High Speed");
+    SmartDashboard.putString("DriveMode", "Speed");
   }
 
   // Toggles Between Gear Shifts
@@ -172,8 +170,12 @@ public class DriveTrain extends SubsystemBase {
 
   // Returns the Angle The Robot is Facing
   public double getHeading() {
+    // Prints Gyro Heading
     SmartDashboard.putData("Gyro", navX);
+
+    // Prints Graph of Heading over Time
     SmartDashboard.putNumber("GyroTime", navX.getAngle());
+
     return Math.IEEEremainder(navX.getAngle(), 360);
   }
 

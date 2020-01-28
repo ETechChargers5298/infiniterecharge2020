@@ -33,6 +33,16 @@ public final class Constants {
         // Ball Shifters on Gearbox.
         public static final int SHIFTER_PORT_ONE = 0;
         public static final int SHIFTER_PORT_TWO = 1;
+
+        // PID Constants for Left Wheels
+        public static final double LEFT_DRIVE_P = 1;
+        public static final double LEFT_DRIVE_I = 0;
+        public static final double LEFT_DRIVE_D = 0;
+
+        // PID Constants for Right Wheels
+        public static final double RIGHT_DRIVE_P = 1;
+        public static final double RIGHT_DRIVE_I = 0;
+        public static final double RIGHT_DRIVE_D = 0;
     }
 
     public static final class JoystickConstants {
