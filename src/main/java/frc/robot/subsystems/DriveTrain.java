@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -43,6 +44,11 @@ public class DriveTrain extends SubsystemBase {
   // Uses Motors as Differential Drive
   private DifferentialDrive diffDrive;
 
+  // Holds Two Encoders
+  private CANEncoder encLeft;
+  private CANEncoder encRight;
+
+
   // Holds GearShifting Solenoids
   private DoubleSolenoid gearShift;
 
@@ -71,6 +77,12 @@ public class DriveTrain extends SubsystemBase {
 
     // Creates a Differential Drive Object Using Grouped Motors
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
+
+    // Creates eEncoder objects
+
+    encLeft = motorLeft0.getEncoder();
+    encRight = motorRight0.getEncoder();
+
 
     // Sets Safety to the Motors
     diffDrive.setSafetyEnabled(true);
@@ -130,6 +142,23 @@ public class DriveTrain extends SubsystemBase {
   public void stopDrive() {
     diffDrive.stopMotor();
   }
+
+  // Get Right Encoder Values -JG
+  public double getEncoderRightValue() {
+    double ri = encRight.getPosition();
+    SmartDashboard.putNumber("Right Encoder", ri);
+    return ri;
+    
+  }
+
+  // Get Left Encoder Values -JG
+  public double getEncoderLeftValue() {
+    double le = encLeft.getPosition();
+    SmartDashboard.putNumber("Left Encoder", le);
+    return le;
+    
+  }
+
 
   // Gear Shifts to High Torque
   public void highTorque() {
