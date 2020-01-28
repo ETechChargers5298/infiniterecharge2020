@@ -34,6 +34,9 @@ public final class Constants {
         public static final int SHIFTER_PORT_ONE = 0;
         public static final int SHIFTER_PORT_TWO = 1;
 
+        // Max Speed of Autonomous Wheels
+        public static final double MAX_SPEED = 0.5;
+
         // PID Constants for Left Wheels
         public static final double LEFT_DRIVE_P = 1;
         public static final double LEFT_DRIVE_I = 0;
