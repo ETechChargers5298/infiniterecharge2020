@@ -11,10 +11,13 @@ package frc.robot.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.liftForward;
+import frc.robot.commands.liftReverse;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -72,6 +75,11 @@ public class RobotContainer {
 
     // Uses Right Bumper to Turn to 90 Degrees
     new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new TurnToAngle(90, driveTrain));
+
+    //Uses Buton A to LiftForward
+    new JoystickButton(driveController, Button.kA.value).whenPressed(new liftForward());
+
+    new JoystickButton(driveController, Button.kB.value).whenPressed(new liftReverse());
 }
 
   /**

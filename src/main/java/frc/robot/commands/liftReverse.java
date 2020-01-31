@@ -10,11 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.robot.RobotContainer;
 
-public class liftForward extends CommandBase {
+public class liftReverse extends CommandBase {
   /**
-   * Creates a new liftForward.
+   * Creates a new liftReverse.
    */
-  public liftForward() {
+  public liftReverse() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.lift);
   }
@@ -22,9 +22,8 @@ public class liftForward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.lift.forwardSolenoid();
+    RobotContainer.lift.reverseSolenoid();
   }
-  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
