@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
+import frc.robot.commands.Level;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Leveler;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -31,6 +33,7 @@ import frc.robot.robot.Constants.JoystickConstants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
+  private final Leveler leveler = new Leveler();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
@@ -70,6 +73,9 @@ public class RobotContainer {
 
     // Uses Right Bumper to Turn to 90 Degrees
     new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new TurnToAngle(90, driveTrain));
+
+    // Test
+    new JoystickButton(driveController, Button.kA.value).whenHeld(new Level(leveler));
 }
 
   /**
