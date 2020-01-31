@@ -23,6 +23,13 @@ public final class Constants {
         public static final int MOTOR_RIGHT_ZERO = 2;
         public static final int MOTOR_RIGHT_ONE = 6;
 
+        // Encoder Resolution
+        public static final int DRIVE_ENCODER_RESOLUTION = 8192;
+
+        // DriveTrain Wheel Data
+        public static final double DRIVE_TRACK_WIDTH = 12; // Inches
+        public static final double DRIVE_WHEEL_RADIUS = 6; // Inches
+
         // Holds wheel inversion boolean (One should be true and the other one should be false)
         public static final boolean LEFT_INVERSION = true;
         public static final boolean RIGHT_INVERSION = true;
@@ -34,8 +41,11 @@ public final class Constants {
         public static final int SHIFTER_PORT_ONE = 0;
         public static final int SHIFTER_PORT_TWO = 1;
 
-        // Max Speed of Autonomous Wheels
-        public static final double MAX_SPEED = 0.5;
+        // Max Speed for Turn
+        public static final double MAX_SPEED = 1;
+        // Max Speed
+        public static final double MAX_VELOCITY = 3.0; // Meters per Second
+        public static final double MAX_TURN_SPEED = 2 * Math.PI; // Rotation Per Second
 
         // PID Constants for Left Wheels
         public static final double LEFT_DRIVE_P = 1;
@@ -46,6 +56,10 @@ public final class Constants {
         public static final double RIGHT_DRIVE_P = 1;
         public static final double RIGHT_DRIVE_I = 0;
         public static final double RIGHT_DRIVE_D = 0;
+
+        // Feed Forward Constants
+        public static final double DRIVE_STATIC_GAIN = 1;
+        public static final double DRIVE_VELOCITY_GAIN = 3;
     }
 
     public static final class JoystickConstants {
@@ -58,6 +72,9 @@ public final class Constants {
         // Numbers for the 2 Xbox controllers
         public static final int DRIVECONTROLLER = 0;
         public static final int OPERATORCONTROLLER = 1;
+
+        public static final double SPEED_LIMIT = 3; // (1 / Speed_Limit) Seconds from 0 to 1
+        public static final double ROT_LIMIT = 3; // (1 / Rot_Limit) Seconds from 0 to 1
     }
 
     public static final class TurnToAngleConstants {
@@ -67,8 +84,8 @@ public final class Constants {
         public static final double TURN_D = 0;
 
         // Turning Tolerance
-        public static final double TURN_TOLERANCE = 5;
-        public static final double TURN_RATE_TOLERANCE = 10;
+        public static final double TURN_TOLERANCE = 5; // Degrees
+        public static final double TURN_RATE_TOLERANCE = 10; // Degrees per Second
     }
     
 }

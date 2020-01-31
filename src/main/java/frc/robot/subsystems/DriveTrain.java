@@ -8,16 +8,22 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -41,13 +47,26 @@ public class DriveTrain extends SubsystemBase {
   private SpeedControllerGroup motorLeft;
   private SpeedControllerGroup motorRight;
 
-  // Uses Motors as Differential Drive
+  // PID Controllers for Drive
+  private PIDController leftController;
+  private PIDController rightController;
+
+  // Implements FeedForward Constraint DriveTrain
+  private SimpleMotorFeedforward feedForward;
+
+  // Slew Rate Limiters for Joystick
+  private SlewRateLimiter speedLimiter;
+  private SlewRateLimiter rotLimiter;
+
+  // Uses Motors for Differential Kinematics
   private DifferentialDrive diffDrive;
 
-  // Holds Two Encoders
-  private CANEncoder encLeft;
-  private CANEncoder encRight;
+  // Uses Motors for Differential Drive 
+  private DifferentialDriveKinematics diffKinematics;
 
+  // Holds Two Encoders
+  private CANEncoder encoderLeft;
+  private CANEncoder encoderRight;
 
   // Holds GearShifting Solenoids
   private DoubleSolenoid gearShift;
@@ -75,23 +94,26 @@ public class DriveTrain extends SubsystemBase {
     motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
     motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
 
+    // PID Controllers are Initialized
+    leftController = new PIDController(DriveConstants.LEFT_DRIVE_P, DriveConstants.LEFT_DRIVE_I, DriveConstants.LEFT_DRIVE_D);
+    rightController = new PIDController(DriveConstants.RIGHT_DRIVE_P, DriveConstants.RIGHT_DRIVE_I, DriveConstants.RIGHT_DRIVE_D);
+
+    // Implements Feedforward to Account for Physics
+    feedForward = new SimpleMotorFeedforward(DriveConstants.DRIVE_STATIC_GAIN, DriveConstants.DRIVE_VELOCITY_GAIN);
+
+    // Slew Rate Limitation
+    speedLimiter = new SlewRateLimiter(JoystickConstants.SPEED_LIMIT);
+    rotLimiter = new SlewRateLimiter(JoystickConstants.ROT_LIMIT);
+
+    // Creates a Differential Kinematics for Chassis
+    diffKinematics = new DifferentialDriveKinematics(DriveConstants.DRIVE_TRACK_WIDTH);
+
     // Creates a Differential Drive Object Using Grouped Motors
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
 
-    // Creates eEncoder objects
-
-    encLeft = motorLeft0.getEncoder();
-    encRight = motorRight0.getEncoder();
-
-
-    // Sets Safety to the Motors
-    diffDrive.setSafetyEnabled(true);
-
-    // Sets Deadband for Better Joystick Performance
-    diffDrive.setDeadband(JoystickConstants.DEADBAND);
-
-    // Stops All Motors for Safety
-    diffDrive.stopMotor();
+    // Creates Encoder objects
+    encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
 
     // Creates DoubleSolonoid to Shift Gears in GearBox
     gearShift = new DoubleSolenoid(DriveConstants.SHIFTER_PORT_ONE, DriveConstants.SHIFTER_PORT_TWO);
@@ -127,6 +149,16 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putData("Differential Drive", diffDrive);
   }
 
+  // Test Arcade Drive
+  public void arcadeDrive2(double linVelocity, double rotVelocity) {
+    // Updates Speeds with Limiters
+    var linearVelocity = -speedLimiter.calculate(linVelocity * DriveConstants.MAX_VELOCITY);
+    var rotationVelocity = -rotLimiter.calculate(rotVelocity * DriveConstants.MAX_TURN_SPEED);
+
+    // Uses Velocity to Drive
+    drive(linearVelocity, rotationVelocity);
+  }
+
   // Moves Motors Based on Speed Given
   public void driveSpeed(double leftSpeed, double rightSpeed) {
     // Clamps Values to Acceptable Range
@@ -138,6 +170,30 @@ public class DriveTrain extends SubsystemBase {
     motorRight.set(rightSpeed * DriveConstants.SPEED_MULTIPLIER);
   }
 
+  // Sets Speed of Motors Using a PID Controller
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    // Feed Forward Calculated for Each Wheel
+    double leftFeedForward = feedForward.calculate(speeds.leftMetersPerSecond);
+    double rightFeedForward = feedForward.calculate(speeds.rightMetersPerSecond);
+    
+    // Calculates Output Needed using PID Controller
+    double leftOutput = leftController.calculate(encoderLeft.getVelocity(), speeds.leftMetersPerSecond);
+    double rightOutput = rightController.calculate(encoderRight.getVelocity(), speeds.rightMetersPerSecond);
+
+    // Sets Voltage to Run Code
+    motorLeft.setVoltage(leftOutput + leftFeedForward);
+    motorRight.setVoltage(rightOutput + rightFeedForward);
+  }
+
+  // Drive Using PID and Real World Velocity
+  public void drive(double linVelocity, double rotVelocity) {
+    // Converts Real World Velocity to Wheel Power
+    var wheelSpeeds = diffKinematics.toWheelSpeeds(new ChassisSpeeds(linVelocity, 0, rotVelocity));
+
+    // Sets Motor Speeds to Move
+    setSpeeds(wheelSpeeds);
+  }
+
   // Stops All Motors
   public void stopDrive() {
     diffDrive.stopMotor();
@@ -145,18 +201,16 @@ public class DriveTrain extends SubsystemBase {
 
   // Get Right Encoder Values -JG
   public double getEncoderRightValue() {
-    double ri = encRight.getPosition();
+    double ri = encoderRight.getPosition();
     SmartDashboard.putNumber("Right Encoder", ri);
     return ri;
-    
   }
 
   // Get Left Encoder Values -JG
   public double getEncoderLeftValue() {
-    double le = encLeft.getPosition();
+    double le = encoderLeft.getPosition();
     SmartDashboard.putNumber("Left Encoder", le);
     return le;
-    
   }
 
 
@@ -190,11 +244,6 @@ public class DriveTrain extends SubsystemBase {
     else {
       highSpeed();
     }
-  }
-
-  // Returns if Robot is at High Torque
-  public boolean isHighTorque() {
-    return isHighTorque;
   }
 
   // Returns the Angle The Robot is Facing
