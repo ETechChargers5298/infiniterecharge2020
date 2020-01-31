@@ -16,6 +16,7 @@ import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -31,6 +32,7 @@ import frc.robot.robot.Constants.JoystickConstants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
+  public final static Lift lift = new Lift();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
