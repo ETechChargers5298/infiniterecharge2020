@@ -8,14 +8,21 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.GearShift;
+import edu.wpi.first.wpilibj2.command.DoubleSolenoid;
 
 public class Lift extends SubsystemBase {
   /**
    * Creates a new Lift.
    */
   public Lift() {
-
+    
+GearShift = new DoubleSolenoid()
   }
+
+
+
+
 
   @Override
   public void periodic() {
