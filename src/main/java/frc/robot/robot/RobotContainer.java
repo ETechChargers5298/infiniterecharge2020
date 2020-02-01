@@ -17,7 +17,11 @@ import frc.robot.commands.GearShift;
 import frc.robot.commands.Level;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.DriveTrain;
+<<<<<<< HEAD
 import frc.robot.subsystems.Leveler;
+=======
+import frc.robot.subsystems.Lift;
+>>>>>>> 5c1a3356f52c95f7fdb1fd2f1cc0c8dfd7be9b57
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -34,6 +38,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final Leveler leveler = new Leveler();
+  public final static Lift lift = new Lift();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();

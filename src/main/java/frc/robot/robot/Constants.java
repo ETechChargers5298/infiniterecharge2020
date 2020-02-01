@@ -60,6 +60,10 @@ public final class Constants {
         // Feed Forward Constants
         public static final double DRIVE_STATIC_GAIN = 1;
         public static final double DRIVE_VELOCITY_GAIN = 3;
+
+        // Lift Solenoid Constants
+        public static final int LIFTER_PORT_THREE = 2;
+        public static final int LIFTER_PORT_FOUR = 3;
     }
 
     public static final class JoystickConstants {
