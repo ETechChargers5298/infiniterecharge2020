@@ -30,6 +30,10 @@ public final class Constants {
         public static final double DRIVE_TRACK_WIDTH = 12; // Inches
         public static final double DRIVE_WHEEL_RADIUS = 6; // Inches
 
+        // Wheel Data Info
+        public static final double WHEEL_RADIUS = 6; // Inches
+        public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_RADIUS * 2.0;
+
         // Holds wheel inversion boolean (One should be true and the other one should be false)
         public static final boolean LEFT_INVERSION = true;
         public static final boolean RIGHT_INVERSION = true;
@@ -113,5 +117,13 @@ public final class Constants {
         // Sets Tolerance for PID Setpoint
 		public static final double DEGREE_TOLERANCE = 5; // Degrees
 		public static final double VELOCITY_TOLERANCE = 1; // Rotation per Second
+    }
+
+    public static final class LimeLightConstants {
+        // PipeLine ID of Shooter
+        public static final int SHOOTER_PIPELINE = 0;
+        
+        // Holds Proportional Constant for Aiming
+        public static final double AIM_P = 1;
     }
 }
