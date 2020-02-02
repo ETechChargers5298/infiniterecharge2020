@@ -122,8 +122,11 @@ public final class Constants {
     public static final class LimeLightConstants {
         // PipeLine ID of Shooter
         public static final int SHOOTER_PIPELINE = 0;
-        
+
         // Holds Proportional Constant for Aiming
         public static final double AIM_P = 1;
+
+        // Holds the Minium Power to Move Robot
+        public static final double AIM_MIN_COMMAND = 0.1;
     }
 }

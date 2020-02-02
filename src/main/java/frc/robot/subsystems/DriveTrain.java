@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -67,7 +68,7 @@ public class DriveTrain extends SubsystemBase {
   private DifferentialDriveKinematics diffKinematics;
 
   // Creates a Odometry 
-  private DifferentialDriveOdometry diffOdemetry;
+  private DifferentialDriveOdometry diffOdometry;
 
   // Holds Two Encoders
   private CANEncoder encoderLeft;
@@ -149,7 +150,7 @@ public class DriveTrain extends SubsystemBase {
     navX.reset();
 
     // Sets Up Odometry
-    diffOdemetry = new DifferentialDriveOdometry(getHeading());
+    diffOdometry = new DifferentialDriveOdometry(getAngle());
   }
 
   // For Arcade Drive Joysticks
@@ -273,9 +274,20 @@ public class DriveTrain extends SubsystemBase {
     return Math.IEEEremainder(navX.getAngle(), 360);
   }
 
+  // Returns 2D Angle
+  public Rotation2d getAngle() {
+    // Returns Angle as a Rotational 2D
+    return Rotation2d.fromDegrees(navX.getAngle());
+  }
+
   // Returns the Degrees per Second of Rotation
   public double getTurnRate() {
     return navX.getRate();
+  }
+
+  // Updates Odometry
+  public void updateOdometry() {
+    diffOdometry.update(getAngle(), encoderLeft.getPosition(), encoderRight.getPosition());
   }
 
   @Override
