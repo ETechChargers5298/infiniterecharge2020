@@ -7,40 +7,56 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.robot.Constants.LevelConstants;
 import frc.robot.subsystems.Leveler;
 
-public class Level extends CommandBase {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class Level extends ProfiledPIDCommand {
   /**
-   * Creates a new Level.
+   * Creates a new Leveler.
    */
 
-  private Leveler leveler;
+  // Holds the Leveler Subsystem
+  private final Leveler leveler;
   public Level(Leveler leveler) {
-    // Use addRequirements() here to declare subsystem dependencies.
+    super(
+        // The ProfiledPIDController used by the command
+        new ProfiledPIDController(
+            // The PID gains
+            LevelConstants.LEVEL_P, LevelConstants.LEVEL_I, LevelConstants.LEVEL_D,
+            // The motion profile constraints
+            new TrapezoidProfile.Constraints(LevelConstants.MAX_VELOCITY, LevelConstants.MAX_ACCELERATION)),
+        // This should return the measurement
+        leveler::getRoll,
+        // This should return the goal
+        LevelConstants.GOAL,
+        // This uses the output
+        (output, setpoint) -> 
+        // Use the output (and setpoint, if desired) here
+        leveler.move(output),
+        // Required Subsystems
+        leveler
+        );
+
+    // Updates Leveler Field
     this.leveler = leveler;
+
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.leveler);
-  }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    leveler.test();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
+    // Sets Tolerance For Setpoint to Know What Speed it Has to Be At
+    getController().setTolerance(LevelConstants.DEGREE_TOLERANCE, LevelConstants.VELOCITY_TOLERANCE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // Ends When Robot is Leveled
+    return getController().atGoal();
   }
 }

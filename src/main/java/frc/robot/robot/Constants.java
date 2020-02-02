@@ -92,4 +92,26 @@ public final class Constants {
         public static final double TURN_RATE_TOLERANCE = 10; // Degrees per Second
     }
     
+    public static final class LevelConstants {
+        // CAN ID for Motors
+        public static final int LEVEL_MOTOR_ID = 9;
+
+        // Max Velocity of Motor
+        public static final double MAX_VELOCITY = 0.25;
+
+        // Max Acceleration of Motor
+        public static final double MAX_ACCELERATION = 0.15;
+
+        // PID Constants for Leveler
+        public static final double LEVEL_P = 1;
+        public static final double LEVEL_I = 0;
+        public static final double LEVEL_D = 0;
+        
+        // Goal of Leveler in Degrees
+        public static final double GOAL = 0.0;
+
+        // Sets Tolerance for PID Setpoint
+		public static final double DEGREE_TOLERANCE = 5; // Degrees
+		public static final double VELOCITY_TOLERANCE = 1; // Rotation per Second
+    }
 }
