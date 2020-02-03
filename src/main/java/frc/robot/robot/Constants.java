@@ -22,6 +22,8 @@ public final class Constants {
         public static final int MOTOR_LEFT_ONE = 4;
         public static final int MOTOR_RIGHT_ZERO = 2;
         public static final int MOTOR_RIGHT_ONE = 6;
+        public static final int WHEEL_INTAKE_MOTOR = 8;
+
 
         // Encoder Resolution
         public static final int DRIVE_ENCODER_RESOLUTION = 8192;
@@ -68,6 +70,10 @@ public final class Constants {
         // Lift Solenoid Constants
         public static final int LIFTER_PORT_THREE = 2;
         public static final int LIFTER_PORT_FOUR = 3;
+
+        // Intake Solenoid Constants 
+        public static final int INTAKE_PORT_FIVE = 4;
+        public static final int INTAKE_PORT_SIX = 5;
     }
 
     public static final class JoystickConstants {
