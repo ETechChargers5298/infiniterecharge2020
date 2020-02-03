@@ -277,7 +277,7 @@ public class DriveTrain extends SubsystemBase {
   // Returns 2D Angle
   public Rotation2d getAngle() {
     // Returns Angle as a Rotational 2D
-    return Rotation2d.fromDegrees(navX.getAngle());
+    return Rotation2d.fromDegrees(-navX.getAngle());
   }
 
   // Returns the Degrees per Second of Rotation
