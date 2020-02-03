@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.robot.Constants.DriveConstants;
 
@@ -26,6 +27,10 @@ public class Intake extends SubsystemBase {
 
       lifeIntakeMotor = new CANSparkMax(DriveConstants.WHEEL_INTAKE_MOTOR, 
       MotorType.kBrushless);
+  }
+  
+  public void pushIntakeDown(){
+    intakeSolenoid.set(Value.kForward);
   }
 
   @Override
