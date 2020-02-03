@@ -21,10 +21,13 @@ import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.robot.Constants.DriveConstants;
@@ -63,6 +66,9 @@ public class DriveTrain extends SubsystemBase {
 
   // Uses Motors for Differential Drive 
   private DifferentialDriveKinematics diffKinematics;
+
+  // Creates a Odometry 
+  private DifferentialDriveOdometry diffOdometry;
 
   // Holds Two Encoders
   private CANEncoder encoderLeft;
@@ -115,6 +121,14 @@ public class DriveTrain extends SubsystemBase {
     encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
     encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
 
+    // Sets Factors for Position to Measure in Meters
+    encoderLeft.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
+    encoderRight.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
+
+    // Sets Factors for Velocity to Measure in Meters per Second
+    encoderLeft.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
+    encoderRight.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
+
     // Creates DoubleSolonoid to Shift Gears in GearBox
     gearShift = new DoubleSolenoid(DriveConstants.SHIFTER_PORT_ONE, DriveConstants.SHIFTER_PORT_TWO);
 
@@ -134,6 +148,9 @@ public class DriveTrain extends SubsystemBase {
 
     // Resets Yaw to Start Heading of Robot During GamePlay
     navX.reset();
+
+    // Sets Up Odometry
+    diffOdometry = new DifferentialDriveOdometry(getAngle());
   }
 
   // For Arcade Drive Joysticks
@@ -257,9 +274,20 @@ public class DriveTrain extends SubsystemBase {
     return Math.IEEEremainder(navX.getAngle(), 360);
   }
 
+  // Returns 2D Angle
+  public Rotation2d getAngle() {
+    // Returns Angle as a Rotational 2D
+    return Rotation2d.fromDegrees(navX.getAngle());
+  }
+
   // Returns the Degrees per Second of Rotation
   public double getTurnRate() {
     return navX.getRate();
+  }
+
+  // Updates Odometry
+  public void updateOdometry() {
+    diffOdometry.update(getAngle(), encoderLeft.getPosition(), encoderRight.getPosition());
   }
 
   @Override
