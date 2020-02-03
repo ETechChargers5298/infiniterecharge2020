@@ -11,14 +11,16 @@ package frc.robot.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.AddressableLEDs;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
+import frc.robot.commands.PushIntakeDown;
+import frc.robot.commands.RetractWheelIntake;
+import frc.robot.commands.SetWheelIntakeSpeed;
 import frc.robot.commands.TurnToAngle;
-import frc.robot.commands.liftForward;
-import frc.robot.commands.liftReverse;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Leveler;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -35,8 +37,12 @@ import frc.robot.robot.Constants.JoystickConstants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
-  private final Leveler leveler = new Leveler();
-  public final static Lift lift = new Lift();
+
+  public static final Intake intake = new Intake();
+  public static final Lift lift = new Lift();
+
+  //Holds Addressable LED code
+  public final AddressableLEDs led = new AddressableLEDs();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
@@ -44,6 +50,7 @@ public class RobotContainer {
   // Holds the Driver Controller Object
   XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
 
+  XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -76,12 +83,14 @@ public class RobotContainer {
 
     // Uses Right Bumper to Turn to 90 Degrees
     new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new TurnToAngle(90, driveTrain));
+    
+    new JoystickButton(operatorController, Button.kA.value).whenPressed(new PushIntakeDown());
 
-    //Uses Buton A to LiftForward
-    new JoystickButton(driveController, Button.kA.value).whenPressed(new liftForward());
-
-    new JoystickButton(driveController, Button.kB.value).whenPressed(new liftReverse());
-}
+    new JoystickButton(operatorController, Button.kB.value).whenPressed(new RetractWheelIntake());
+  
+    new JoystickButton(operatorController, Button.kX.value).whileHeld(new SetWheelIntakeSpeed(1));
+    new JoystickButton(operatorController, Button.kX.value).whenReleased(new SetWheelIntakeSpeed(0));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
