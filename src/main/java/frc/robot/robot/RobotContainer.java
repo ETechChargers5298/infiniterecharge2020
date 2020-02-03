@@ -11,11 +11,9 @@ package frc.robot.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
-import frc.robot.commands.Level;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.liftForward;
 import frc.robot.commands.liftReverse;
