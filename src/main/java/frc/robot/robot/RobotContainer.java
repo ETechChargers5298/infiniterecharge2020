@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
+import frc.robot.commands.Shooting;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.liftForward;
 import frc.robot.commands.liftReverse;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Leveler;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -37,6 +39,7 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain();
   private final Leveler leveler = new Leveler();
   public final static Lift lift = new Lift();
+  private final Shooter shooter = new Shooter();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
@@ -81,7 +84,9 @@ public class RobotContainer {
     new JoystickButton(driveController, Button.kA.value).whenPressed(new liftForward());
 
     new JoystickButton(driveController, Button.kB.value).whenPressed(new liftReverse());
-}
+
+    new JoystickButton(driveController, Button.kX.value).whenHeld(new Shooting(shooter));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
