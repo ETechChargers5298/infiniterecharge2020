@@ -37,7 +37,11 @@ public class Intake extends SubsystemBase {
     intakeSolenoid.set(Value.kReverse);
   }
 
-  
+  public void intakeMotorSpeed(double speed){
+    lifeIntakeMotor.set(speed);
+  }
+
+
 
   @Override
   public void periodic() {
