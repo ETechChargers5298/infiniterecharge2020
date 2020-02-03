@@ -15,13 +15,18 @@ import frc.robot.AddressableLEDs;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.GearShift;
+<<<<<<< HEAD
 import frc.robot.commands.PushIntakeDown;
 import frc.robot.commands.RetractWheelIntake;
 import frc.robot.commands.SetWheelIntakeSpeed;
+=======
+import frc.robot.commands.Shooting;
+>>>>>>> 7e1c38bd94bbbcd87c051d317f542e09d289ac12
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -37,12 +42,18 @@ import frc.robot.robot.Constants.JoystickConstants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
+<<<<<<< HEAD
 
   public static final Intake intake = new Intake();
   public static final Lift lift = new Lift();
 
   //Holds Addressable LED code
   public final AddressableLEDs led = new AddressableLEDs();
+=======
+  private final Leveler leveler = new Leveler();
+  public final static Lift lift = new Lift();
+  private final Shooter shooter = new Shooter();
+>>>>>>> 7e1c38bd94bbbcd87c051d317f542e09d289ac12
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
@@ -86,10 +97,19 @@ public class RobotContainer {
     
     new JoystickButton(operatorController, Button.kA.value).whenPressed(new PushIntakeDown());
 
+<<<<<<< HEAD
     new JoystickButton(operatorController, Button.kB.value).whenPressed(new RetractWheelIntake());
   
     new JoystickButton(operatorController, Button.kX.value).whileHeld(new SetWheelIntakeSpeed(1));
     new JoystickButton(operatorController, Button.kX.value).whenReleased(new SetWheelIntakeSpeed(0));
+=======
+    //Uses Buton A to LiftForward
+    new JoystickButton(driveController, Button.kA.value).whenPressed(new liftForward());
+
+    new JoystickButton(driveController, Button.kB.value).whenPressed(new liftReverse());
+
+    new JoystickButton(driveController, Button.kX.value).whenHeld(new Shooting(shooter));
+>>>>>>> 7e1c38bd94bbbcd87c051d317f542e09d289ac12
   }
 
   /**
