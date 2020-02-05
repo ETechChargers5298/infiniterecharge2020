@@ -7,14 +7,57 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.robot.Constants.ShooterConstants;
+import frc.robot.utils.LimeLight;
 
 public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  public Shooter() {
 
+  // Holds Motor That Rotates To Launch Ball
+  private CANSparkMax shooterMotor;
+
+  // Holds Encoder to Measure Velocity of Launcher
+  private CANEncoder shooterEncoder;
+
+  // Holds Piston That Changes Angle of Shooter
+  private DoubleSolenoid shooterSolenoid;
+
+  // Holds LimeLight Which Is Used For Aiming
+  private LimeLight lime;
+
+  public Shooter() {
+    // Constructs Motor for Shooting
+    shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_ID, MotorType.kBrushless);
+
+    // Inverts Motor if Needed
+    shooterMotor.setInverted(ShooterConstants.SHOOTER_MOTOR_INVERSION);
+
+    // Obtains Encoder from SparkMax
+    shooterEncoder = shooterMotor.getEncoder();
+
+    // Constructs a Solenoid to Change Angles
+    shooterSolenoid = new DoubleSolenoid(ShooterConstants.SHOOTER_PORT_ZERO, ShooterConstants.SHOOTER_PORT_ONE);
+
+    // Constructs a Limelight to Aim
+    lime = new LimeLight();
+  }
+  
+  // Shoots at Max Power
+  public void shootMaxVelocity() {
+    shooterMotor.set(ShooterConstants.SHOOTER_MAX_SPEED);
+  }
+
+  // Stops Shooting
+  public void stopShooting() {
+    shooterMotor.stopMotor();
   }
 
   @Override

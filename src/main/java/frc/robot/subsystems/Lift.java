@@ -8,35 +8,36 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.DriveConstants;
+import frc.robot.robot.Constants.LiftConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Lift extends SubsystemBase {
+  /**
+   * Our Robot has a Elevator Controlled by Pistons. This Allows Us to
+   * Exceed the Robots Height Using Lots of Compressed Air to Lift
+   * onto the Generator Switch During End Game.
+   */
+
+  // Holds Solenoid that Powers Lifts
   private DoubleSolenoid lifterSolenoid;
 
-
   public Lift() {
-    
-    lifterSolenoid = new DoubleSolenoid(DriveConstants.LIFTER_PORT_THREE, 
-    DriveConstants.LIFTER_PORT_FOUR);
+    // Constructs a Solenoid Object for Lifter
+    lifterSolenoid = new DoubleSolenoid(LiftConstants.LIFT_PORT_ZERO,
+    LiftConstants.LIFT_PORT_ONE);
   }
 
-  public void forwardSolenoid(){
+  // Elevator Goes Up to Reach for Generator Switch Bar
+  public void robotReach(){
     lifterSolenoid.set(Value.kForward);
-    
   }
 
-  public void reverseSolenoid(){
+  // Elevator Goes Down to Pull The Robot on the Bar
+  public void robotPull(){
     lifterSolenoid.set(Value.kReverse);
 
   }
-
-  public void offSolenoid(){
-    lifterSolenoid.set(Value.kOff);
-  }
-
-
 
   @Override
   public void periodic() {

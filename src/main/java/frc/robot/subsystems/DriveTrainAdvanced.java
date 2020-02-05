@@ -137,8 +137,6 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
     // Begins with High Torque at Start of Match
     highTorque();
-
-
   }
 
   // Returns Angle as Rotation2d

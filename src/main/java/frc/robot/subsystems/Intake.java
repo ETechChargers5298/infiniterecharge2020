@@ -13,35 +13,62 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.DriveConstants;
+import frc.robot.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
+  /**
+   * Our Robot has the Ability to Drop and Retract its Intake to Ensure
+   * that We will Not Exceed Our Robot's Max Perimeter. To Actually Intake Balls,
+   * We Use a Motor Connected to Chains Which Spins a Axle Containing Many 2 Inch Mechanum
+   * Wheels.
+   */
 
+  // Holds Solenoids that Drop and Retract Intake
   private DoubleSolenoid intakeSolenoid;
-  private CANSparkMax lifeIntakeMotor;
+
+  // Holds Motor That Moves Intake Axle
+  private CANSparkMax intakeMotor;
 
   public Intake() {
-    // Creating DoubleSolenoid Object for the Intake
-      intakeSolenoid = new DoubleSolenoid(DriveConstants.INTAKE_PORT_FIVE, 
-      DriveConstants.INTAKE_PORT_SIX);
+    // Creating DoubleSolenoid Object
+    intakeSolenoid = new DoubleSolenoid(IntakeConstants.INTAKE_PORT_ZERO,
+    IntakeConstants.INTAKE_PORT_ONE);
 
-      lifeIntakeMotor = new CANSparkMax(DriveConstants.WHEEL_INTAKE_MOTOR, 
-      MotorType.kBrushless);
+    // Creating a Motor Object
+    intakeMotor = new CANSparkMax(IntakeConstants.INTAKE_MOTOR_ID, 
+    MotorType.kBrushless);
+
+    // Inverts Motor if Needed
+    intakeMotor.setInverted(IntakeConstants.INTAKE_MOTOR_INVERSION);
+
+    // The Robot Starts With a Retracted Intake
+    retractIntake();
   }
   
-  public void pushIntakeDown(){
+  // Pushes Intake Down to Start Collecting Balls
+  public void dropIntake() {
     intakeSolenoid.set(Value.kForward);
   }
 
-  public void retractIntakeMotor(){
+  // Retracts Intake to Get Within Perimeter
+  public void retractIntake() {
     intakeSolenoid.set(Value.kReverse);
   }
 
-  public void intakeMotorSpeed(double speed){
-    lifeIntakeMotor.set(speed);
+  // Axle Moves in One Direction to Grab Balls
+  public void grabBall(){
+    intakeMotor.set(IntakeConstants.INTAKE_MAX_SPEED);
   }
 
+  // Axle Moves in Opposite Direction to Drop Balls
+  public void releaseBall() {
+    intakeMotor.set(-1 * IntakeConstants.INTAKE_MAX_SPEED);
+  }
 
+  // Stops the Intake Motor
+  public void stopIntake() {
+    intakeMotor.stopMotor();
+  }
 
   @Override
   public void periodic() {

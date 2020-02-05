@@ -22,8 +22,6 @@ public final class Constants {
         public static final int MOTOR_LEFT_ONE = 4;
         public static final int MOTOR_RIGHT_ZERO = 2;
         public static final int MOTOR_RIGHT_ONE = 6;
-        public static final int WHEEL_INTAKE_MOTOR = 8;
-
 
         // Encoder Resolution
         public static final int DRIVE_ENCODER_RESOLUTION = 8192;
@@ -66,14 +64,6 @@ public final class Constants {
         // Feed Forward Constants
         public static final double DRIVE_STATIC_GAIN = 1;
         public static final double DRIVE_VELOCITY_GAIN = 3;
-
-        // Lift Solenoid Constants
-        public static final int LIFTER_PORT_THREE = 2;
-        public static final int LIFTER_PORT_FOUR = 3;
-
-        // Intake Solenoid Constants 
-        public static final int INTAKE_PORT_FIVE = 4;
-        public static final int INTAKE_PORT_SIX = 5;
     }
 
     public static final class JoystickConstants {
@@ -134,5 +124,40 @@ public final class Constants {
 
         // Holds the Minium Power to Move Robot
         public static final double AIM_MIN_COMMAND = 0.1;
+    }
+
+    public static final class IntakeConstants {
+        // Holds The ID of the Motor
+        public static final int INTAKE_MOTOR_ID = 31;
+
+        // Inversion of the Motor
+        public static final boolean INTAKE_MOTOR_INVERSION = false;
+
+        // Max Speed of the Intake Motors
+        public static final double INTAKE_MAX_SPEED = 1;
+
+        // Holds The Solenoid Ports
+        public static final int INTAKE_PORT_ZERO = 3;
+        public static final int INTAKE_PORT_ONE = 4;
+    }
+
+    public static final class LiftConstants {
+        // Holds the Solenoid Ports
+        public static final int LIFT_PORT_ZERO = 5;
+        public static final int LIFT_PORT_ONE = 6;
+    }
+
+    public static final class ShooterConstants {
+        // Holds the ID of the Motor
+        public static final int SHOOTER_MOTOR_ID = 32;
+
+        // Inversion of the Motor
+        public static final boolean SHOOTER_MOTOR_INVERSION = false;
+
+        // Max Speed of the Motors
+        public static final double SHOOTER_MAX_SPEED = 1;
+        // Holds the Solenoid Ports
+        public static final int SHOOTER_PORT_ZERO = 7;
+        public static final int SHOOTER_PORT_ONE = 8;
     }
 }
