@@ -3,9 +3,12 @@ package frc.robot.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.robot.Constants.LimeLightConstants;
+import frc.robot.Constants.LimeLightConstants;
 
 public class LimeLight {
+
+    /*LIMELIGHT FIELDS */
+
     // Table to Obtain Values from LimeLight
     private NetworkTable table;
     
@@ -22,6 +25,8 @@ public class LimeLight {
     // Boolean to Check if LimeLight has Valid Target
     private boolean hasValidTarget;
 
+
+    /* LIMELIGHT CONSTRUCTOR */
     public LimeLight() {
         // Passes LimeLight's Network Table
         table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -36,6 +41,9 @@ public class LimeLight {
         hasValidTarget = false;
     }
 
+
+    /*LIMELIGHT METHODS*/
+    
     // Updates Fields LimeLight Values
     public void updateLimeLight() {
         // Takes Data from LimeLight Network Tables

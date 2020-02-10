@@ -7,30 +7,21 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.RobotContainer;
 
-public class ArcadeDrive extends CommandBase {
+public class DriveGearShift extends CommandBase {
   /**
-   * Creates a new ArcadeDrive.
+   * Creates a new GearShift.
    */
-  
+
   // Holds the DriveTrain Subsystem
   private final DriveTrain driveTrain;
-
-  // Holds the Supplier of the Velocities
-  private final DoubleSupplier linVelocity;
-  private final DoubleSupplier rotVelocity;
-
-  public ArcadeDrive(DoubleSupplier linVelocity, DoubleSupplier rotVelocity, DriveTrain driveTrain) {
+  
+  public DriveGearShift() {
     // Passes the DriveTrain Subsystem Into the Field
-    this.driveTrain = driveTrain;
-
-    // Uses Joystick as Our Velocity Supplier
-    this.linVelocity = linVelocity;
-    this.rotVelocity = rotVelocity;
+    this.driveTrain = RobotContainer.driveTrain;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.driveTrain);
@@ -44,21 +35,19 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Uses Joystick Velocity to Implement Arcade Drive
-    driveTrain.arcadeDrive(linVelocity.getAsDouble(), rotVelocity.getAsDouble());
+    // Toggles Between High Speed and High Torque
+    driveTrain.toggleDriveMode();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Stops Driving Completely
-    driveTrain.stopDrive();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // This Command Never Ends
-    return false;
+    // Ends After Executing Once
+    return true;
   }
 }

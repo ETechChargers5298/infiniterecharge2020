@@ -9,39 +9,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.robot.Constants.TurnToAngleConstants;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.TurnToAngleConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class TurnToAngle extends PIDCommand {
+public class DriveTurnToAngle extends PIDCommand {
   /**
    * Creates a new TurnToAngle.
    */
 
-  // Holds the DriveTrain Subsystem
-  private final DriveTrain driveTrain;
 
-  public TurnToAngle(double targetAngleDegrees, DriveTrain driveTrain) {
+  public DriveTurnToAngle(double targetAngleDegrees) {
     super(
         // The Controller that the Command will Use
         new PIDController(TurnToAngleConstants.TURN_P, TurnToAngleConstants.TURN_I, TurnToAngleConstants.TURN_D),
         // This should Return the Measurement
-        driveTrain::getHeading,
+        RobotContainer.driveTrain::getHeading,
         // This Should Return the Setpoint
         targetAngleDegrees,
         // This uses the Output
-        output -> driveTrain.driveSpeed(output, output),
+        output -> RobotContainer.driveTrain.driveSpeed(output, output),
         // Subsystems that are Used
-        driveTrain
+        RobotContainer.driveTrain
         );
     
-    // Updates Subsystem Fields
-    this.driveTrain = driveTrain;
-
     // These are Required Subsystems
-    addRequirements(this.driveTrain);
+    addRequirements(RobotContainer.driveTrain);
 
     // Instead of Min and Max, PID Knows its can Turn Infinitely
     getController().enableContinuousInput(-180, 180);

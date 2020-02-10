@@ -8,27 +8,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.robot.RobotContainer;
+import frc.robot.RobotContainer;
 
-public class liftForward extends CommandBase {
-  /**
-   * Creates a new liftForward.
-   */
-  public liftForward() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.lift);
+public class IntakeEat extends CommandBase {
+  
+double speed;
+
+  public IntakeEat(double speed) {
+
+    addRequirements(RobotContainer.intake);
+
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.lift.forwardSolenoid();
   }
-  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.intake.intakeMotorSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.

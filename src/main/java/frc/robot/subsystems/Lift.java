@@ -8,20 +8,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Lift extends SubsystemBase {
+
+  /*LIFT FIELDS */
   private DoubleSolenoid lifterSolenoid;
 
 
+  /* LIFT CONSTRUCTOR */
   public Lift() {
     
     lifterSolenoid = new DoubleSolenoid(DriveConstants.LIFTER_PORT_THREE, 
     DriveConstants.LIFTER_PORT_FOUR);
   }
 
+  
+  /* LIFT METHODS */
   public void forwardSolenoid(){
     lifterSolenoid.set(Value.kForward);
     

@@ -10,8 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.robot.Constants.LevelConstants;
+import frc.robot.Constants.LevelConstants;
 import frc.robot.subsystems.Leveler;
+import frc.robot.RobotContainer;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -23,7 +24,8 @@ public class Level extends ProfiledPIDCommand {
 
   // Holds the Leveler Subsystem
   private final Leveler leveler;
-  public Level(Leveler leveler) {
+
+  public Level() {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
@@ -32,19 +34,19 @@ public class Level extends ProfiledPIDCommand {
             // The motion profile constraints
             new TrapezoidProfile.Constraints(LevelConstants.MAX_VELOCITY, LevelConstants.MAX_ACCELERATION)),
         // This should return the measurement
-        leveler::getRoll,
+        RobotContainer.leveler::getRoll,
         // This should return the goal
         LevelConstants.GOAL,
         // This uses the output
         (output, setpoint) -> 
         // Use the output (and setpoint, if desired) here
-        leveler.move(output),
+        RobotContainer.leveler.move(output),
         // Required Subsystems
-        leveler
+        RobotContainer.leveler
         );
 
     // Updates Leveler Field
-    this.leveler = leveler;
+    this.leveler = RobotContainer.leveler;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.leveler);

@@ -30,13 +30,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.robot.Constants.DriveConstants;
-import frc.robot.robot.Constants.JoystickConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.JoystickConstants;
 
 public class DriveTrain extends SubsystemBase {
-  /**
-   * Contains the Differential Drive capabilties our robot has
-   */
+  
+  /* DRIVETRAIN FIELDS */
 
   // Hold the Left Motors
   private CANSparkMax motorLeft0;
@@ -83,6 +82,8 @@ public class DriveTrain extends SubsystemBase {
   // Holds Navigation Board (IMU)
   private AHRS navX;
 
+
+  /* DRIVETRAIN CONSTRUCTOR */
   public DriveTrain() {
     // Constructs Left Motors
     motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
@@ -152,6 +153,9 @@ public class DriveTrain extends SubsystemBase {
     // Sets Up Odometry
     diffOdometry = new DifferentialDriveOdometry(getAngle());
   }
+
+
+  /* DRIVETRAIN METHODS */
 
   // For Arcade Drive Joysticks
   public void arcadeDrive(double linVelocity, double rotVelocity) {

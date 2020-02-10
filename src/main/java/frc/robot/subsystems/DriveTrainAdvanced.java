@@ -27,13 +27,16 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.DriveConstants;
-import frc.robot.robot.Constants.JoystickConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.JoystickConstants;
 
-public class DriveTrainAdvanced extends SubsystemBase {
-  /**
+/**
    * Creates a new DriveTrainAdvanced.
    */
+public class DriveTrainAdvanced extends SubsystemBase {
+  
+
+  /*DRIVETRAIN ADVANCED FIELDS */
 
   // Holds the Left Motors
   private CANSparkMax motorLeft0;
@@ -80,6 +83,9 @@ public class DriveTrainAdvanced extends SubsystemBase {
   // Holds Data for Current DriveMode
   private boolean isHighTorque;
   
+
+  /* DRIVETRAIN ADVANCED CONSTRUCTOR */
+
   public DriveTrainAdvanced() {
     // Constructs Left Motors
     motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
@@ -140,6 +146,9 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
 
   }
+
+
+  /* DRIVETRAIN ADVANCED METHODS */
 
   // Returns Angle as Rotation2d
   public Rotation2d getHeading() {

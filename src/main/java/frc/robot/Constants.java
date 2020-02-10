@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.robot;
+package frc.robot;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -135,4 +135,11 @@ public final class Constants {
         // Holds the Minium Power to Move Robot
         public static final double AIM_MIN_COMMAND = 0.1;
     }
+
+    public static final class LightStripConstants {
+        public static final int PWM_PORT = 9;
+        public static final int NUM_PIXELS = 60;
+        
+    }
+
 }

@@ -13,32 +13,33 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants;
 
 public class Intake extends SubsystemBase {
 
-  private DoubleSolenoid intakeSolenoid;
-  private CANSparkMax lifeIntakeMotor;
+  /* INTAKE FIELDS */
+  private final DoubleSolenoid intakeSolenoid;
+  private final CANSparkMax intakeMotor;
 
+  /* INTAKE CONSTRUCTOR */
   public Intake() {
     // Creating DoubleSolenoid Object for the Intake
-      intakeSolenoid = new DoubleSolenoid(DriveConstants.INTAKE_PORT_FIVE, 
-      DriveConstants.INTAKE_PORT_SIX);
+    intakeSolenoid = new DoubleSolenoid(DriveConstants.INTAKE_PORT_FIVE, DriveConstants.INTAKE_PORT_SIX);
 
-      lifeIntakeMotor = new CANSparkMax(DriveConstants.WHEEL_INTAKE_MOTOR, 
-      MotorType.kBrushless);
+    intakeMotor = new CANSparkMax(DriveConstants.WHEEL_INTAKE_MOTOR, MotorType.kBrushless);
   }
-  
-  public void pushIntakeDown(){
+
+  /* INTAKE METHODS */
+  public void pushIntakePistons() {
     intakeSolenoid.set(Value.kForward);
   }
 
-  public void retractIntakeMotor(){
+  public void retractIntakePistons() {
     intakeSolenoid.set(Value.kReverse);
   }
 
-  public void intakeMotorSpeed(double speed){
-    lifeIntakeMotor.set(speed);
+  public void intakeMotorSpeed(final double speed) {
+    intakeMotor.set(speed);
   }
 
 
