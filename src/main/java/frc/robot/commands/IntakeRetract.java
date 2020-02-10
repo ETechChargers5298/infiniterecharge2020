@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class RetractIntake extends CommandBase {
+public class IntakeRetract extends CommandBase {
   /**
    * Creates a new RetractIntake.
    */
@@ -18,7 +18,7 @@ public class RetractIntake extends CommandBase {
   // Holds the Intake Subsystem
   private Intake intake;
 
-  public RetractIntake(Intake intake) {
+  public IntakeRetract(Intake intake) {
     // Passes the Intake Subsystem into Field
     this.intake = intake;
 

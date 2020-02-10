@@ -14,11 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-<<<<<<< HEAD
-import frc.robot.robot.Constants.IntakeConstants;
-=======
-import frc.robot.Constants.DriveConstants;
->>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
   /**
@@ -28,7 +24,6 @@ public class Intake extends SubsystemBase {
    * Wheels.
    */
 
-<<<<<<< HEAD
   // Holds Solenoids that Drop and Retract Intake
   private DoubleSolenoid intakeSolenoid;
 
@@ -39,15 +34,9 @@ public class Intake extends SubsystemBase {
   private boolean isRetracted;
   private boolean isGrabing;
   private boolean isOn;
-=======
-  /* INTAKE FIELDS */
-  private final DoubleSolenoid intakeSolenoid;
-  private final CANSparkMax intakeMotor;
->>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
 
   /* INTAKE CONSTRUCTOR */
   public Intake() {
-<<<<<<< HEAD
     // Creating DoubleSolenoid Object
     intakeSolenoid = new DoubleSolenoid(IntakeConstants.INTAKE_PORT_ZERO,
     IntakeConstants.INTAKE_PORT_ONE);
@@ -69,36 +58,21 @@ public class Intake extends SubsystemBase {
   // Pushes Intake Down to Start Collecting Balls
   public void dropIntake() {
     // Controls Solenoids
-=======
-    // Creating DoubleSolenoid Object for the Intake
-    intakeSolenoid = new DoubleSolenoid(DriveConstants.INTAKE_PORT_FIVE, DriveConstants.INTAKE_PORT_SIX);
-
-    intakeMotor = new CANSparkMax(DriveConstants.WHEEL_INTAKE_MOTOR, MotorType.kBrushless);
-  }
-
-  /* INTAKE METHODS */
-  public void pushIntakePistons() {
->>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
     intakeSolenoid.set(Value.kForward);
 
     // Updates Robot State
     isRetracted = false;
   }
 
-<<<<<<< HEAD
   // Retracts Intake to Get Within Perimeter
   public void retractIntake() {
     // Controls Solenoids
-=======
-  public void retractIntakePistons() {
->>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
     intakeSolenoid.set(Value.kReverse);
 
     // Updates Robot State
     isRetracted = true;
   }
 
-<<<<<<< HEAD
   // Axle Moves in One Direction to Grab Balls
   public void grabBall() {
     // Moves Motor
@@ -107,10 +81,6 @@ public class Intake extends SubsystemBase {
     // Updates Robot State
     isGrabing = true;
     isOn = true;
-=======
-  public void intakeMotorSpeed(final double speed) {
-    intakeMotor.set(speed);
->>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
   }
 
   // Axle Moves in Opposite Direction to Drop Balls

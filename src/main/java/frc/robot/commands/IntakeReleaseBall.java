@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class ReleaseBall extends CommandBase {
+public class IntakeReleaseBall extends CommandBase {
   /**
    * Creates a new ReleaseBall.
    */
@@ -18,7 +18,7 @@ public class ReleaseBall extends CommandBase {
   // Holds the Intake Subsystem
   private Intake intake;
 
-  public ReleaseBall(Intake intake) {
+  public IntakeReleaseBall(Intake intake) {
     // Passes the Intake Subsystem into Field
     this.intake = intake;
 

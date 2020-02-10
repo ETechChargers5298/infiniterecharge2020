@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class DropIntake extends CommandBase {
+public class IntakeDrop extends CommandBase {
   /**
    * Creates a new DropIntake.
    */
@@ -18,7 +18,7 @@ public class DropIntake extends CommandBase {
   // Holds the Intake Subsystem
   private Intake intake;
 
-  public DropIntake(Intake intake) {
+  public IntakeDrop(Intake intake) {
     // Passes the Intake Subsystem into Field
     this.intake = intake;
 

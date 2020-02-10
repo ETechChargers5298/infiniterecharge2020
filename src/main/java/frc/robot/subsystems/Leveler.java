@@ -18,16 +18,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LevelConstants;
 
 public class Leveler extends SubsystemBase {
-<<<<<<< HEAD
   /**
    * For Our Robot, We Use Wheels, One Thats Stationary for Stability
    * and Another to Move Around While We Are On The Generator Switch
    */
 
-=======
-  
-  /* LEVELER FIELDS */
->>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
   // Holds the Micro NavX for Leveling
   private AHRS navX;
 
