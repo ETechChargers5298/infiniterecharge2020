@@ -23,6 +23,14 @@ public final class Constants {
         public static final int MOTOR_RIGHT_ZERO = 2;
         public static final int MOTOR_RIGHT_ONE = 6;
 
+        // Holds wheel inversion boolean (One should be true and the other one should be false)
+        public static final boolean LEFT_INVERSION = true;
+        public static final boolean RIGHT_INVERSION = false;
+
+        // Wheel Data Info
+        public static final double WHEEL_RADIUS = 6; // Inches
+        public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_RADIUS * 2.0;
+
         // Encoder Resolution
         public static final int DRIVE_ENCODER_RESOLUTION = 8192;
 
@@ -30,48 +38,43 @@ public final class Constants {
         public static final double DRIVE_TRACK_WIDTH = 12; // Inches
         public static final double DRIVE_WHEEL_RADIUS = 6; // Inches
 
-        // Wheel Data Info
-        public static final double WHEEL_RADIUS = 6; // Inches
-        public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_RADIUS * 2.0;
-
-        // Holds wheel inversion boolean (One should be true and the other one should be false)
-        public static final boolean LEFT_INVERSION = true;
-        public static final boolean RIGHT_INVERSION = true;
-
-        // Constant that is multiplied to power to lower max possible power
-        public static final double SPEED_MULTIPLIER = 1.0;
-
-        // Ball Shifters on Gearbox.
-        public static final int SHIFTER_PORT_ONE = 0;
-        public static final int SHIFTER_PORT_TWO = 1;
-
-        // Max Speed for Turn
-        public static final double MAX_SPEED = 1;
         // Max Speed
+        public static final double MAX_SPEED = 1;
+
+        // Max Velocities
         public static final double MAX_VELOCITY = 3.0; // Meters per Second
-        public static final double MAX_TURN_SPEED = 2 * Math.PI; // Rotation Per Second
+        public static final double MAX_TURN_VELOCITY = 2 * Math.PI; // Radians Per Second
 
-        // PID Constants for Left Wheels
-        public static final double LEFT_DRIVE_P = 1;
-        public static final double LEFT_DRIVE_I = 0;
-        public static final double LEFT_DRIVE_D = 0;
+        // PID Constants for Left Wheels on High Speed
+        public static final double LEFT_SPEED_DRIVE_P = 1;
+        public static final double LEFT_SPEED_DRIVE_I = 0;
+        public static final double LEFT_SPEED_DRIVE_D = 0;
 
-        // PID Constants for Right Wheels
-        public static final double RIGHT_DRIVE_P = 1;
-        public static final double RIGHT_DRIVE_I = 0;
-        public static final double RIGHT_DRIVE_D = 0;
+        // PID Constants for Right Wheels on High Speed
+        public static final double RIGHT_SPEED_DRIVE_P = 1;
+        public static final double RIGHT_SPEED_DRIVE_I = 0;
+        public static final double RIGHT_SPEED_DRIVE_D = 0;
+
+        // PID Constants for Left Wheels on High Torque
+        public static final double LEFT_TORQUE_DRIVE_P = 1;
+        public static final double LEFT_TORQUE_DRIVE_I = 0;
+        public static final double LEFT_TORQUE_DRIVE_D = 0;
 
         // Feed Forward Constants
         public static final double DRIVE_STATIC_GAIN = 1;
         public static final double DRIVE_VELOCITY_GAIN = 3;
+
+        // Ball Shifters on Gearbox.
+        public static final int SHIFTER_PORT_ONE = 0;
+        public static final int SHIFTER_PORT_TWO = 1;
     }
 
     public static final class JoystickConstants {
         // Deadbands ignore smaller inputs from joystick for smoother driving
-        public static final double DEADBAND = 0.2;
+        public static final double DEADBAND = 0.01;
 
         // Sets JoyStick Sensitivity (Even Numbers ONLY)
-        public static double JOYSTICK_SENSITIVITY = 2;
+        public static double JOYSTICK_SENSITIVITY = 8;
 
         // Numbers for the 2 Xbox controllers
         public static final int DRIVECONTROLLER = 0;
@@ -123,7 +126,7 @@ public final class Constants {
         public static final double AIM_P = 1;
 
         // Holds the Minium Power to Move Robot
-        public static final double AIM_MIN_COMMAND = 0.1;
+        public static final double AIM_MIN_SPEED = 0.1;
     }
 
     public static final class IntakeConstants {

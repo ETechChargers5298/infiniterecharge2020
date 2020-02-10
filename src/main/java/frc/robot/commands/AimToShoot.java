@@ -28,8 +28,8 @@ public class AimToShoot extends CommandBase {
   private double steeringAdjust;
 
   // Holds Wheel Speed Commands
-  private double leftCommand;
-  private double rightCommand;
+  private double leftSpeed;
+  private double rightSpeed;
 
   public AimToShoot(LimeLight limeLight, DriveTrain driveTrain) {
     // Updates LimeLight field
@@ -39,8 +39,8 @@ public class AimToShoot extends CommandBase {
     this.driveTrain = driveTrain;
 
     // Commands are Zero due to the First Time Command is Called
-    leftCommand = 0;
-    rightCommand = 0;
+    leftSpeed = 0;
+    rightSpeed = 0;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.driveTrain);
@@ -60,18 +60,18 @@ public class AimToShoot extends CommandBase {
 
     // Steering Adjust Compensates for if Target Found
     if(limeLight.hasValidTarget()) {
-      steeringAdjust -= LimeLightConstants.AIM_MIN_COMMAND;
+      steeringAdjust -= LimeLightConstants.AIM_MIN_SPEED;
     }
     else {
-      steeringAdjust += LimeLightConstants.AIM_MIN_COMMAND;
+      steeringAdjust += LimeLightConstants.AIM_MIN_SPEED;
     }
     
     // Updates Wheel Commands
-    leftCommand += steeringAdjust;
-    rightCommand -= steeringAdjust;
+    leftSpeed += steeringAdjust;
+    rightSpeed -= steeringAdjust;
 
     // Uses Command to Drive Robot
-    driveTrain.driveSpeed(leftCommand, rightCommand);
+    driveTrain.driveSpeed(leftSpeed, rightSpeed);
   }
 
   // Called once the command ends or is interrupted.

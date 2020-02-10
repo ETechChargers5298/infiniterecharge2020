@@ -38,10 +38,10 @@ import frc.robot.robot.Constants.JoystickConstants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private DriveTrain driveTrain = new DriveTrain();
-  private Intake intake = new Intake();
-  private Leveler leveler = new Leveler();
-  private Lift lift = new Lift();
-  private Shooter shooter = new Shooter();
+  //private Intake intake = new Intake();
+  //private Leveler leveler = new Leveler();
+  //private Lift lift = new Lift();
+  //private Shooter shooter = new Shooter();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
@@ -63,7 +63,8 @@ public class RobotContainer {
       () -> driveController.getX(GenericHID.Hand.kLeft),
       driveTrain));
 
-    
+    // Reset Sensors
+    driveTrain.reset();
   }
 
   /**

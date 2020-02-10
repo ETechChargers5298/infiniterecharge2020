@@ -20,7 +20,7 @@ import frc.robot.robot.Constants.LevelConstants;
 public class Leveler extends SubsystemBase {
   /**
    * For Our Robot, We Use Wheels, One Thats Stationary for Stability
-   * and Another to Move Around While We Are On The Generator Switch/
+   * and Another to Move Around While We Are On The Generator Switch
    */
 
   // Holds the Micro NavX for Leveling

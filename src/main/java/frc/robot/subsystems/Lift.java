@@ -36,7 +36,6 @@ public class Lift extends SubsystemBase {
   // Elevator Goes Down to Pull The Robot on the Bar
   public void robotPull(){
     lifterSolenoid.set(Value.kReverse);
-
   }
 
   @Override

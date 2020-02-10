@@ -22,9 +22,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.robot.Constants.DriveConstants;
@@ -52,8 +54,10 @@ public class DriveTrainAdvanced extends SubsystemBase {
   private CANEncoder encoderRight;
 
   // PID Controllers Use Encoders to Fix Velocity
-  private PIDController leftController;
-  private PIDController righController;
+  private PIDController speedLeftController;
+  private PIDController speedRightController;
+  private PIDController torqueLeftController;
+  private PIDController torqueRightController;
 
   // Holds Navigational Board (IMU)
   private AHRS navX;
@@ -66,6 +70,9 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
   // Uses Gyro and Encoders to Create Pose2D of Robot
   private DifferentialDriveOdometry diffOdometry;
+
+  // Holds the Current Position of the Robot on Field
+  Pose2d location;
 
   // Implements FeedForward to Account for Friction
   private SimpleMotorFeedforward feedforward;
@@ -102,8 +109,8 @@ public class DriveTrainAdvanced extends SubsystemBase {
     encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
 
     // Initializes PID Controllers for Each Wheel
-    leftController = new PIDController(DriveConstants.LEFT_DRIVE_P, DriveConstants.LEFT_DRIVE_I, DriveConstants.LEFT_DRIVE_D);
-    righController = new PIDController(DriveConstants.RIGHT_DRIVE_P, DriveConstants.RIGHT_DRIVE_I, DriveConstants.RIGHT_DRIVE_D);
+    speedLeftController = new PIDController(DriveConstants.LEFT_DRIVE_P, DriveConstants.LEFT_DRIVE_I, DriveConstants.LEFT_DRIVE_D);
+    speedRightController = new PIDController(DriveConstants.RIGHT_DRIVE_P, DriveConstants.RIGHT_DRIVE_I, DriveConstants.RIGHT_DRIVE_D);
 
     // Connects to NavX
     try {
@@ -125,6 +132,9 @@ public class DriveTrainAdvanced extends SubsystemBase {
     // Constructs Odometry for Tracking Robot on Field
     diffOdometry = new DifferentialDriveOdometry(getHeading());
 
+    // Location of the Robot on Field
+    location = new Pose2d();
+
     // Constructs feedForward to Account for Friction
     feedforward = new SimpleMotorFeedforward(DriveConstants.DRIVE_STATIC_GAIN, DriveConstants.DRIVE_VELOCITY_GAIN);
 
@@ -139,9 +149,43 @@ public class DriveTrainAdvanced extends SubsystemBase {
     highTorque();
   }
 
+  // Get the Left Wheel Position of the Robot in Meters
+  public double getLeftPosition() {
+    return encoderLeft.getPosition() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE);
+  }
+
+  // Get the Right Wheel Position of the Robot in Meters
+  public double getRightPosition() {
+    return encoderRight.getPosition() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE);
+  }
+
+  // Get the Left Wheel Velocity of the Robot in Meters per Second
+  public double getLeftVelocity() {
+    return encoderLeft.getVelocity() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE) / 60;
+  }
+
+  // Get the Right Wheel Velocity of the Robot in Meters per Second
+  public double getRightVelocity() {
+    return encoderRight.getVelocity() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE) / 60;
+  }
+
+  public DifferentialDriveWheelSpeeds getSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+  }
+
   // Returns Angle as Rotation2d
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(-navX.getAngle());
+  }
+
+  // Returns the PID Controller for Left Wheels (High Speed)
+  public PIDController getLeftSpeedPID() {
+    return speedLeftController;
+  }
+
+  // Returns the PID Controller for Right Wheels (High Speed)
+  public PIDController getRightSpeedPID() {
+    return speedRightController;
   }
 
   // Gear Shifts to High Torque
@@ -165,5 +209,8 @@ public class DriveTrainAdvanced extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    // Updates Odometry Constantly
+    location = diffOdometry.update(getHeading(), getLeftPosition(), getRightPosition());
   }
 }

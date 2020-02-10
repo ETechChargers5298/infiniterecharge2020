@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.robot.Constants.DriveConstants;
 import frc.robot.robot.Constants.JoystickConstants;
+import frc.robot.utils.LimeLight;
 
 public class DriveTrain extends SubsystemBase {
   /**
@@ -83,6 +84,8 @@ public class DriveTrain extends SubsystemBase {
   // Holds Navigation Board (IMU)
   private AHRS navX;
 
+  private LimeLight lime = new LimeLight();
+
   public DriveTrain() {
     // Constructs Left Motors
     motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
@@ -118,8 +121,13 @@ public class DriveTrain extends SubsystemBase {
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
 
     // Creates Encoder objects
-    encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
-    encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    //encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    //encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    encoderLeft = motorLeft0.getEncoder();
+    encoderRight = motorRight0.getEncoder();
+
+    encoderLeft.setPosition(0);
+    encoderRight.setPosition(0);
 
     // Sets Factors for Position to Measure in Meters
     encoderLeft.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
@@ -133,8 +141,6 @@ public class DriveTrain extends SubsystemBase {
     gearShift = new DoubleSolenoid(DriveConstants.SHIFTER_PORT_ONE, DriveConstants.SHIFTER_PORT_TWO);
 
     // Begins with High Torque Everytime
-    highTorque();
-
     // Updates DriveMode
     isHighTorque = true;
 
@@ -151,6 +157,8 @@ public class DriveTrain extends SubsystemBase {
 
     // Sets Up Odometry
     diffOdometry = new DifferentialDriveOdometry(getAngle());
+
+    //diffDrive.setDeadband(JoystickConstants.DEADBAND);
   }
 
   // For Arcade Drive Joysticks
@@ -158,19 +166,18 @@ public class DriveTrain extends SubsystemBase {
     // Changes Speed to Match Sensitivity 
     linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
     rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
-    
+    // linVelocity = Math.copySign(linVelocity, linVelocity);
+    // rotVelocity = Math.copySign(rotVelocty, rotVelocity);
+
     // Drives Robot
     diffDrive.arcadeDrive(linVelocity, rotVelocity);
-
-    // Prints Velocity of Wheels
-    SmartDashboard.putData("Differential Drive", diffDrive);
   }
 
   // Test Arcade Drive
   public void arcadeDrive2(double linVelocity, double rotVelocity) {
     // Updates Speeds with Limiters
     var linearVelocity = -speedLimiter.calculate(linVelocity * DriveConstants.MAX_VELOCITY);
-    var rotationVelocity = -rotLimiter.calculate(rotVelocity * DriveConstants.MAX_TURN_SPEED);
+    var rotationVelocity = -rotLimiter.calculate(rotVelocity * DriveConstants.MAX_TURN_VELOCITY);
 
     // Uses Velocity to Drive
     drive(linearVelocity, rotationVelocity);
@@ -183,8 +190,8 @@ public class DriveTrain extends SubsystemBase {
     rightSpeed = MathUtil.clamp(rightSpeed, -1 * DriveConstants.MAX_SPEED, DriveConstants.MAX_SPEED);
 
     // Sets Speed Which is Impacted by Speed Multiplier
-    motorLeft.set(leftSpeed * DriveConstants.SPEED_MULTIPLIER);
-    motorRight.set(rightSpeed * DriveConstants.SPEED_MULTIPLIER);
+    motorLeft.set(leftSpeed);
+    motorRight.set(rightSpeed);
   }
 
   // Sets Speed of Motors Using a PID Controller
@@ -218,16 +225,12 @@ public class DriveTrain extends SubsystemBase {
 
   // Get Right Encoder Values -JG
   public double getEncoderRightValue() {
-    double ri = encoderRight.getPosition();
-    SmartDashboard.putNumber("Right Encoder", ri);
-    return ri;
+    return encoderRight.getPosition();
   }
 
   // Get Left Encoder Values -JG
   public double getEncoderLeftValue() {
-    double le = encoderLeft.getPosition();
-    SmartDashboard.putNumber("Left Encoder", le);
-    return le;
+    return encoderLeft.getPosition();
   }
 
 
@@ -235,18 +238,12 @@ public class DriveTrain extends SubsystemBase {
   public void highTorque() {
     // Sends Air to High Torque Pipes
     gearShift.set(Value.kForward);
-
-    // Prints Current DriveMode
-    SmartDashboard.putString("DriveMode", "Torque");
   }
 
   // Gear Shifts to High Speed
   public void highSpeed() {
     // Sends Air to High Speed Pipes
     gearShift.set(Value.kReverse);
-
-    // Prints Current DriveMode
-    SmartDashboard.putString("DriveMode", "Speed");
   }
 
   // Toggles Between Gear Shifts
@@ -265,12 +262,6 @@ public class DriveTrain extends SubsystemBase {
 
   // Returns the Angle The Robot is Facing
   public double getHeading() {
-    // Prints Gyro Heading
-    SmartDashboard.putData("Gyro", navX);
-
-    // Prints Graph of Heading over Time
-    SmartDashboard.putNumber("GyroTime", navX.getAngle());
-
     return Math.IEEEremainder(navX.getAngle(), 360);
   }
 
@@ -290,8 +281,46 @@ public class DriveTrain extends SubsystemBase {
     diffOdometry.update(getAngle(), encoderLeft.getPosition(), encoderRight.getPosition());
   }
 
+  // Prints Out Data Relating to DriveTrain
+  public void printData() {
+    // The Velocities of Our Wheels
+    SmartDashboard.putData("DriveSpeed", diffDrive);
+
+    // The Current DriveMode We are At
+    if(isHighTorque) {
+      SmartDashboard.putString("DriveMode", "Torque");
+    }
+    else {
+      SmartDashboard.putString("DriveMode", "Speed");
+    }
+    
+    // The Gyro from NavX
+    SmartDashboard.putData("Gyro", navX);
+
+    // Gives Velocity From Encoders
+    SmartDashboard.putNumber("Left Encoder Velocity", encoderLeft.getVelocity());
+    SmartDashboard.putNumber("Right Encoder Velocity", encoderRight.getVelocity());
+
+    // Gives Position From Encoders
+    SmartDashboard.putNumber("Left Encoder Position", -1 * encoderLeft.getPosition() / 33 * 2 * Math.PI * 3.5);
+    SmartDashboard.putNumber("Right Encoder Position", encoderRight.getPosition() / 33 * 2 * Math.PI * 3.5);
+  }
+
+  // Resets Sensors
+  public void reset() {
+    // Resets Encoders
+    encoderLeft.setPosition(0);
+    encoderRight.setPosition(0);
+
+    // Resets NavX
+    navX.zeroYaw();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    printData();
+    lime.updateLimeLight();
+    lime.printData();
   }
 }

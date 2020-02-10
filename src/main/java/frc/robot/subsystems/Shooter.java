@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.robot.Constants.ShooterConstants;
 import frc.robot.utils.LimeLight;
@@ -60,8 +61,26 @@ public class Shooter extends SubsystemBase {
     shooterMotor.stopMotor();
   }
 
+  // Changes to High Angle
+  public void highAngle() {
+    shooterSolenoid.set(Value.kForward);
+  }
+
+  // Changes to Low Angle
+  public void lowAngle() {
+    shooterSolenoid.set(Value.kReverse);
+  }
+
+  // Prints Data Relating to Shooter
+  public void printData() {
+    // Prints LimeLight Values for Shooter
+    lime.printData();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    lime.updateLimeLight();
+    lime.printData();
   }
 }
