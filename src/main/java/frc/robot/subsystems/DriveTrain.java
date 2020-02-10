@@ -30,14 +30,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.robot.Constants.DriveConstants;
-import frc.robot.robot.Constants.JoystickConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.JoystickConstants;
 import frc.robot.utils.LimeLight;
 
 public class DriveTrain extends SubsystemBase {
-  /**
-   * Contains the Differential Drive capabilties our robot has
-   */
+  
+  /* DRIVETRAIN FIELDS */
 
   // Hold the Left Motors
   private CANSparkMax motorLeft0;
@@ -104,8 +103,8 @@ public class DriveTrain extends SubsystemBase {
     motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
 
     // PID Controllers are Initialized
-    leftController = new PIDController(DriveConstants.LEFT_DRIVE_P, DriveConstants.LEFT_DRIVE_I, DriveConstants.LEFT_DRIVE_D);
-    rightController = new PIDController(DriveConstants.RIGHT_DRIVE_P, DriveConstants.RIGHT_DRIVE_I, DriveConstants.RIGHT_DRIVE_D);
+    leftController = new PIDController(DriveConstants.LEFT_SPEED_DRIVE_P, DriveConstants.LEFT_SPEED_DRIVE_I, DriveConstants.LEFT_SPEED_DRIVE_D);
+    rightController = new PIDController(DriveConstants.RIGHT_SPEED_DRIVE_P, DriveConstants.RIGHT_SPEED_DRIVE_I, DriveConstants.RIGHT_SPEED_DRIVE_D);
 
     // Implements Feedforward to Account for Physics
     feedForward = new SimpleMotorFeedforward(DriveConstants.DRIVE_STATIC_GAIN, DriveConstants.DRIVE_VELOCITY_GAIN);
@@ -160,6 +159,9 @@ public class DriveTrain extends SubsystemBase {
 
     //diffDrive.setDeadband(JoystickConstants.DEADBAND);
   }
+
+
+  /* DRIVETRAIN METHODS */
 
   // For Arcade Drive Joysticks
   public void arcadeDrive(double linVelocity, double rotVelocity) {

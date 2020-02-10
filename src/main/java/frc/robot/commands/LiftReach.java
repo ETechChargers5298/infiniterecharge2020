@@ -8,22 +8,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Intake;
 
-public class PullUpBar extends CommandBase {
+public class LiftReach extends CommandBase {
   /**
-   * Creates a new PullUpBar.
+   * Creates a new GrabBall.
    */
 
-  // Holds the Lift Subsystem
-  Lift lift;
+  // Holds the Intake Subsystem
+  private Intake intake;
 
-  public PullUpBar(Lift lift) {
-    // Passes the Lift Subsystem into Field
-    this.lift = lift;
+  public LiftReach(Intake intake) {
+    // Passes the Intake Subsystem into Field
+    this.intake = intake;
 
-    // Use addRequirements() here to declare subsystem dependencies.\
-    addRequirements(this.lift);
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +34,8 @@ public class PullUpBar extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Robot Pulls Up On Generator Switch
-    lift.robotPull();
+    // Moves Motors to Intake the Balls
+    intake.grabBall();
   }
 
   // Called once the command ends or is interrupted.

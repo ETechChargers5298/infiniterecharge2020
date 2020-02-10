@@ -15,32 +15,39 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.LevelConstants;
+import frc.robot.Constants.LevelConstants;
 
 public class Leveler extends SubsystemBase {
+<<<<<<< HEAD
   /**
    * For Our Robot, We Use Wheels, One Thats Stationary for Stability
    * and Another to Move Around While We Are On The Generator Switch
    */
 
+=======
+  
+  /* LEVELER FIELDS */
+>>>>>>> 340802fa3a435c07d2a71c67f4fe66145c7a405c
   // Holds the Micro NavX for Leveling
   private AHRS navX;
 
   // Holds the Motor that Moves on Beam
-  private CANSparkMax motor;
+  private final CANSparkMax motor;
 
   // Holds Encoders to Measure Velocity
-  private CANEncoder encoder;
+  private final CANEncoder encoder;
 
+
+  /* LEVELER CONSTRUCTOR */
   public Leveler() {
     // Micro NavX Communication with I2C
     try {
       navX = new AHRS(I2C.Port.kMXP);
-    }
-    catch(RuntimeException ex) {
+    } catch (final RuntimeException ex) {
       DriverStation.reportError("Error instantiating NavX MXP: " + ex.getMessage(), true);
     }
 
+  /* LEVELER METHODS */
     // Sets Up Motor
     motor = new CANSparkMax(LevelConstants.LEVEL_MOTOR_ID, MotorType.kBrushless);
 
@@ -48,7 +55,7 @@ public class Leveler extends SubsystemBase {
     encoder = motor.getEncoder();
   }
 
-  public void move(double speed) {
+  public void move(final double speed) {
     // Moves Motor
     motor.set(speed);
   }

@@ -8,22 +8,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.RobotContainer;
 
-public class GrabBall extends CommandBase {
+public class DriveGearShift extends CommandBase {
   /**
-   * Creates a new GrabBall.
+   * Creates a new GearShift.
    */
 
-  // Holds the Intake Subsystem
-  private Intake intake;
-
-  public GrabBall(Intake intake) {
-    // Passes the Intake Subsystem into Field
-    this.intake = intake;
+  // Holds the DriveTrain Subsystem
+  private final DriveTrain driveTrain;
+  
+  public DriveGearShift() {
+    // Passes the DriveTrain Subsystem Into the Field
+    this.driveTrain = RobotContainer.driveTrain;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.intake);
+    addRequirements(this.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +35,8 @@ public class GrabBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Moves Motors to Intake the Balls
-    intake.grabBall();
+    // Toggles Between High Speed and High Torque
+    driveTrain.toggleDriveMode();
   }
 
   // Called once the command ends or is interrupted.
@@ -46,7 +47,7 @@ public class GrabBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Runs Only Once
+    // Ends After Executing Once
     return true;
   }
 }

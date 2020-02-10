@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.LiftConstants;
+import frc.robot.Constants.LiftConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -22,6 +22,7 @@ public class Lift extends SubsystemBase {
   // Holds Solenoid that Powers Lifts
   private DoubleSolenoid lifterSolenoid;
 
+  /* LIFT CONSTRUCTOR */
   public Lift() {
     // Constructs a Solenoid Object for Lifter
     lifterSolenoid = new DoubleSolenoid(LiftConstants.LIFT_PORT_ZERO,

@@ -8,22 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Lift;
+import frc.robot.RobotContainer;
 
-public class ReachForBar extends CommandBase {
+public class Shoot extends CommandBase {
+  
   /**
-   * Creates a new LiftReach.
+   * Creates a new Shoot command.
    */
-
-  // Holds the Lift Subsystem
-  Lift lift;
-
-  public ReachForBar(Lift lift) {
-    // Passes the Lift Subsystem into Field
-    this.lift = lift;
-
+  public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.lift);
+    addRequirements(RobotContainer.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +28,6 @@ public class ReachForBar extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Robot Reaches for Generator Switch
-    lift.robotReach();
   }
 
   // Called once the command ends or is interrupted.
@@ -46,7 +38,6 @@ public class ReachForBar extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Runs Only Once
-    return true;
+    return false;
   }
 }

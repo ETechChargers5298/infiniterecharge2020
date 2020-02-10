@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.robot;
+package frc.robot;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -163,4 +163,11 @@ public final class Constants {
         public static final int SHOOTER_PORT_ZERO = 7;
         public static final int SHOOTER_PORT_ONE = 8;
     }
+
+    public static final class LightStripConstants {
+        public static final int PWM_PORT = 9;
+        public static final int NUM_PIXELS = 60;
+        
+    }
+
 }

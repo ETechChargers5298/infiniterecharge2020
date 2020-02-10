@@ -8,20 +8,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.robot.Constants.LimeLightConstants;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.Constants.LimeLightConstants;
+import frc.robot.RobotContainer;
 import frc.robot.utils.LimeLight;
+import frc.robot.subsystems.DriveTrain;
 
-public class AimToShoot extends CommandBase {
-  /**
-   * Creates a new AimToShoot.
-   */
+public class DriveAimToShoot extends CommandBase {
 
-  // Holds LimeLight Object
-  private LimeLight limeLight;
-
-  // Holds DriveTrain Subsystem
-  private DriveTrain driveTrain;
+  private LimeLight limeLight;  // Holds LimeLight Object
+  private DriveTrain driveTrain;  // Holds DriveTrain Subsystem
 
   // Holds Error Fields
   private double headingError;
@@ -31,12 +26,14 @@ public class AimToShoot extends CommandBase {
   private double leftSpeed;
   private double rightSpeed;
 
-  public AimToShoot(LimeLight limeLight, DriveTrain driveTrain) {
+
+ //Constructor
+  public DriveAimToShoot() {
     // Updates LimeLight field
-    this.limeLight = limeLight;
+    this.limeLight = RobotContainer.limeLight;
 
     // Updates Subsystem Fields
-    this.driveTrain = driveTrain;
+    this.driveTrain = RobotContainer.driveTrain;
 
     // Commands are Zero due to the First Time Command is Called
     leftSpeed = 0;

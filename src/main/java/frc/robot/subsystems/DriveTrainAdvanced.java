@@ -29,13 +29,16 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.robot.Constants.DriveConstants;
-import frc.robot.robot.Constants.JoystickConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.JoystickConstants;
 
-public class DriveTrainAdvanced extends SubsystemBase {
-  /**
+/**
    * Creates a new DriveTrainAdvanced.
    */
+public class DriveTrainAdvanced extends SubsystemBase {
+  
+
+  /*DRIVETRAIN ADVANCED FIELDS */
 
   // Holds the Left Motors
   private CANSparkMax motorLeft0;
@@ -87,6 +90,9 @@ public class DriveTrainAdvanced extends SubsystemBase {
   // Holds Data for Current DriveMode
   private boolean isHighTorque;
   
+
+  /* DRIVETRAIN ADVANCED CONSTRUCTOR */
+
   public DriveTrainAdvanced() {
     // Constructs Left Motors
     motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
@@ -109,8 +115,8 @@ public class DriveTrainAdvanced extends SubsystemBase {
     encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
 
     // Initializes PID Controllers for Each Wheel
-    speedLeftController = new PIDController(DriveConstants.LEFT_DRIVE_P, DriveConstants.LEFT_DRIVE_I, DriveConstants.LEFT_DRIVE_D);
-    speedRightController = new PIDController(DriveConstants.RIGHT_DRIVE_P, DriveConstants.RIGHT_DRIVE_I, DriveConstants.RIGHT_DRIVE_D);
+    speedLeftController = new PIDController(DriveConstants.LEFT_SPEED_DRIVE_P, DriveConstants.LEFT_SPEED_DRIVE_I, DriveConstants.LEFT_SPEED_DRIVE_D);
+    speedRightController = new PIDController(DriveConstants.RIGHT_SPEED_DRIVE_P, DriveConstants.RIGHT_SPEED_DRIVE_I, DriveConstants.RIGHT_SPEED_DRIVE_D);
 
     // Connects to NavX
     try {
@@ -172,6 +178,9 @@ public class DriveTrainAdvanced extends SubsystemBase {
   public DifferentialDriveWheelSpeeds getSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
   }
+
+
+  /* DRIVETRAIN ADVANCED METHODS */
 
   // Returns Angle as Rotation2d
   public Rotation2d getHeading() {

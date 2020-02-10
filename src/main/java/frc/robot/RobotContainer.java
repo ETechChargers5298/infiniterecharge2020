@@ -7,16 +7,16 @@
 
 //Test Comment -Mr. Bianchi
 
-package frc.robot.robot;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.AddressableLEDs;
-import frc.robot.commands.ArcadeDrive;
+import frc.robot.utils.LightStrip;
 import frc.robot.commands.Autonomous;
-import frc.robot.commands.GearShift;
-import frc.robot.commands.Shooting;
-import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.DriveArcade;
+import frc.robot.commands.DriveGearShift;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Leveler;
@@ -25,8 +25,8 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import static edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.robot.Constants.JoystickConstants;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.JoystickConstants;
  
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -37,31 +37,33 @@ import frc.robot.robot.Constants.JoystickConstants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private DriveTrain driveTrain = new DriveTrain();
-  //private Intake intake = new Intake();
-  //private Leveler leveler = new Leveler();
-  //private Lift lift = new Lift();
-  //private Shooter shooter = new Shooter();
+  public final static DriveTrain driveTrain = new DriveTrain();
+  public final static Intake intake = new Intake();
+  public final static Shooter shooter = new Shooter();
+  public final static Lift lift = new Lift();
+  public final static Leveler leveler = new Leveler();
+
+  public final static LightStrip led = new LightStrip();
+  public final static LimeLight limeLight = new LimeLight();
 
   // Holds Autonomous Code
   private final Command m_autoCommand = new Autonomous();
 
   // Holds the Driver Controller Object
-  XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
-  XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
-
+  public final static XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
+  public final static XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
     // Configure the Button Bindings
     configureButtonBindings();
 
     // Uses Left Joystick to Drive Robot
-    driveTrain.setDefaultCommand(new ArcadeDrive(
+    driveTrain.setDefaultCommand(new DriveArcade(
       () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
-      () -> driveController.getX(GenericHID.Hand.kLeft),
-      driveTrain));
+      () -> driveController.getX(GenericHID.Hand.kLeft)));
 
     // Reset Sensors
     driveTrain.reset();
@@ -75,15 +77,12 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    // Uses Button Y to Toggle the Drive Mode by Shifting Gears
-    new JoystickButton(driveController, Button.kY.value).whenPressed(new GearShift(driveTrain));
+    // GEAR SHIFTING = Y-button to toggle between low gear & high gear
+    new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveGearShift());
 
-    // Uses Left Bumper to Turn to -90 Degrees
-    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new TurnToAngle(-90, driveTrain));
-
-    // Uses Right Bumper to Turn to 90 Degrees
-    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new TurnToAngle(90, driveTrain));
-
+    // SNAP TURNS = Left bumper for -90 turn, Right bumper for 90 turn
+    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveTurnToAngle(-90));
+    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveTurnToAngle(90));
   }
 
   /**
