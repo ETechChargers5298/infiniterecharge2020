@@ -107,7 +107,7 @@ public class DriveTrain extends SubsystemBase {
     rightController = new PIDController(DriveConstants.RIGHT_SPEED_DRIVE_P, DriveConstants.RIGHT_SPEED_DRIVE_I, DriveConstants.RIGHT_SPEED_DRIVE_D);
 
     // Implements Feedforward to Account for Physics
-    feedForward = new SimpleMotorFeedforward(DriveConstants.DRIVE_STATIC_GAIN, DriveConstants.DRIVE_VELOCITY_GAIN);
+    feedForward = new SimpleMotorFeedforward(DriveConstants.DRIVE_TORQUE_STATIC_GAIN, DriveConstants.DRIVE_TORQUE_VELOCITY_GAIN);
 
     // Slew Rate Limitation
     speedLimiter = new SlewRateLimiter(JoystickConstants.SPEED_LIMIT);

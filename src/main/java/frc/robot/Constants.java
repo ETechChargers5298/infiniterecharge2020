@@ -61,8 +61,10 @@ public final class Constants {
         public static final double LEFT_TORQUE_DRIVE_D = 0;
 
         // Feed Forward Constants
-        public static final double DRIVE_STATIC_GAIN = 1;
-        public static final double DRIVE_VELOCITY_GAIN = 3;
+        public static final double DRIVE_SPEED_STATIC_GAIN = 1;
+        public static final double DRIVE_SPEED_VELOCITY_GAIN = 3;
+        public static final double DRIVE_TORQUE_STATIC_GAIN = 1;
+        public static final double DRIVE_TORQUE_VELOCITY_GAIN = 3;
 
         // Ball Shifters on Gearbox.
         public static final int SHIFTER_PORT_ONE = 0;
@@ -167,7 +169,7 @@ public final class Constants {
     public static final class LightStripConstants {
         public static final int PWM_PORT = 9;
         public static final int NUM_PIXELS = 60;
-        
+
     }
 
 }

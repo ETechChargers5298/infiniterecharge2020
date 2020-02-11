@@ -60,7 +60,6 @@ public class RobotContainer {
     // Configure the Button Bindings
     configureButtonBindings();
 
-    // Uses Left Joystick to Drive Robot
     driveTrain.setDefaultCommand(new DriveArcade(
       () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
       () -> driveController.getX(GenericHID.Hand.kLeft)));
@@ -78,11 +77,11 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
     // GEAR SHIFTING = Y-button to toggle between low gear & high gear
-    new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveGearShift());
+    //new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveGearShift());
 
     // SNAP TURNS = Left bumper for -90 turn, Right bumper for 90 turn
-    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveTurnToAngle(-90));
-    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveTurnToAngle(90));
+    //new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveTurnToAngle(-90));
+    //new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveTurnToAngle(90));
   }
 
   /**
