@@ -33,7 +33,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.JoystickConstants;
-import frc.robot.Constants;
+import frc.robot.Constants.SolenoidConstants;
+import frc.robot.Constants.SparkConstants;
 
 /**
    * Creates a new DriveTrainAdvanced.
@@ -99,12 +100,12 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
   public DriveTrainAdvanced() {
     // Constructs Left Motors
-    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_A, MotorType.kBrushless);
-    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_B, MotorType.kBrushless);
+    motorLeft0 = new CANSparkMax(SparkConstants.MOTOR_LEFT_A, MotorType.kBrushless);
+    motorLeft1 = new CANSparkMax(SparkConstants.MOTOR_LEFT_B, MotorType.kBrushless);
 
     // Constructs Right Motors
-    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
-    motorRight1 = new CANSparkMax(Constants.DriveConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
+    motorRight0 = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
+    motorRight1 = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
 
     // Groups Motors Together for Differential Drive
     motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
@@ -156,8 +157,8 @@ public class DriveTrainAdvanced extends SubsystemBase {
     rotLimiter = new SlewRateLimiter(JoystickConstants.ROT_LIMIT);
 
     // Constructs a DoubleSolenoid to Shift Gears in GearBox
-    gearShift = new DoubleSolenoid(DriveConstants.SHIFTER_PORT_ONE, DriveConstants.SHIFTER_PORT_TWO);
-
+    gearShift = new DoubleSolenoid(SolenoidConstants.SHIFTER_PORT_A, SolenoidConstants.SHIFTER_PORT_B);
+  
     // Begins with High Torque at Start of Match
     highTorque();
   }
@@ -233,22 +234,22 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
   // Get the Left Wheel Position of the Robot in Meters
   public double getLeftPosition() {
-    return encoderLeft.getPosition() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE);
+    return encoderLeft.getPosition() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE);
   }
 
   // Get the Right Wheel Position of the Robot in Meters
   public double getRightPosition() {
-    return encoderRight.getPosition() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE);
+    return encoderRight.getPosition() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE);
   }
 
   // Get the Left Wheel Velocity of the Robot in Meters per Second
   public double getLeftVelocity() {
-    return encoderLeft.getVelocity() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE) / 60;
+    return encoderLeft.getVelocity() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE) / 60;
   }
 
   // Get the Right Wheel Velocity of the Robot in Meters per Second
   public double getRightVelocity() {
-    return encoderRight.getVelocity() * Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE) / 60;
+    return encoderRight.getVelocity() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE) / 60;
   }
 
   public DifferentialDriveWheelSpeeds getSpeeds() {

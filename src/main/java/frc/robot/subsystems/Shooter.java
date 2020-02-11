@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.SolenoidConstants;
+import frc.robot.Constants.SparkConstants;
 import frc.robot.utils.LimeLight;
 
 public class Shooter extends SubsystemBase {
@@ -36,7 +38,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     // Constructs Motor for Shooting
-    shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_ID, MotorType.kBrushless);
+    shooterMotor = new CANSparkMax(SparkConstants.MOTOR_SHOOTER, MotorType.kBrushless);
 
     // Inverts Motor if Needed
     shooterMotor.setInverted(ShooterConstants.SHOOTER_MOTOR_INVERSION);
@@ -45,7 +47,7 @@ public class Shooter extends SubsystemBase {
     shooterEncoder = shooterMotor.getEncoder();
 
     // Constructs a Solenoid to Change Angles
-    shooterSolenoid = new DoubleSolenoid(ShooterConstants.SHOOTER_PORT_ZERO, ShooterConstants.SHOOTER_PORT_ONE);
+    shooterSolenoid = new DoubleSolenoid(SolenoidConstants.ANGLER_PORT_A, SolenoidConstants.ANGLER_PORT_B);
 
     // Constructs a Limelight to Aim
     lime = new LimeLight();

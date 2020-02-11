@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LiftConstants;
+import frc.robot.Constants.SolenoidConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -25,8 +25,8 @@ public class Lift extends SubsystemBase {
   /* LIFT CONSTRUCTOR */
   public Lift() {
     // Constructs a Solenoid Object for Lifter
-    lifterSolenoid = new DoubleSolenoid(LiftConstants.LIFT_PORT_ZERO,
-    LiftConstants.LIFT_PORT_ONE);
+    lifterSolenoid = new DoubleSolenoid(SolenoidConstants.LIFT_PORT_A,
+    SolenoidConstants.LIFT_PORT_B);
   }
 
   // Elevator Goes Up to Reach for Generator Switch Bar

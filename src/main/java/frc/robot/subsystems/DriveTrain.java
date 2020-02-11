@@ -32,6 +32,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.SolenoidConstants;
+import frc.robot.Constants.SparkConstants;
 import frc.robot.utils.LimeLight;
 
 public class DriveTrain extends SubsystemBase {
@@ -39,12 +41,12 @@ public class DriveTrain extends SubsystemBase {
   /* DRIVETRAIN FIELDS */
 
   // Hold the Left Motors
-  private CANSparkMax motorLeft0;
-  private CANSparkMax motorLeft1;
+  private CANSparkMax motorLeftA;
+  private CANSparkMax motorLeftB;
 
   // Hold the Right Motors
-  private CANSparkMax motorRight0;
-  private CANSparkMax motorRight1;
+  private CANSparkMax motorRightA;
+  private CANSparkMax motorRightB;
 
   // Holds Grouped Motors
   private SpeedControllerGroup motorLeft;
@@ -87,16 +89,16 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
     // Constructs Left Motors
-    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_A, MotorType.kBrushless);
-    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_B, MotorType.kBrushless);
+    motorLeftA = new CANSparkMax(SparkConstants.MOTOR_LEFT_A, MotorType.kBrushless);
+    motorLeftB = new CANSparkMax(SparkConstants.MOTOR_LEFT_B, MotorType.kBrushless);
     
     // Constructs Right Motors
-    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_C, MotorType.kBrushless);
-    motorRight1 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_D, MotorType.kBrushless);
+    motorRightA = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
+    motorRightB = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
 
     // Groups Motors Together for Differential Drive
-    motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
-    motorRight = new SpeedControllerGroup(motorRight0, motorRight1);
+    motorLeft = new SpeedControllerGroup(motorLeftA, motorLeftB);
+    motorRight = new SpeedControllerGroup(motorRightA, motorRightB);
 
     // Inverts Motors
     motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
@@ -122,22 +124,22 @@ public class DriveTrain extends SubsystemBase {
     // Creates Encoder objects
     //encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
     //encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
-    encoderLeft = motorLeft0.getEncoder();
-    encoderRight = motorRight0.getEncoder();
+    encoderLeft = motorLeftA.getEncoder();
+    encoderRight = motorRightA.getEncoder();
 
     encoderLeft.setPosition(0);
     encoderRight.setPosition(0);
 
     // Sets Factors for Position to Measure in Meters
-    encoderLeft.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
-    encoderRight.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
+    encoderLeft.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
+    encoderRight.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
 
     // Sets Factors for Velocity to Measure in Meters per Second
-    encoderLeft.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
-    encoderRight.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.WHEEL_CIRCUMFERENCE));
+    encoderLeft.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
+    encoderRight.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
 
     // Creates DoubleSolonoid to Shift Gears in GearBox
-    gearShift = new DoubleSolenoid(DriveConstants.SHIFTER_PORT_ONE, DriveConstants.SHIFTER_PORT_TWO);
+    gearShift = new DoubleSolenoid(SolenoidConstants.SHIFTER_PORT_A, SolenoidConstants.SHIFTER_PORT_B);
 
     // Begins with High Torque Everytime
     // Updates DriveMode
