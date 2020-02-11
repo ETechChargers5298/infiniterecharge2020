@@ -17,13 +17,6 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DriveConstants {
-        // Holds CAN IDs from SparkMax speed controllers
-        public static final int MOTOR_LEFT_ZERO = 1;
-        public static final int MOTOR_LEFT_ONE = 4;
-        public static final int MOTOR_RIGHT_ZERO = 2;
-        public static final int MOTOR_RIGHT_ONE = 6;
-        public static final int WHEEL_INTAKE_MOTOR = 8;
-
 
         // Encoder Resolution
         public static final int DRIVE_ENCODER_RESOLUTION = 8192;
@@ -74,6 +67,30 @@ public final class Constants {
         // Intake Solenoid Constants 
         public static final int INTAKE_PORT_FIVE = 4;
         public static final int INTAKE_PORT_SIX = 5;
+
+		public static final int MOTOR_INTAKE_WHEEL = 0;
+    }
+
+    public static final class MechanismConstants {
+
+        // Holds CAN IDs from SparkMax speed controllers
+        public static final int MOTOR_LEFT_A = 1;
+        public static final int MOTOR_LEFT_B = 2;
+        public static final int MOTOR_LEFT_C = 3;
+        
+        public static final int MOTOR_RIGHT_A = 4;
+        public static final int MOTOR_RIGHT_B = 5;
+        public static final int MOTOR_RIGHT_C = 6;
+        
+        public static final int MOTOR_INTAKE_WHEEL = 7;
+        public static final int MOTOR_LOADER = 8;
+        public static final int MOTOR_ANGLER = 9;
+        public static final int MOTOR_SHOOTER = 10;
+        public static final int MOTOR_LEVELER = 11;
+    
+        public static final int LEVEL_MOTOR_ID = 12;
+        
+
     }
 
     public static final class JoystickConstants {
@@ -103,8 +120,6 @@ public final class Constants {
     }
     
     public static final class LevelConstants {
-        // CAN ID for Motors
-        public static final int LEVEL_MOTOR_ID = 9;
 
         // Max Velocity of Motor
         public static final double MAX_VELOCITY = 0.25;
@@ -123,6 +138,9 @@ public final class Constants {
         // Sets Tolerance for PID Setpoint
 		public static final double DEGREE_TOLERANCE = 5; // Degrees
 		public static final double VELOCITY_TOLERANCE = 1; // Rotation per Second
+
+
+		public static int LEVEL_MOTOR_ID;
     }
 
     public static final class LimeLightConstants {

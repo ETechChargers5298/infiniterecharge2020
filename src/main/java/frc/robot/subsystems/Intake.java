@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
     // Creating DoubleSolenoid Object for the Intake
     intakeSolenoid = new DoubleSolenoid(DriveConstants.INTAKE_PORT_FIVE, DriveConstants.INTAKE_PORT_SIX);
 
-    intakeMotor = new CANSparkMax(DriveConstants.WHEEL_INTAKE_MOTOR, MotorType.kBrushless);
+    intakeMotor = new CANSparkMax(DriveConstants.MOTOR_INTAKE_WHEEL, MotorType.kBrushless);
   }
 
   /* INTAKE METHODS */

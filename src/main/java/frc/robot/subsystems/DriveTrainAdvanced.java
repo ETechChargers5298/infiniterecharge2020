@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants;
 
 /**
    * Creates a new DriveTrainAdvanced.
@@ -88,12 +89,12 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
   public DriveTrainAdvanced() {
     // Constructs Left Motors
-    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
-    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ONE, MotorType.kBrushless);
+    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_A, MotorType.kBrushless);
+    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_B, MotorType.kBrushless);
 
     // Constructs Right Motors
-    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
-    motorRight1 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
+    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
+    motorRight1 = new CANSparkMax(Constants.DriveConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
 
     // Groups Motors Together for Differential Drive
     motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);

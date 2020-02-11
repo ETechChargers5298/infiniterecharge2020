@@ -86,12 +86,12 @@ public class DriveTrain extends SubsystemBase {
   /* DRIVETRAIN CONSTRUCTOR */
   public DriveTrain() {
     // Constructs Left Motors
-    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ZERO, MotorType.kBrushless);
-    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_ONE, MotorType.kBrushless);
+    motorLeft0 = new CANSparkMax(DriveConstants.MOTOR_LEFT_A, MotorType.kBrushless);
+    motorLeft1 = new CANSparkMax(DriveConstants.MOTOR_LEFT_B, MotorType.kBrushless);
     
     // Constructs Right Motors
-    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ZERO, MotorType.kBrushless);
-    motorRight1 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_ONE, MotorType.kBrushless);
+    motorRight0 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_C, MotorType.kBrushless);
+    motorRight1 = new CANSparkMax(DriveConstants.MOTOR_RIGHT_D, MotorType.kBrushless);
 
     // Groups Motors Together for Differential Drive
     motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
