@@ -8,17 +8,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Intake;
 
-public class IntakeEat extends CommandBase {
-  
-double speed;
+public class IntakeRetract extends CommandBase {
+  /**
+   * Creates a new RetractIntake.
+   */
 
-  public IntakeEat(double speed) {
+  // Holds the Intake Subsystem
+  private Intake intake;
 
-    addRequirements(RobotContainer.intake);
+  public IntakeRetract(Intake intake) {
+    // Passes the Intake Subsystem into Field
+    this.intake = intake;
 
-    this.speed = speed;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +34,8 @@ double speed;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.intakeMotorSpeed(speed);
+    // Brings Intake Back Up To Stop Grabbing
+    intake.retractIntake();
   }
 
   // Called once the command ends or is interrupted.
@@ -40,6 +46,7 @@ double speed;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Runs Only Once
     return true;
   }
 }
