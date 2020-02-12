@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SolenoidConstants;
 import frc.robot.Constants.SparkConstants;
@@ -50,7 +51,7 @@ public class Shooter extends SubsystemBase {
     shooterSolenoid = new DoubleSolenoid(SolenoidConstants.ANGLER_PORT_A, SolenoidConstants.ANGLER_PORT_B);
 
     // Constructs a Limelight to Aim
-    lime = new LimeLight();
+    lime = RobotContainer.limeLight;
   }
   
   // Shoots at Max Power
