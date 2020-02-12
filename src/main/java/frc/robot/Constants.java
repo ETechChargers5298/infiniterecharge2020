@@ -19,8 +19,7 @@ public final class Constants {
 
     
     public static final class SparkConstants {
-
-        // Holds CAN IDs from SparkMax speed controllers
+        // Holds CAN IDs from SparkMax Speed Controllers
         public static final int MOTOR_LEFT_A = 1;
         public static final int MOTOR_LEFT_B = 2;
         public static final int MOTOR_LEFT_C = 5;
@@ -29,17 +28,17 @@ public final class Constants {
         public static final int MOTOR_RIGHT_B = 4;
         public static final int MOTOR_RIGHT_C = 6;
         
+        // For Mechanisms Other than DriveTrain
         public static final int MOTOR_INTAKE = 7;
         public static final int MOTOR_LOADER = 8;
         public static final int MOTOR_ANGLER = 9;
         public static final int MOTOR_SHOOTER = 10;
         public static final int MOTOR_LEVELER = 11;
-
     }
         
 
     public static final class SolenoidConstants {
-        // Ball Shifters on Gearbox.
+        // Ball Shifters on Gearbox
         public static final int SHIFTER_PORT_A = 0;
         public static final int SHIFTER_PORT_B = 1;
 
@@ -54,13 +53,10 @@ public final class Constants {
         //Angler Piston?
         public static final int ANGLER_PORT_A = 6;
         public static final int ANGLER_PORT_B = 7;
-
     }
 
 
     public static final class DriveConstants {
-
-
         // Holds wheel inversion boolean (One should be true and the other one should be false)
         public static final boolean LEFT_INVERSION = true;
         public static final boolean RIGHT_INVERSION = false;
@@ -95,12 +91,16 @@ public final class Constants {
         public static final double LEFT_TORQUE_DRIVE_I = 0;
         public static final double LEFT_TORQUE_DRIVE_D = 0;
 
+        // PID Constants for Right Wheels on High Torque
+        public static final double RIGHT_TORQUE_DRIVE_P = 1;
+        public static final double RIGHT_TORQUE_DRIVE_I = 0;
+        public static final double RIGHT_TORQUE_DRIVE_D = 0;
+
         // Feed Forward Constants
         public static final double DRIVE_SPEED_STATIC_GAIN = 1;
         public static final double DRIVE_SPEED_VELOCITY_GAIN = 3;
         public static final double DRIVE_TORQUE_STATIC_GAIN = 1;
         public static final double DRIVE_TORQUE_VELOCITY_GAIN = 3;
-
     }
 
   
@@ -108,9 +108,6 @@ public final class Constants {
     public static final class JoystickConstants {
         // Deadbands ignore smaller inputs from joystick for smoother driving
         public static final double DEADBAND = 0.01;
-
-        // Sets JoyStick Sensitivity (Even Numbers ONLY)
-        public static double JOYSTICK_SENSITIVITY = 8;
 
         // Numbers for the 2 Xbox controllers
         public static final int DRIVECONTROLLER = 0;
@@ -150,9 +147,6 @@ public final class Constants {
         // Sets Tolerance for PID Setpoint
 		public static final double DEGREE_TOLERANCE = 5; // Degrees
 		public static final double VELOCITY_TOLERANCE = 1; // Rotation per Second
-
-
-		public static int LEVEL_MOTOR_ID;
     }
 
     public static final class LimeLightConstants {
@@ -167,18 +161,15 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-
         // Inversion of the Motor
         public static final boolean INTAKE_MOTOR_INVERSION = false;
 
         // Max Speed of the Intake Motors
         public static final double INTAKE_MAX_SPEED = 1;
-
     }
 
 
     public static final class ShooterConstants {
- 
         // Inversion of the Motor
         public static final boolean SHOOTER_MOTOR_INVERSION = false;
 
@@ -188,9 +179,11 @@ public final class Constants {
     }
 
     public static final class LightStripConstants {
+        // PWM Port for REV BLINKIN LEDs
         public static final int PWM_PORT = 9;
-        public static final int NUM_PIXELS = 60;
 
+        // Number of LEDs on Strip
+        public static final int NUM_PIXELS = 60;
     }
 
 }

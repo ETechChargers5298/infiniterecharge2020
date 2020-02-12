@@ -15,7 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LevelConstants;
+import frc.robot.Constants.SparkConstants;
 
 public class Leveler extends SubsystemBase {
   /**
@@ -44,7 +44,7 @@ public class Leveler extends SubsystemBase {
 
   /* LEVELER METHODS */
     // Sets Up Motor
-    motor = new CANSparkMax(LevelConstants.LEVEL_MOTOR_ID, MotorType.kBrushless);
+    motor = new CANSparkMax(SparkConstants.MOTOR_LEVELER, MotorType.kBrushless);
 
     // Encoders Started
     encoder = motor.getEncoder();

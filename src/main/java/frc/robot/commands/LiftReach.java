@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lift;
 
 public class LiftReach extends CommandBase {
   /**
@@ -16,14 +17,14 @@ public class LiftReach extends CommandBase {
    */
 
   // Holds the Intake Subsystem
-  private Intake intake;
+  private Lift lift;
 
-  public LiftReach(Intake intake) {
+  public LiftReach(Lift lift) {
     // Passes the Intake Subsystem into Field
-    this.intake = intake;
+    this.lift = lift;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.intake);
+    addRequirements(this.lift);
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +36,7 @@ public class LiftReach extends CommandBase {
   @Override
   public void execute() {
     // Moves Motors to Intake the Balls
-    intake.grabBall();
+    lift.robotReach();
   }
 
   // Called once the command ends or is interrupted.

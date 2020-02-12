@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 
 public class LiftClimb extends CommandBase {
@@ -16,7 +17,7 @@ public class LiftClimb extends CommandBase {
    */
 
   // Holds the Lift Subsystem
-  Lift lift;
+  private Lift lift;
 
   public LiftClimb(Lift lift) {
     // Passes the Lift Subsystem into Field
@@ -26,7 +27,7 @@ public class LiftClimb extends CommandBase {
     addRequirements(this.lift);
   }
 
-  // Called when the command is initially scheduled.
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }

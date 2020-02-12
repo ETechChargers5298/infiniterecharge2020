@@ -96,13 +96,18 @@ public class DriveTrain extends SubsystemBase {
     motorRightA = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
     motorRightB = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
 
+    motorLeftA.setInverted(DriveConstants.LEFT_INVERSION); // Test Difference On Impact
+    motorLeftB.setInverted(DriveConstants.LEFT_INVERSION);
+    motorRightA.setInverted(DriveConstants.RIGHT_INVERSION);
+    motorRightB.setInverted(DriveConstants.RIGHT_INVERSION);
+
     // Groups Motors Together for Differential Drive
     motorLeft = new SpeedControllerGroup(motorLeftA, motorLeftB);
     motorRight = new SpeedControllerGroup(motorRightA, motorRightB);
 
     // Inverts Motors
-    motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
-    motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
+    //motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
+    //motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
 
     // PID Controllers are Initialized
     leftController = new PIDController(DriveConstants.LEFT_SPEED_DRIVE_P, DriveConstants.LEFT_SPEED_DRIVE_I, DriveConstants.LEFT_SPEED_DRIVE_D);
@@ -168,8 +173,8 @@ public class DriveTrain extends SubsystemBase {
   // For Arcade Drive Joysticks
   public void arcadeDrive(double linVelocity, double rotVelocity) {
     // Changes Speed to Match Sensitivity 
-    linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
-    rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
+    //linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
+    //rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
     // linVelocity = Math.copySign(linVelocity, linVelocity);
     // rotVelocity = Math.copySign(rotVelocty, rotVelocity);
 

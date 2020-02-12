@@ -45,12 +45,12 @@ public class DriveTrainAdvanced extends SubsystemBase {
   /*DRIVETRAIN ADVANCED FIELDS */
 
   // Holds the Left Motors
-  private CANSparkMax motorLeft0;
-  private CANSparkMax motorLeft1;
+  private CANSparkMax motorLeftA;
+  private CANSparkMax motorLeftB;
 
   // Holds the Right Motors
-  private CANSparkMax motorRight0;
-  private CANSparkMax motorRight1;
+  private CANSparkMax motorRightA;
+  private CANSparkMax motorRightB;
 
   // Groups Motors Together
   private SpeedControllerGroup motorLeft;
@@ -100,30 +100,30 @@ public class DriveTrainAdvanced extends SubsystemBase {
 
   public DriveTrainAdvanced() {
     // Constructs Left Motors
-    motorLeft0 = new CANSparkMax(SparkConstants.MOTOR_LEFT_A, MotorType.kBrushless);
-    motorLeft1 = new CANSparkMax(SparkConstants.MOTOR_LEFT_B, MotorType.kBrushless);
+    motorLeftA = new CANSparkMax(SparkConstants.MOTOR_LEFT_A, MotorType.kBrushless);
+    motorLeftB = new CANSparkMax(SparkConstants.MOTOR_LEFT_B, MotorType.kBrushless);
 
     // Constructs Right Motors
-    motorRight0 = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
-    motorRight1 = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
+    motorRightA = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
+    motorRightB = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
 
     // Groups Motors Together for Differential Drive
-    motorLeft = new SpeedControllerGroup(motorLeft0, motorLeft1);
-    motorRight = new SpeedControllerGroup(motorRight0, motorRight1);
+    motorLeft = new SpeedControllerGroup(motorLeftA, motorLeftB);
+    motorRight = new SpeedControllerGroup(motorRightA, motorRightB);
 
     // Inverts Motors
     motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
     motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
 
     // Obtains Encoders from Speed Controllers
-    encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
-    encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    encoderLeft = motorLeftA.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    encoderRight = motorRightA.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
 
     // Initializes PID Controllers for Each Wheel
     speedLeftController = new PIDController(DriveConstants.LEFT_SPEED_DRIVE_P, DriveConstants.LEFT_SPEED_DRIVE_I, DriveConstants.LEFT_SPEED_DRIVE_D);
     speedRightController = new PIDController(DriveConstants.RIGHT_SPEED_DRIVE_P, DriveConstants.RIGHT_SPEED_DRIVE_I, DriveConstants.RIGHT_SPEED_DRIVE_D);
     torqueLeftController = new PIDController(DriveConstants.LEFT_TORQUE_DRIVE_P, DriveConstants.LEFT_TORQUE_DRIVE_I, DriveConstants.LEFT_TORQUE_DRIVE_D);
-    torqueRightController = new PIDController(DriveConstants.LEFT_TORQUE_DRIVE_P, DriveConstants.LEFT_TORQUE_DRIVE_I, DriveConstants.LEFT_TORQUE_DRIVE_D);
+    torqueRightController = new PIDController(DriveConstants.RIGHT_TORQUE_DRIVE_P, DriveConstants.RIGHT_TORQUE_DRIVE_I, DriveConstants.RIGHT_TORQUE_DRIVE_D);
 
     // Connects to NavX
     try {
