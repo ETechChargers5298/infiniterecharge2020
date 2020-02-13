@@ -20,6 +20,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeDrop;
 import frc.robot.commands.IntakeGrabBall;
+import frc.robot.commands.IntakeReleaseBall;
 import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.JoystickConstants;
  
@@ -83,33 +85,32 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    // GEAR SHIFTING = Y-button to toggle between low gear & high gear
+    // GEAR SHIFTING = Right Bumper/Left Bumper
     new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveGearShift());
 
-    // SNAP TURNS = Left bumper for -90 turn, Right bumper for 90 turn
-    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveTurnToAngle(-90));
-    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveTurnToAngle(90));
+    // LIFT CLIMB = Left Bumper
+    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftClimb(lift));
 
-    // LIFT REACH = X-button to reach for lift
-    new JoystickButton(operatorController, Button.kX.value).whenPressed(new LiftReach(lift));
-
-    // LIFT CLIMB = A-button to climb on lift
-    new JoystickButton(operatorController, Button.kA.value).whenPressed(new LiftClimb(lift));
-
-    // LEVEL = Y-button
-    new JoystickButton(operatorController, Button.kY.value).whenPressed(new Level());
+    // LEVEL = Right stick x-axis
+    //new JoystickButton(operatorController, Button.k).whenPressed(new Level());
 
     // GRAB BALL = B-button
     new JoystickButton(operatorController, Button.kB.value).whenPressed(new IntakeGrabBall(intake));
     
-    // INTAKE RETRACT = LEFT BUMPER
-    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new IntakeRetract(intake));
+    // INTAKE RETRACT = Right Trigger
+    //new JoystickButton(operatorController, Button.k).whenPressed(new IntakeRetract(intake));
 
     // INTAKE DROP = RIGHT BUMPER
     new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new IntakeDrop(intake));
 
     // SHOOT = X-Button
     new JoystickButton(driveController, Button.kX.value).whenPressed(new Shoot());
+
+    //Spit Ball
+    new JoystickButton(operatorController, Button.kA.value).whenPressed(new IntakeReleaseBall(intake));
+    
+    //LOAD = Y-button
+    //new JoystickButton(operatorController, Button.kY.value).whenPressed(new )
   }
 
   /**

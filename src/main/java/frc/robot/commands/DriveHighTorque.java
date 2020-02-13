@@ -9,19 +9,20 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.DriveTrain;
 
-public class Shoot extends CommandBase {
-  
+public class DriveHighTorque extends CommandBase {
   /**
-   * Creates a new Shoot command.
+   * Creates a new DriveHighTorque.
    */
 
-   Shooter shooter;
-  public Shoot() {
-    shooter = RobotContainer.shooter;
+  private DriveTrain driveTrain;
+  
+  public DriveHighTorque() {
+    this.driveTrain = RobotContainer.driveTrain;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.shooter);
+    addRequirements(this.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -32,7 +33,7 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shootMaxVelocity();
+    driveTrain.highTorque();
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +44,6 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
