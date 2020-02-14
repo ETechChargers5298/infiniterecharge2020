@@ -9,11 +9,11 @@
 
 package frc.robot;
 
+import frc.robot.commands.Autonomous.*;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.utils.LightStrip;
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveGearShift;
 import frc.robot.commands.Shoot;
@@ -32,9 +32,11 @@ import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.JoystickConstants;
  
 /**
@@ -52,11 +54,11 @@ public class RobotContainer {
   public final static Lift lift = new Lift();
   public final static Leveler leveler = new Leveler();
 
+  //Sendable Chooser
+  public SendableChooser<CommandGroupBase> autoChooser;
+
   public final static LightStrip led = new LightStrip();
   public final static LimeLight limeLight = new LimeLight();
-
-  // Holds Autonomous Code
-  private final Command m_autoCommand = new Autonomous();
 
   // Holds the Driver Controller Object
   public final static XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
@@ -72,6 +74,9 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(new DriveArcade(
       () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
       () -> driveController.getX(GenericHID.Hand.kLeft)));
+
+      autoChooser = new SendableChooser<CommandGroupBase>();
+      autoChooser.addObject("Drive Straight", new AutonomousDriveStraight(driveTrain, 0.5, 2));
 
     // Reset Sensors
     driveTrain.reset();
