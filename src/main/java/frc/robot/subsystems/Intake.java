@@ -49,12 +49,6 @@ public class Intake extends SubsystemBase {
 
     // Inverts Motor if Needed
     intakeMotor.setInverted(IntakeConstants.INTAKE_MOTOR_INVERSION);
-
-    // The Robot Starts With a Retracted Intake
-    retractIntake();
-
-    // The Robot Intake Starts Off
-    stopIntake();
   }
   
   // Pushes Intake Down to Start Collecting Balls

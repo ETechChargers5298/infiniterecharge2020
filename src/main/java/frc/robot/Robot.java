@@ -7,11 +7,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.DriveTurnToAngle;
+import frc.robot.commands.IntakeRetract;
+import frc.robot.commands.LiftClimb;
+import frc.robot.commands.MoveLevel;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -101,6 +106,16 @@ public class Robot extends TimedRobot {
     int pov = RobotContainer.driveController.getPOV();
     if(pov != -1) {
       new DriveTurnToAngle(pov).schedule();
+    }
+
+    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > 0.5) {
+
+      new LiftClimb(RobotContainer.lift).schedule();
+    }
+
+    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
+
+      new IntakeRetract(RobotContainer.intake).schedule();
     }
   }
 
