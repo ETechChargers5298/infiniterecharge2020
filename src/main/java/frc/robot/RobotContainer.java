@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.utils.LightStrip;
-import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveGearShift; //could be deleted
 import frc.robot.commands.DriveHighTorque;
@@ -29,6 +28,9 @@ import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
 import frc.robot.commands.MoveLevel;
+import frc.robot.autoCommands.AutoDriveStraight;
+import frc.robot.autoCommands.AutoTripleShot;
+import frc.robot.autoCommands.AutoDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Leveler;
@@ -36,9 +38,11 @@ import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.JoystickConstants;
  
 /**
@@ -59,12 +63,15 @@ public class RobotContainer {
   public final static LightStrip led = new LightStrip();
   public final static LimeLight limeLight = new LimeLight();
 
-  // Holds Autonomous Code
-  private final Command m_autoCommand = new Autonomous();
-
   // Holds the Driver Controller Object
   public final static XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
   public final static XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
+
+  //Sendable Chooser
+  public SendableChooser<CommandGroupBase> autoChooser;
+  public static Command chosenAutoCommand;
+
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -80,6 +87,11 @@ public class RobotContainer {
     leveler.setDefaultCommand(new MoveLevel(
       () -> operatorController.getX(GenericHID.Hand.kRight)
     ));
+
+      autoChooser = new SendableChooser<CommandGroupBase>();
+      autoChooser.addOption("Only Drive Straight", new AutoDrive());
+      autoChooser.addOption("Only Shoot", new AutoTripleShot());
+
     // Reset Sensors
     driveTrain.reset();
   }
@@ -100,6 +112,7 @@ public class RobotContainer {
     //new JoystickButton(operatorController, Button.kA.value).whenPressed(new LiftClimb(lift));
 
     new JoystickButton(driveController, Button.kA.value).whenHeld(new Shoot());
+    // LIFT Reach = Left Bumper
 
     // LEVEL = Right stick x-axis
     //new JoystickButton(operatorController, Button.k).whenPressed(new Level());
@@ -131,7 +144,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    // Whichever command is assigned to chosenAutoCommand will run in autonomous
+    return chosenAutoCommand;
   }
 }
