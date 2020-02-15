@@ -99,8 +99,8 @@ public class RobotContainer {
     // GEAR SHIFTING = Right Bumper/Left Bumper
     new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveGearShift());
 
-    // LIFT CLIMB = Left Bumper
-    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftClimb(lift));
+    // LIFT Reach = Left Bumper
+    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
 
     // LEVEL = Right stick x-axis
     //new JoystickButton(operatorController, Button.k).whenPressed(new Level());

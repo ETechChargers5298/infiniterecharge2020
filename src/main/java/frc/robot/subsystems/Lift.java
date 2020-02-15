@@ -31,12 +31,12 @@ public class Lift extends SubsystemBase {
 
   // Elevator Goes Up to Reach for Generator Switch Bar
   public void robotReach(){
-    lifterSolenoid.set(Value.kForward);
+    lifterSolenoid.set(Value.kReverse);
   }
 
   // Elevator Goes Down to Pull The Robot on the Bar
   public void robotPull(){
-    lifterSolenoid.set(Value.kReverse);
+    lifterSolenoid.set(Value.kForward);
   }
 
   @Override
