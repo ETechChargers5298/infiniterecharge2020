@@ -50,7 +50,7 @@ public class Leveler extends SubsystemBase {
     encoder = motor.getEncoder();
   }
 
-  public void move(final double speed) {
+  public void move(double speed) {
     // Moves Motor
     motor.set(speed);
   }

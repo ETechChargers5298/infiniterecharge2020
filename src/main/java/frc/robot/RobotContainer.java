@@ -14,16 +14,20 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.utils.LightStrip;
 import frc.robot.commands.DriveArcade;
-import frc.robot.commands.DriveGearShift;
+import frc.robot.commands.DriveGearShift; //could be deleted
+import frc.robot.commands.DriveHighTorque;
+import frc.robot.commands.DriveHighSpeed;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.IntakeEat;
 import frc.robot.commands.IntakeSpit;
 import frc.robot.commands.IntakeRetract;
+import frc.robot.commands.IntakeStop;
 import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
+import frc.robot.commands.MoveLevel;
 import frc.robot.autoCommands.AutoDriveStraight;
 import frc.robot.autoCommands.AutoTripleShot;
 import frc.robot.autoCommands.AutoDrive;
@@ -79,6 +83,10 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(new DriveArcade(
       () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
       () -> driveController.getX(GenericHID.Hand.kLeft)));
+    
+    leveler.setDefaultCommand(new MoveLevel(
+      () -> operatorController.getX(GenericHID.Hand.kRight)
+    ));
 
       autoChooser = new SendableChooser<CommandGroupBase>();
       autoChooser.addOption("Only Drive Straight", new AutoDrive());
@@ -97,16 +105,20 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
     // GEAR SHIFTING = Right Bumper/Left Bumper
-    new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveGearShift());
+    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveHighTorque());
 
+    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveHighSpeed());
+    // LIFT CLIMB = Left Bumper
+    //new JoystickButton(operatorController, Button.kA.value).whenPressed(new LiftClimb(lift));
+
+    new JoystickButton(driveController, Button.kA.value).whenHeld(new Shoot());
     // LIFT Reach = Left Bumper
-    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
 
     // LEVEL = Right stick x-axis
     //new JoystickButton(operatorController, Button.k).whenPressed(new Level());
 
     // GRAB BALL = B-button
-    new JoystickButton(operatorController, Button.kB.value).whenPressed(new IntakeEat(intake));
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeEat(intake), true);
     
     // INTAKE RETRACT = Right Trigger
     //new JoystickButton(operatorController, Button.k).whenPressed(new IntakeRetract(intake));
@@ -118,7 +130,9 @@ public class RobotContainer {
     new JoystickButton(driveController, Button.kX.value).whenPressed(new Shoot());
 
     //Spit Ball
-    new JoystickButton(operatorController, Button.kA.value).whenPressed(new IntakeSpit(intake));
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(new IntakeSpit(intake), true);
+
+    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
     
     //LOAD = Y-button
     //new JoystickButton(operatorController, Button.kY.value).whenPressed(new )

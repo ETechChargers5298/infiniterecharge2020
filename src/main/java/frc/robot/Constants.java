@@ -59,7 +59,7 @@ public final class Constants {
     public static final class DriveConstants {
         // Holds wheel inversion boolean (One should be true and the other one should be false)
         public static final boolean LEFT_INVERSION = true;
-        public static final boolean RIGHT_INVERSION = false;
+        public static final boolean RIGHT_INVERSION = true;
 
         // Encoder Resolution
         public static final int DRIVE_ENCODER_RESOLUTION = 8192;

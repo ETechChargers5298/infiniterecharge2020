@@ -7,24 +7,27 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Leveler;
 
-public class IntakeEat extends CommandBase {
+public class MoveLevel extends CommandBase {
   /**
-   * Creates a new GrabBall.
+   * Creates a new MoveLevel.
    */
 
-  // Holds the Intake Subsystem
-  private Intake intake;
+   private Leveler leveler;
+   private DoubleSupplier speed;
+   
+  public MoveLevel(DoubleSupplier speed) {
 
-  public IntakeEat(Intake intake) {
-    // Passes the Intake Subsystem into Field
-    this.intake = intake;
-
+    this.leveler = RobotContainer.leveler;
+    this.speed = speed;
+    
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.intake);
+    addRequirements(this.leveler);
   }
 
   // Called when the command is initially scheduled.
@@ -35,23 +38,17 @@ public class IntakeEat extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Moves Motors to Intake the Balls
-    intake.eatBall();
+    leveler.move(speed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Runs Only Once
-    if(RobotContainer.operatorController.getBButtonReleased()) {
-      return true;
-    }
     return false;
   }
 }
