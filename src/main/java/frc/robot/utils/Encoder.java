@@ -5,27 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+/* What advantage is there in having an Encoder class if the API provides accessors already? -Mr. Bianchi */
+
+package frc.robot.utils;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-public class Encoders extends SubsystemBase {
+public class Encoder {
   /**
    * Creates a new Encoders.
    */
   private CANEncoder encoder;
-  public Encoders(CANSparkMax motor) {
+  public Encoder(CANSparkMax motor) {
     encoder = motor.getEncoder();
   }
 
   public double getDistance() {
+
+    return 0.0;
     
   }
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+
 }

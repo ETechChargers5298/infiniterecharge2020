@@ -9,7 +9,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autonomous.*;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,6 +24,9 @@ import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
+import frc.robot.autoCommands.AutoDriveStraight;
+import frc.robot.autoCommands.AutoTripleShot;
+import frc.robot.autoCommands.AutoDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Leveler;
@@ -54,15 +56,18 @@ public class RobotContainer {
   public final static Lift lift = new Lift();
   public final static Leveler leveler = new Leveler();
 
-  //Sendable Chooser
-  public SendableChooser<CommandGroupBase> autoChooser;
-
   public final static LightStrip led = new LightStrip();
   public final static LimeLight limeLight = new LimeLight();
 
   // Holds the Driver Controller Object
   public final static XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
   public final static XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
+
+  //Sendable Chooser
+  public SendableChooser<CommandGroupBase> autoChooser;
+  public static Command chosenAutoCommand;
+
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -76,7 +81,8 @@ public class RobotContainer {
       () -> driveController.getX(GenericHID.Hand.kLeft)));
 
       autoChooser = new SendableChooser<CommandGroupBase>();
-      autoChooser.addObject("Drive Straight", new AutonomousDriveStraight(driveTrain, 0.5, 2));
+      autoChooser.addOption("Only Drive Straight", new AutoDrive());
+      autoChooser.addOption("Only Shoot", new AutoTripleShot());
 
     // Reset Sensors
     driveTrain.reset();
@@ -124,7 +130,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    // Whichever command is assigned to chosenAutoCommand will run in autonomous
+    return chosenAutoCommand;
   }
 }

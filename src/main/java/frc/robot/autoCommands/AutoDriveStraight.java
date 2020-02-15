@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Autonomous;
+package frc.robot.autoCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.Timer;
 
 
-public class AutonomousDriveStraight extends CommandBase {
+public class AutoDriveStraight extends CommandBase {
   /**
    * Creates a new AutonomousDriveStraight.
    */
@@ -23,7 +23,7 @@ public class AutonomousDriveStraight extends CommandBase {
   private double startTime;
   private boolean finished;
 
-  public AutonomousDriveStraight(DriveTrain drive, double speed, double timer) {
+  public AutoDriveStraight(DriveTrain drive, double speed, double timer) {
     this.drive = drive;
     this.speed = speed;
     this.maxTime = timer;
