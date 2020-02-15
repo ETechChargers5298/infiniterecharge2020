@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
 
   // Holds States of Intake
   private boolean isRetracted;
-  private boolean isGrabing;
+  private boolean isGrabbing;
   private boolean isOn;
 
   /* INTAKE CONSTRUCTOR */
@@ -58,7 +58,7 @@ public class Intake extends SubsystemBase {
   }
   
   // Pushes Intake Down to Start Collecting Balls
-  public void dropIntake() {
+  public void chompIntake() {
     // Controls Solenoids
     intakeSolenoid.set(Value.kForward);
 
@@ -76,22 +76,22 @@ public class Intake extends SubsystemBase {
   }
 
   // Axle Moves in One Direction to Grab Balls
-  public void grabBall() {
+  public void eatBall() {
     // Moves Motor
     intakeMotor.set(IntakeConstants.INTAKE_MAX_SPEED);
 
     // Updates Robot State
-    isGrabing = true;
+    isGrabbing = true;
     isOn = true;
   }
 
   // Axle Moves in Opposite Direction to Drop Balls
-  public void releaseBall() {
+  public void spitBall() {
     // Moves Motor
     intakeMotor.set(-1 * IntakeConstants.INTAKE_MAX_SPEED);
 
     // Updates Robot State
-    isGrabing = false;
+    isGrabbing = false;
     isOn = true;
   }
 
@@ -116,7 +116,7 @@ public class Intake extends SubsystemBase {
 
     // The Motor Mode for Balls
     SmartDashboard.putBoolean("Intake On", isOn);
-    SmartDashboard.putBoolean("Grabbing PowerCell", isGrabing);
+    SmartDashboard.putBoolean("Grabbing PowerCell", isGrabbing);
   }
 
   @Override

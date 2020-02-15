@@ -10,15 +10,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeDrop extends CommandBase {
+public class IntakeSpit extends CommandBase {
   /**
-   * Creates a new DropIntake.
+   * Creates a new ReleaseBall.
    */
 
   // Holds the Intake Subsystem
   private Intake intake;
 
-  public IntakeDrop(Intake intake) {
+  public IntakeSpit(Intake intake) {
     // Passes the Intake Subsystem into Field
     this.intake = intake;
 
@@ -34,8 +34,8 @@ public class IntakeDrop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Drops the Intake Down to Pick Up Balls
-    intake.dropIntake();
+    // Drops Balls that are being Loaded
+    intake.spitBall();
   }
 
   // Called once the command ends or is interrupted.

@@ -17,9 +17,9 @@ import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveGearShift;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.DriveTurnToAngle;
-import frc.robot.commands.IntakeDrop;
-import frc.robot.commands.IntakeGrabBall;
-import frc.robot.commands.IntakeReleaseBall;
+import frc.robot.commands.IntakeChomp;
+import frc.robot.commands.IntakeEat;
+import frc.robot.commands.IntakeSpit;
 import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
@@ -106,19 +106,19 @@ public class RobotContainer {
     //new JoystickButton(operatorController, Button.k).whenPressed(new Level());
 
     // GRAB BALL = B-button
-    new JoystickButton(operatorController, Button.kB.value).whenPressed(new IntakeGrabBall(intake));
+    new JoystickButton(operatorController, Button.kB.value).whenPressed(new IntakeEat(intake));
     
     // INTAKE RETRACT = Right Trigger
     //new JoystickButton(operatorController, Button.k).whenPressed(new IntakeRetract(intake));
 
     // INTAKE DROP = RIGHT BUMPER
-    new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new IntakeDrop(intake));
+    new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new IntakeChomp(intake));
 
     // SHOOT = X-Button
     new JoystickButton(driveController, Button.kX.value).whenPressed(new Shoot());
 
     //Spit Ball
-    new JoystickButton(operatorController, Button.kA.value).whenPressed(new IntakeReleaseBall(intake));
+    new JoystickButton(operatorController, Button.kA.value).whenPressed(new IntakeSpit(intake));
     
     //LOAD = Y-button
     //new JoystickButton(operatorController, Button.kY.value).whenPressed(new )

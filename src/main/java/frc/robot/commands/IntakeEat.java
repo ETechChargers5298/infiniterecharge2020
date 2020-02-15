@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeGrabBall extends CommandBase {
+public class IntakeEat extends CommandBase {
   /**
    * Creates a new GrabBall.
    */
@@ -18,7 +18,7 @@ public class IntakeGrabBall extends CommandBase {
   // Holds the Intake Subsystem
   private Intake intake;
 
-  public IntakeGrabBall(Intake intake) {
+  public IntakeEat(Intake intake) {
     // Passes the Intake Subsystem into Field
     this.intake = intake;
 
@@ -35,7 +35,7 @@ public class IntakeGrabBall extends CommandBase {
   @Override
   public void execute() {
     // Moves Motors to Intake the Balls
-    intake.grabBall();
+    intake.eatBall();
   }
 
   // Called once the command ends or is interrupted.

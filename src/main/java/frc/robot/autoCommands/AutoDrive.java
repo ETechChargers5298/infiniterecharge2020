@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.autoCommands.AutoDriveStraight;
+import frc.robot.commands.DriveHighSpeed;
+import frc.robot.commands.IntakeChomp;
+import frc.robot.RobotContainer.Intake;
 import frc.robot.commands.LiftClimb;
 
 public class AutoDrive extends SequentialCommandGroup {
@@ -25,8 +28,11 @@ public class AutoDrive extends SequentialCommandGroup {
     this.driveTrain = RobotContainer.driveTrain;
 
     // Add Commands here:
-    addcommand(new LiftClimb(climb))
+    //addCommands(new DriveHighSpeed());
+    //addCommands(new LiftClimb(RobotContainer.lift));
+
     addCommands(new AutoDriveStraight(driveTrain, 0.5, 2));
+    addCommands(new IntakeChomp(RobotContainer.intake);
     
   }
 
