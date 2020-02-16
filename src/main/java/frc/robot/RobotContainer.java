@@ -17,11 +17,12 @@ import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveGearShift; //could be deleted
 import frc.robot.commands.DriveHighTorque;
 import frc.robot.commands.DriveHighSpeed;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.ShooterSpin;
+import frc.robot.commands.ShooterLoad;
 import frc.robot.commands.DriveTurnToAngle;
-import frc.robot.commands.IntakeDrop;
-import frc.robot.commands.IntakeGrabBall;
-import frc.robot.commands.IntakeReleaseBall;
+import frc.robot.commands.IntakeChomp;
+import frc.robot.commands.IntakeEat;
+import frc.robot.commands.IntakeSpit;
 import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.IntakeStop;
 import frc.robot.commands.Level;
@@ -30,9 +31,10 @@ import frc.robot.commands.LiftReach;
 import frc.robot.commands.LoaderLoad;
 import frc.robot.commands.LoaderRelease;
 import frc.robot.commands.MoveLevel;
-import frc.robot.autoCommands.AutoDriveStraight;
-import frc.robot.autoCommands.AutoTripleShot;
-import frc.robot.autoCommands.AutoDrive;
+import frc.robot.commands.ShooterAngle;
+import frc.robot.commands.AutoDriveStraight;
+import frc.robot.commandGroups.AutoDriveOnly;
+import frc.robot.commandGroups.AutoTripleShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Leveler;
@@ -84,17 +86,11 @@ public class RobotContainer {
     // Configure the Button Bindings
     configureButtonBindings();
 
-    driveTrain.setDefaultCommand(new DriveArcade(
-      () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
-      () -> driveController.getX(GenericHID.Hand.kLeft)));
-    
-    leveler.setDefaultCommand(new MoveLevel(
-      () -> operatorController.getX(GenericHID.Hand.kRight)
-    ));
+    configureAxes();
 
-      autoChooser = new SendableChooser<CommandGroupBase>();
-      autoChooser.addOption("Only Drive Straight", new AutoDrive());
-      autoChooser.addOption("Only Shoot", new AutoTripleShot());
+    autoChooser = new SendableChooser<CommandGroupBase>();
+    autoChooser.addOption("Only Drive Straight", new AutoDriveOnly());
+    autoChooser.addOption("Only Shoot", new AutoTripleShot());
 
     // Reset Sensors
     driveTrain.reset();
@@ -108,42 +104,53 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
-    new JoystickButton(operatorController, Button.kX.value).whenPressed(new LoaderLoad());
 
-    new JoystickButton(operatorController, Button.kY.value).whenPressed(new LoaderRelease());
+    // DRIVE HIGH SPEED = Right Bumper
+    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveHighSpeed(driveTrain));
+    //DRIVE HIGH TORQUE = Right Trigger (See Robot.java)
+
+    // INTAKE EAT & SPIT = B/A buttons
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeEat(intake), true);
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(new IntakeSpit(intake), true);
+
+    // INTAKE CHOMP & RETRACT = X/Y buttons
+    new JoystickButton(operatorController, Button.kX.value).whenPressed(new IntakeChomp(intake));
+    new JoystickButton(operatorController, Button.kY.value).whenPressed(new IntakeRetract(intake));
+
+    //SHOOTER ANGLER AUTO = POV Buttons (See Robot.java)
+
+    //SHOOTER LOAD = RIGHT TRIGGER (See Robot.java)
+    //new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new ShooterLoad(shooter));
+    //SHOOTER SPIN = RIGHT BUMPER
+    new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new ShooterSpin(shooter));
+
+    // LIFT REACH = LB button
+    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
+    // LIFT CLIMB = Left Trigger (See Robot.java)
+
+
+  }
+
+
+  public void configureAxes(){
+
+    //DRIVE WITH JOYSTICKS
+    driveTrain.setDefaultCommand(new DriveArcade(
+      () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
+      () -> driveController.getX(GenericHID.Hand.kLeft)));
     
-    // GEAR SHIFTING = Right Bumper/Left Bumper
-    new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveHighTorque());
-
-    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveHighSpeed());
-    // LIFT CLIMB = Left Bumper
-    //new JoystickButton(operatorController, Button.kA.value).whenPressed(new LiftClimb(lift));
-
-    new JoystickButton(driveController, Button.kA.value).whenHeld(new Shoot());
-    // LIFT Reach = Left Bumper
+    //SHOOTER ANGLER MANUAL = Left-Axis
+    shooter.setDefaultCommand(new ShooterAngle(
+      shooter,
+      () -> operatorController.getY(GenericHID.Hand.kLeft)
+    ));
 
     // LEVEL = Right stick x-axis
-    //new JoystickButton(operatorController, Button.k).whenPressed(new Level());
+    leveler.setDefaultCommand(new MoveLevel(
+      leveler,
+      () -> operatorController.getX(GenericHID.Hand.kRight)
+    ));
 
-    // GRAB BALL = B-button
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeGrabBall(intake), true);
-    
-    // INTAKE RETRACT = Right Trigger
-    //new JoystickButton(operatorController, Button.k).whenPressed(new IntakeRetract(intake));
-
-    // INTAKE DROP = RIGHT BUMPER
-    new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new IntakeDrop(intake));
-
-    // SHOOT = X-Button
-    new JoystickButton(driveController, Button.kX.value).whenPressed(new Shoot());
-
-    //Spit Ball
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(new IntakeReleaseBall(intake), true);
-
-    new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
-    
-    //LOAD = Y-button
-    //new JoystickButton(operatorController, Button.kY.value).whenPressed(new )
   }
 
   /**

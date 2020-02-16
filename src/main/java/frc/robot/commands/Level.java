@@ -25,7 +25,7 @@ public class Level extends ProfiledPIDCommand {
   // Holds the Leveler Subsystem
   private final Leveler leveler;
 
-  public Level() {
+  public Level(Leveler leveler) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
@@ -34,19 +34,19 @@ public class Level extends ProfiledPIDCommand {
             // The motion profile constraints
             new TrapezoidProfile.Constraints(LevelConstants.MAX_VELOCITY, LevelConstants.MAX_ACCELERATION)),
         // This should return the measurement
-        RobotContainer.leveler::getRoll,
+        leveler::getRoll,
         // This should return the goal
         LevelConstants.GOAL,
         // This uses the output
         (output, setpoint) -> 
         // Use the output (and setpoint, if desired) here
-        RobotContainer.leveler.move(output),
+        leveler.move(output),
         // Required Subsystems
-        RobotContainer.leveler
+        leveler
         );
 
     // Updates Leveler Field
-    this.leveler = RobotContainer.leveler;
+    this.leveler = leveler;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.leveler);

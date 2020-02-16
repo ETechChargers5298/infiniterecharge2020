@@ -5,26 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autoCommands;
+package frc.robot.commandGroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.autoCommands.AutoDriveStraight;
+import frc.robot.commands.AutoDriveStraight;
+import frc.robot.commands.DriveHighSpeed;
+import frc.robot.commands.IntakeChomp;
+import frc.robot.commands.LiftClimb;
 
-public class AutoDrive extends SequentialCommandGroup {
+public class AutoDriveOnly extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
 
   private final DriveTrain driveTrain; // Holds DriveTrain Subsystem
 
-  public AutoDrive() {
+  public AutoDriveOnly() {
 
     this.driveTrain = RobotContainer.driveTrain;
 
     // Add Commands here:
+    //addCommands(new DriveHighSpeed());
+    //addCommands(new LiftClimb(RobotContainer.lift));
+
     addCommands(new AutoDriveStraight(driveTrain, 0.5, 2));
+    addCommands(new IntakeChomp(RobotContainer.intake));
     
   }
 

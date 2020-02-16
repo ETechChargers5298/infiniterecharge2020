@@ -7,23 +7,19 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeDrop extends CommandBase {
-  /**
-   * Creates a new DropIntake.
-   */
+public class ShooterAngle extends CommandBase {
+  
+  Shooter shooter;
+  private final DoubleSupplier angleSpeed;
 
-  // Holds the Intake Subsystem
-  private Intake intake;
-
-  public IntakeDrop(Intake intake) {
-    // Passes the Intake Subsystem into Field
-    this.intake = intake;
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.intake);
+  public ShooterAngle(Shooter shooter, DoubleSupplier angleSpeed) {
+    this.shooter = shooter;
+    this.angleSpeed = angleSpeed;
+    addRequirements(this.shooter);        // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +30,7 @@ public class IntakeDrop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Drops the Intake Down to Pick Up Balls
-    intake.dropIntake();
+    shooter.moveAngle(angleSpeed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
@@ -46,7 +41,6 @@ public class IntakeDrop extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Runs Only Once
     return true;
   }
 }

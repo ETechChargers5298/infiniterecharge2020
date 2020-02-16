@@ -8,18 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
-public class IntakeReleaseBall extends CommandBase {
+public class IntakeChomp extends CommandBase {
   /**
-   * Creates a new ReleaseBall.
+   * Creates a new DropIntake.
    */
 
   // Holds the Intake Subsystem
   private Intake intake;
 
-  public IntakeReleaseBall(Intake intake) {
+  public IntakeChomp(Intake intake) {
     // Passes the Intake Subsystem into Field
     this.intake = intake;
 
@@ -35,23 +34,19 @@ public class IntakeReleaseBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Drops Balls that are being Loaded
-    intake.releaseBall();
+    // Drops the Intake Down to Pick Up Balls
+    intake.chompIntake();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // Runs Only Once
-    if(RobotContainer.operatorController.getAButtonReleased()) {
-      return true;
-    }
-    return false;
+    return true;
   }
 }

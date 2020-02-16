@@ -13,10 +13,11 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.DriveHighTorque;
 import frc.robot.commands.DriveTurnToAngle;
-import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.LiftClimb;
-import frc.robot.commands.MoveLevel;
+import frc.robot.commands.AutoShooterAngle;
+import frc.robot.commands.ShooterLoad;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -103,21 +104,53 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    int pov = RobotContainer.driveController.getPOV();
-    if(pov != -1) {
-      new DriveTurnToAngle(pov).schedule();
+
+    final double triggerThresh = 0.5;
+
+    // DRIVE TURN-TO-ANGLE = POVs
+    final int drivePov = RobotContainer.driveController.getPOV();
+    
+    if(drivePov == 0){
+      new DriveTurnToAngle(Constants.DriveConstants.ANGLE_FORWARD).schedule();
+    }
+    if(drivePov == 90){
+      new DriveTurnToAngle(Constants.DriveConstants.ANGLE_RIGHT).schedule();
+    }
+    if(drivePov == 180){
+      new DriveTurnToAngle(Constants.DriveConstants.ANGLE_BACKWARDS).schedule();
+    }
+    if(drivePov == 270){
+      new DriveTurnToAngle(Constants.DriveConstants.ANGLE_LEFT).schedule();
     }
 
-    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > 0.5) {
+    // DRIVE HIGH-GEAR SHIFT = RT
+    if(RobotContainer.driveController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThresh) {
+      new DriveHighTorque(RobotContainer.driveTrain).schedule();
+    }
 
+
+    // SHOOTER ANGLER = POVs
+    final int operatorPov = RobotContainer.operatorController.getPOV();
+
+    if(operatorPov == 0){
+      new AutoShooterAngle(RobotContainer.shooter, Constants.ShooterConstants.TRENCH_ANGLE).schedule();
+    }
+    if(operatorPov == 180){
+      new AutoShooterAngle(RobotContainer.shooter, Constants.ShooterConstants.WALL_ANGLE).schedule();
+    }
+
+    //SHOOTER LOAD = RT
+    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThresh) {
+      new ShooterLoad(RobotContainer.shooter).schedule();
+    }
+
+    //LIFT CLIMB = LT
+    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > triggerThresh) {
       new LiftClimb(RobotContainer.lift).schedule();
     }
-
-    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
-
-      new IntakeRetract(RobotContainer.intake).schedule();
-    }
+  
   }
+
 
   @Override
   public void testInit() {
