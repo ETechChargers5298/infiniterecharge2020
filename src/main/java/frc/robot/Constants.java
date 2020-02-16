@@ -57,6 +57,13 @@ public final class Constants {
 
 
     public static final class DriveConstants {
+
+        //Angles for the robot to face based on the NavX
+        public static final double ANGLE_FORWARD = 0.0;
+        public static final double ANGLE_RIGHT = 90.0;
+        public static final double ANGLE_BACKWARDS = 179.9;
+        public static final double ANGLE_LEFT = -90.0;
+
         // Holds wheel inversion boolean (One should be true and the other one should be false)
         public static final boolean LEFT_INVERSION = true;
         public static final boolean RIGHT_INVERSION = true;
@@ -174,7 +181,20 @@ public final class Constants {
         public static final boolean SHOOTER_MOTOR_INVERSION = false;
 
         // Max Speed of the Motors
-        public static final double SHOOTER_MAX_SPEED = 1;
+        public static final double SHOOTER_MAX_SPEED = 1.0;
+
+        // Inversion of the Angler Motor
+        public static final boolean ANGLER_MOTOR_INVERSION = false;
+
+        // Max Speed of the Angler Motor
+        public static final double ANGLER_MAX_SPEED = 1.0;
+
+        //Angles for the Shooter
+        public static final double TRENCH_ANGLE = 45.0;
+        public static final double SIDE_START_ANGLE = 55.0;
+        public static final double SIDE_MIDDLE_ANGLE = 52.0;
+        public static final double WALL_ANGLE = 68.0;
+
 
     }
 

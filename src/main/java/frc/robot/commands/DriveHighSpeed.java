@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveHighSpeed extends CommandBase {
@@ -18,12 +17,11 @@ public class DriveHighSpeed extends CommandBase {
 
    private DriveTrain driveTrain;
 
-  public DriveHighSpeed() {
+  public DriveHighSpeed(DriveTrain driveTrain) {
     
-    this.driveTrain = RobotContainer.driveTrain;
+    this.driveTrain = driveTrain;
+    addRequirements(this.driveTrain);       // Use addRequirements() here to declare subsystem dependencies.
 
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.driveTrain);
   }
 
   // Called when the command is initially scheduled.

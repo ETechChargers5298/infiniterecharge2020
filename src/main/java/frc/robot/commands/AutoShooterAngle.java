@@ -8,20 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 
-public class DriveHighTorque extends CommandBase {
-  /**
-   * Creates a new DriveHighTorque.
-   */
-
-  private DriveTrain driveTrain;
+public class AutoShooterAngle extends CommandBase {
   
-  public DriveHighTorque(DriveTrain driveTrain) {
+  Shooter shooter;
+  double shotAngle;
 
-    this.driveTrain = driveTrain;
-    addRequirements(this.driveTrain);     // Use addRequirements() here to declare subsystem dependencies.
+  public AutoShooterAngle(Shooter shooter, double shotAngle) {
 
+      this.shooter = shooter;
+      this.shotAngle = shotAngle;
+      addRequirements(this.shooter);        // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -32,7 +30,7 @@ public class DriveHighTorque extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.highTorque();
+    shooter.autoAngle(shotAngle);
   }
 
   // Called once the command ends or is interrupted.

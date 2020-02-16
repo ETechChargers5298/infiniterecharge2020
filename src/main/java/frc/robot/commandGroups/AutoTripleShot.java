@@ -5,12 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autoCommands;
+package frc.robot.commandGroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.autoCommands.AutoDriveStraight;
+import frc.robot.commands.AutoDriveStraight;
 
 public class AutoTripleShot extends SequentialCommandGroup {
   /**

@@ -5,55 +5,42 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autoCommands;
+package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Shooter;
 
-
-public class AutoDriveStraight extends CommandBase {
-  /**
-   * Creates a new AutonomousDriveStraight.
-   */
+public class ShooterAngle extends CommandBase {
   
-  private DriveTrain drive;
-  private double speed;
-  private double maxTime;
-  private double startTime;
-  private boolean finished;
+  Shooter shooter;
+  private final DoubleSupplier angleSpeed;
 
-  public AutoDriveStraight(DriveTrain drive, double speed, double timer) {
-    this.drive = drive;
-    this.speed = speed;
-    this.maxTime = timer;
+  public ShooterAngle(Shooter shooter, DoubleSupplier angleSpeed) {
+    this.shooter = shooter;
+    this.angleSpeed = angleSpeed;
+    addRequirements(this.shooter);        // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.arcadeDrive(speed, 0.0);
+    shooter.moveAngle(angleSpeed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Timer.getFPGATimestamp() - startTime >= maxTime) {
-        finished = true;
-    }
-    
-    return finished;
+    return true;
   }
 }

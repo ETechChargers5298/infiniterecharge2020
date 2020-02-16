@@ -11,12 +11,9 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.SolenoidConstants;
 import frc.robot.Constants.SparkConstants;
 import frc.robot.utils.LimeLight;
 
@@ -31,8 +28,11 @@ public class Shooter extends SubsystemBase {
   // Holds Encoder to Measure Velocity of Launcher
   private CANEncoder shooterEncoder;
 
-  // Holds Piston That Changes Angle of Shooter
-  private DoubleSolenoid shooterSolenoid;
+  //Holds Motor to Angle the Shooter
+  private CANSparkMax anglerMotor;
+
+  //Holds Encoder to Measure the Angle of the Angler
+  private CANEncoder anglerEncoder;
 
   // Holds LimeLight Which Is Used For Aiming
   private LimeLight lime;
@@ -47,8 +47,14 @@ public class Shooter extends SubsystemBase {
     // Obtains Encoder from SparkMax
     shooterEncoder = shooterMotor.getEncoder();
 
-    // Constructs a Solenoid to Change Angles
-    shooterSolenoid = new DoubleSolenoid(SolenoidConstants.ANGLER_PORT_A, SolenoidConstants.ANGLER_PORT_B);
+    // Constructs Motor for Shooting
+    anglerMotor = new CANSparkMax(SparkConstants.MOTOR_ANGLER, MotorType.kBrushed);
+
+    // Inverts Motor if Needed
+    anglerMotor.setInverted(ShooterConstants.ANGLER_MOTOR_INVERSION);
+
+    // Obtains Angler Encoder from SparkMax
+    anglerEncoder = shooterMotor.getEncoder();
 
     // Constructs a Limelight to Aim
     lime = RobotContainer.limeLight;
@@ -64,15 +70,21 @@ public class Shooter extends SubsystemBase {
     shooterMotor.stopMotor();
   }
 
-  // Changes to High Angle
-  public void highAngle() {
-    shooterSolenoid.set(Value.kForward);
+  // Change angle of Angler Motor Manually
+  /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */
+  public void moveAngle(double speed) {
+    anglerMotor.set(speed);
   }
 
-  // Changes to Low Angle
-  public void lowAngle() {
-    shooterSolenoid.set(Value.kReverse);
+  // Change angle of Angler Motor with a PID Loop and Encoder
+  /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */
+  public void autoAngle(double shotAngle) {
+    
+    
   }
+
+  
+
 
   // Prints Data Relating to Shooter
   public void printData() {

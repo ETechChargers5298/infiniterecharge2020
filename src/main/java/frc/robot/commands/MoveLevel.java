@@ -10,7 +10,6 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Leveler;
 
 public class MoveLevel extends CommandBase {
@@ -21,9 +20,9 @@ public class MoveLevel extends CommandBase {
    private Leveler leveler;
    private DoubleSupplier speed;
    
-  public MoveLevel(DoubleSupplier speed) {
+  public MoveLevel(Leveler leveler, DoubleSupplier speed) {
 
-    this.leveler = RobotContainer.leveler;
+    this.leveler = leveler;
     this.speed = speed;
     
     // Use addRequirements() here to declare subsystem dependencies.

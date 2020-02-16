@@ -9,40 +9,51 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.Timer;
 
-public class DriveHighTorque extends CommandBase {
+
+public class AutoDriveStraight extends CommandBase {
   /**
-   * Creates a new DriveHighTorque.
+   * Creates a new AutonomousDriveStraight.
    */
-
-  private DriveTrain driveTrain;
   
-  public DriveHighTorque(DriveTrain driveTrain) {
+  private DriveTrain drive;
+  private double speed;
+  private double maxTime;
+  private double startTime;
+  private boolean finished;
 
-    this.driveTrain = driveTrain;
-    addRequirements(this.driveTrain);     // Use addRequirements() here to declare subsystem dependencies.
-
+  public AutoDriveStraight(DriveTrain drive, double speed, double timer) {
+    this.drive = drive;
+    this.speed = speed;
+    this.maxTime = timer;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.highTorque();
+    drive.arcadeDrive(speed, 0.0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if(Timer.getFPGATimestamp() - startTime >= maxTime) {
+        finished = true;
+    }
+    
+    return finished;
   }
 }
