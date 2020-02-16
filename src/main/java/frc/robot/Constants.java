@@ -38,13 +38,13 @@ public final class Constants {
         
 
     public static final class SolenoidConstants {
-        // Ball Shifters on Gearbox
+        // Ball Shifters on Gearbox    
         public static final int SHIFTER_PORT_A = 0;
         public static final int SHIFTER_PORT_B = 1;
 
         // Intake Pistons
-        public static final int INTAKE_PORT_A = 2;
-        public static final int INTAKE_PORT_B = 3;
+        public static final int INTAKE_PORT_A = 3;
+        public static final int INTAKE_PORT_B = 2;
 
         // Lift Pistons
         public static final int LIFT_PORT_A = 5;
