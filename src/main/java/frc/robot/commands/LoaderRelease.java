@@ -9,19 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
 
-public class Shoot extends CommandBase {
-  
+public class LoaderRelease extends CommandBase {
   /**
-   * Creates a new Shoot command.
+   * Creates a new LoaderRelease.
    */
-
-   Shooter shooter;
-  public Shoot() {
-    shooter = RobotContainer.shooter;
+  public LoaderRelease() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -32,7 +26,6 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shootMaxVelocity();
   }
 
   // Called once the command ends or is interrupted.
@@ -43,7 +36,7 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(RobotContainer.driveController.getAButtonReleased()) {
+    if(RobotContainer.operatorController.getYButtonPressed()) {
       return true;
     }
     return false;

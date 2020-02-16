@@ -27,6 +27,8 @@ import frc.robot.commands.IntakeStop;
 import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
+import frc.robot.commands.LoaderLoad;
+import frc.robot.commands.LoaderRelease;
 import frc.robot.commands.MoveLevel;
 import frc.robot.autoCommands.AutoDriveStraight;
 import frc.robot.autoCommands.AutoTripleShot;
@@ -35,6 +37,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Leveler;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,6 +62,7 @@ public class RobotContainer {
   public final static Shooter shooter = new Shooter();
   public final static Lift lift = new Lift();
   public final static Leveler leveler = new Leveler();
+  public final static Loader loader = new Loader();
 
   public final static LightStrip led = new LightStrip();
   public final static LimeLight limeLight = new LimeLight();
@@ -104,6 +108,10 @@ public class RobotContainer {
    */
   
   private void configureButtonBindings() {
+    new JoystickButton(operatorController, Button.kX.value).whenPressed(new LoaderLoad());
+
+    new JoystickButton(operatorController, Button.kY.value).whenPressed(new LoaderRelease());
+    
     // GEAR SHIFTING = Right Bumper/Left Bumper
     new JoystickButton(driveController, Button.kBumperLeft.value).whenPressed(new DriveHighTorque());
 
