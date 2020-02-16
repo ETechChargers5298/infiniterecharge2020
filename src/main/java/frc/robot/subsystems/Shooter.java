@@ -34,6 +34,9 @@ public class Shooter extends SubsystemBase {
   //Holds Encoder to Measure the Angle of the Angler
   private CANEncoder anglerEncoder;
 
+  //
+  private CANSparkMax loaderMotor;
+
   // Holds LimeLight Which Is Used For Aiming
   private LimeLight lime;
 
@@ -56,6 +59,8 @@ public class Shooter extends SubsystemBase {
     // Obtains Angler Encoder from SparkMax
     anglerEncoder = shooterMotor.getEncoder();
 
+    loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
+
     // Constructs a Limelight to Aim
     lime = RobotContainer.limeLight;
   }
@@ -63,6 +68,11 @@ public class Shooter extends SubsystemBase {
   // Shoots at Max Power
   public void shootMaxVelocity() {
     shooterMotor.set(ShooterConstants.SHOOTER_MAX_SPEED);
+  }
+
+  // Does the Loader
+  public void load() {
+    loaderMotor.set(1);
   }
 
   // Stops Shooting

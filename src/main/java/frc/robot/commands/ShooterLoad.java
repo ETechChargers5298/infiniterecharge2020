@@ -7,7 +7,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterLoad extends CommandBase {
@@ -28,7 +30,7 @@ public class ShooterLoad extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shootMaxVelocity();
+    shooter.load();
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +41,9 @@ public class ShooterLoad extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
+      return false;
+    }
     return true;
   }
 }
