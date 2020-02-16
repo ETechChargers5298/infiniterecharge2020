@@ -118,7 +118,7 @@ public class RobotContainer {
     //SHOOTER LOAD = RIGHT TRIGGER (See Robot.java)
     //new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new ShooterLoad(shooter));
     //SHOOTER SPIN = RIGHT BUMPER
-    new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new ShooterSpin(shooter));
+    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterSpin(shooter));
 
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));

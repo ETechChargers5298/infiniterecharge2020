@@ -49,6 +49,9 @@ public class Intake extends SubsystemBase {
 
     // Inverts Motor if Needed
     intakeMotor.setInverted(IntakeConstants.INTAKE_MOTOR_INVERSION);
+  
+    this.retractIntake();
+  
   }
   
   // Pushes Intake Down to Start Collecting Balls

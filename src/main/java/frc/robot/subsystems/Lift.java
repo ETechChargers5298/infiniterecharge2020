@@ -27,6 +27,8 @@ public class Lift extends SubsystemBase {
     // Constructs a Solenoid Object for Lifter
     lifterSolenoid = new DoubleSolenoid(SolenoidConstants.LIFT_PORT_A,
     SolenoidConstants.LIFT_PORT_B);
+
+    robotPull();
   }
 
   // Elevator Goes Up to Reach for Generator Switch Bar

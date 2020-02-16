@@ -165,6 +165,9 @@ public class DriveTrain extends SubsystemBase {
     diffOdometry = new DifferentialDriveOdometry(getAngle());
 
     //diffDrive.setDeadband(JoystickConstants.DEADBAND);
+
+
+    this.highSpeed();
   }
 
 
