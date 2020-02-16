@@ -41,9 +41,9 @@ public class ShooterLoad extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
-      return false;
+    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) <= 0.5) {
+      return true;
     }
-    return true;
+    return false;
   }
 }

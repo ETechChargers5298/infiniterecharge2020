@@ -72,7 +72,7 @@ public class Shooter extends SubsystemBase {
 
   // Does the Loader
   public void load() {
-    loaderMotor.set(1);
+    loaderMotor.set(-1);
   }
 
   // Stops Shooting
