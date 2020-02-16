@@ -47,8 +47,8 @@ public final class Constants {
         public static final int INTAKE_PORT_B = 3;
 
         // Lift Pistons
-        public static final int LIFT_PORT_A = 4;
-        public static final int LIFT_PORT_B = 5;
+        public static final int LIFT_PORT_A = 5;
+        public static final int LIFT_PORT_B = 4;
 
         //Angler Piston?
         public static final int ANGLER_PORT_A = 6;
