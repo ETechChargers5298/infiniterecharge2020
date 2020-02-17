@@ -63,6 +63,8 @@ public final class Constants {
         public static final double ANGLE_RIGHT = 90.0;
         public static final double ANGLE_BACKWARDS = 179.9;
         public static final double ANGLE_LEFT = -90.0;
+        public static final double ANGLE_MIDDLE_APPROACH = -22.5;
+        public static final double ANGLE_SIDE_APPROACH = 22.5;
 
         // Holds wheel inversion boolean (One should be true and the other one should be false)
         public static final boolean LEFT_INVERSION = true;
@@ -182,6 +184,7 @@ public final class Constants {
 
         // Max Speed of the Motors
         public static final double SHOOTER_MAX_SPEED = 1.0;
+        public static final double LOAD_SPEED = -1.0;
 
         // Inversion of the Angler Motor
         public static final boolean ANGLER_MOTOR_INVERSION = false;

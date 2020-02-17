@@ -166,8 +166,8 @@ public class DriveTrain extends SubsystemBase {
 
     //diffDrive.setDeadband(JoystickConstants.DEADBAND);
 
-
-    this.highSpeed();
+    this.highSpeed();   //start robot in high-speed mode
+    this.reset();       //set direction of robot to 0 and encoders restart to 0
   }
 
 

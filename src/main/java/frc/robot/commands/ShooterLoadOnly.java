@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterLoad extends CommandBase {
+public class ShooterLoadOnly extends CommandBase {
   
   Shooter shooter;
   
-  public ShooterLoad(Shooter shooter) {
+  public ShooterLoadOnly(Shooter shooter) {
 
     this.shooter = shooter;
     addRequirements(this.shooter);        // Use addRequirements() here to declare subsystem dependencies.
@@ -41,9 +41,9 @@ public class ShooterLoad extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) <= 0.5) {
-      return true;
-    }
+    // if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) <= 0.5) {
+    //   return true;
+    // }
     return false;
   }
 }

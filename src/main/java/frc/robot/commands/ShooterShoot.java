@@ -7,24 +7,22 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeSpit extends CommandBase {
+public class ShooterShoot extends CommandBase {
+  
   /**
-   * Creates a new ReleaseBall.
+   * Creates a new Shoot command.
    */
 
-  // Holds the Intake Subsystem
-  private Intake intake;
+   Shooter shooter;
+  public ShooterShoot(Shooter shooter) {
 
-  public IntakeSpit(Intake intake) {
-    // Passes the Intake Subsystem into Field
-    this.intake = intake;
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.intake);
+    this.shooter = shooter;
+    addRequirements(this.shooter);  // Use addRequirements() here to declare subsystem dependencies.
+  
   }
 
   // Called when the command is initially scheduled.
@@ -35,23 +33,24 @@ public class IntakeSpit extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Drops Balls that are being Loaded
-    intake.spitBall();
+    shooter.shootMaxVelocity();
+    shooter.load();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
+    shooter.stopShooting();
+    shooter.stopLoading();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Runs Only Once
-    // if(RobotContainer.operatorController.getAButtonReleased()) {
-    //   return true;
-    // }
-    return false;
+      // Runs Only Once
+      // if(RobotContainer.operatorController.getBumperReleased(GenericHID.Hand.kRight)) {
+      //   return true;
+      // }
+      return false;
   }
 }

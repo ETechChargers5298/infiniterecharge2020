@@ -9,16 +9,30 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.utils.TriggerButton;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
+import frc.robot.Constants.JoystickConstants;
+
 import frc.robot.utils.LightStrip;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveGearShift; //could be deleted
 import frc.robot.commands.DriveHighTorque;
+import frc.robot.commands.DriveReset;
 import frc.robot.commands.DriveHighSpeed;
-import frc.robot.commands.ShooterSpin;
-import frc.robot.commands.ShooterLoad;
+import frc.robot.commands.ShooterShoot;
+import frc.robot.commands.ShooterLoadOnly;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.IntakeEat;
@@ -31,6 +45,7 @@ import frc.robot.commands.LiftReach;
 import frc.robot.commands.MoveLevel;
 import frc.robot.commands.ShooterAngle;
 import frc.robot.commands.AutoDriveStraight;
+import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commandGroups.AutoDriveOnly;
 import frc.robot.commandGroups.AutoTripleShot;
 import frc.robot.subsystems.DriveTrain;
@@ -39,13 +54,7 @@ import frc.robot.subsystems.Leveler;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.JoystickConstants;
+
  
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -101,9 +110,16 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
 
-    // DRIVE HIGH SPEED = Right Bumper
+    // DRIVE HIGH SPEED & HIGH TORQUE = Right Bumper/ Right Trigger
     new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveHighSpeed(driveTrain));
-    //DRIVE HIGH TORQUE = Right Trigger (See Robot.java)
+    new TriggerButton(driveController, Hand.kRight).whileActiveOnce(new DriveHighTorque(driveTrain));
+
+    // DRIVE TURN-TO-ANGLE = POVs
+    new POVButton(driveController, 0).whileHeld(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_FORWARD));
+    new POVButton(driveController, 90).whileHeld(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_RIGHT));
+    new POVButton(driveController, 180).whileHeld(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_BACKWARDS));
+    new POVButton(driveController, 270).whileHeld(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_LEFT));
+    new JoystickButton(driveController, Button.kY.value).whenPressed(new DriveReset(driveTrain));
 
     // INTAKE EAT & SPIT = B/A buttons
     new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeEat(intake), true);
@@ -113,16 +129,21 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kX.value).whenPressed(new IntakeChomp(intake));
     new JoystickButton(operatorController, Button.kY.value).whenPressed(new IntakeRetract(intake));
 
-    //SHOOTER ANGLER AUTO = POV Buttons (See Robot.java)
+    // SHOOTER ANGLER = POVs
+    // new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(shooter, Constants.ShooterConstants.TRENCH_ANGLE));
+    // new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(shooter, Constants.ShooterConstants.WALL_ANGLE));
 
-    //SHOOTER LOAD = RIGHT TRIGGER (See Robot.java)
-    //new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new ShooterLoad(shooter));
+    //SHOOTER LOAD = RIGHT TRIGGER
+    new TriggerButton(operatorController, Hand.kRight).whileActiveOnce(new DriveHighTorque(driveTrain));
+
     //SHOOTER SPIN = RIGHT BUMPER
-    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterSpin(shooter));
+    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterShoot(shooter));
 
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
-    // LIFT CLIMB = Left Trigger (See Robot.java)
+
+    // LIFT CLIMB = Left Trigger
+    new TriggerButton(operatorController, Hand.kLeft).whileActiveOnce(new LiftClimb(lift));
 
 
   }
@@ -132,19 +153,19 @@ public class RobotContainer {
 
     //DRIVE WITH JOYSTICKS
     driveTrain.setDefaultCommand(new DriveArcade(
-      () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
-      () -> driveController.getX(GenericHID.Hand.kLeft)));
+      () -> (-1.0 * driveController.getY(Hand.kLeft)), 
+      () -> driveController.getX(Hand.kLeft)));
     
-    //SHOOTER ANGLER MANUAL = Left-Axis
+    //SHOOTER ANGLER MANUAL = Left Y-Axis
     shooter.setDefaultCommand(new ShooterAngle(
       shooter,
-      () -> operatorController.getY(GenericHID.Hand.kLeft)
+      () -> operatorController.getY(Hand.kLeft)
     ));
 
     // LEVEL = Right stick x-axis
     leveler.setDefaultCommand(new MoveLevel(
       leveler,
-      () -> operatorController.getX(GenericHID.Hand.kRight)
+      () -> operatorController.getX(Hand.kRight)
     ));
 
   }

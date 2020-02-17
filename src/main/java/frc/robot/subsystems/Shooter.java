@@ -70,15 +70,22 @@ public class Shooter extends SubsystemBase {
     shooterMotor.set(ShooterConstants.SHOOTER_MAX_SPEED);
   }
 
-  // Does the Loader
-  public void load() {
-    loaderMotor.set(-1);
-  }
-
   // Stops Shooting
   public void stopShooting() {
-    shooterMotor.stopMotor();
+    shooterMotor.set(0.0);
   }
+  
+  // Does the Loader
+  public void load() {
+    loaderMotor.set(ShooterConstants.LOAD_SPEED);
+  }
+
+  //Stops the loader
+  public void stopLoading(){
+    loaderMotor.set(0.0);
+  }
+
+
 
   // Change angle of Angler Motor Manually
   /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */

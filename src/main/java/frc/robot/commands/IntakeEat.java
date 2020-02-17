@@ -49,9 +49,9 @@ public class IntakeEat extends CommandBase {
   @Override
   public boolean isFinished() {
     // Runs Only Once
-    if(RobotContainer.operatorController.getBButtonReleased()) {
-      return true;
-    }
+    // if(RobotContainer.operatorController.getBButtonReleased()) {
+    //   return true;
+    // }
     return false;
   }
 }
