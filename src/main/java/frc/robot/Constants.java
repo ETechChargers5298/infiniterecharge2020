@@ -187,7 +187,7 @@ public final class Constants {
         public static final double LOAD_SPEED = -1.0;
 
         // Inversion of the Angler Motor
-        public static final boolean ANGLER_MOTOR_INVERSION = false;
+        public static final boolean ANGLER_MOTOR_INVERSION = true;
 
         // Max Speed of the Angler Motor
         public static final double ANGLER_MAX_SPEED = 1.0;
