@@ -106,7 +106,7 @@ public class RobotContainer {
     // DRIVE HIGH SPEED = Right Bumper
     new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveHighSpeed(driveTrain));
     //DRIVE HIGH TORQUE = Right Trigger (See Robot.java)
-    new TriggerButton(driveController, GenericHID.Hand.kRight).whenPressed(new DriveHighTorque(driveTrain));
+    new TriggerButton(driveController, Hand.kRight).whenPressed(new DriveHighTorque(driveTrain));
 
     // INTAKE EAT & SPIT = B/A buttons
     new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeEat(intake), true);
@@ -118,16 +118,16 @@ public class RobotContainer {
 
     //SHOOTER ANGLER AUTO = POV Buttons (See Robot.java)
 
-    //SHOOTER LOAD = RIGHT TRIGGER (See Robot.java)
-    new TriggerButton(operatorController, GenericHID.Hand.kRight).whenHeld(new ShooterLoadOnly(shooter), true);
-    //new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new ShooterLoad(shooter));
-    //SHOOTER SPIN = RIGHT BUMPER
-    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterShoot(shooter));
+    //SHOOTER LOAD & SHOOT = RIGHT TRIGGER (See Robot.java)
+    new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
+    //SHOOTER LOAD ONLY = RIGHT BUMPER
+    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter), true);
 
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
     // LIFT CLIMB = Left Trigger (See Robot.java)
-    new TriggerButton(operatorController, GenericHID.Hand.kLeft).whenPressed(new LiftClimb(lift));
+    new TriggerButton(operatorController, Hand.kLeft).whenPressed(new LiftClimb(lift));
+    new Trigger(isActive)
 
   }
 
@@ -136,19 +136,19 @@ public class RobotContainer {
 
     //DRIVE WITH JOYSTICKS
     driveTrain.setDefaultCommand(new DriveArcade(
-      () -> (-1.0 * driveController.getY(GenericHID.Hand.kLeft)), 
-      () -> driveController.getX(GenericHID.Hand.kLeft)));
+      () -> (-1.0 * driveController.getY(Hand.kLeft)), 
+      () -> driveController.getX(Hand.kLeft)));
     
-    //SHOOTER ANGLER MANUAL = Left-Axis
+    //SHOOTER ANGLER MANUAL = Left Y-Axis
     shooter.setDefaultCommand(new ShooterAngle(
       shooter,
-      () -> operatorController.getY(GenericHID.Hand.kLeft)
+      () -> operatorController.getY(Hand.kLeft)
     ));
 
-    // LEVEL = Right stick x-axis
+    // LEVEL = Right X-axis
     leveler.setDefaultCommand(new MoveLevel(
       leveler,
-      () -> operatorController.getX(GenericHID.Hand.kRight)
+      () -> operatorController.getX(Hand.kRight)
     ));
 
   }
