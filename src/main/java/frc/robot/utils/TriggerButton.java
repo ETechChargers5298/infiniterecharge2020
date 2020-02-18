@@ -8,6 +8,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
@@ -28,6 +29,8 @@ public class TriggerButton extends Button {
 
 	@Override
 	public boolean get() {
+		SmartDashboard.putString("TriggerButton?"," Triggered" + controller.toString() + hand.toString());
 		return controller.getTriggerAxis(hand) >= 0.5;
+
 	}
 }
