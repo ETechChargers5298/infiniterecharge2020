@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -43,6 +44,10 @@ public class Shooter extends SubsystemBase {
   // Holds LimeLight Which Is Used For Aiming
   private LimeLight lime;
 
+  private DigitalInput limitHighAngle;
+
+  private DigitalInput limitLowAngle;
+
   public Shooter() {
     // Constructs Motor for Shooting
     shooterMotor = new CANSparkMax(SparkConstants.MOTOR_SHOOTER, MotorType.kBrushless);
@@ -62,10 +67,16 @@ public class Shooter extends SubsystemBase {
     // Obtains Angler Encoder from SparkMax
     anglerEncoder = anglerMotor.getEncoder(EncoderType.kQuadrature, 8192);
 
+    zeroAngleRaw();
+
     loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
 
     // Constructs a Limelight to Aim
     lime = RobotContainer.limeLight;
+
+    limitHighAngle = new DigitalInput(0);
+
+    limitLowAngle = new DigitalInput(1);
   }
 
   // Shoots at Max Power
@@ -99,20 +110,36 @@ public class Shooter extends SubsystemBase {
   public void autoAngle(double shotAngle) {
   }
 
-  
-
-
   // Prints Data Relating to Shooter
   public void printData() {
     // Prints LimeLight Values for Shooter
-    lime.printData();
-    
+    lime.printData(); 
+  }
+
+  public int getAngleRaw() {
+    return (int)(anglerEncoder.getPosition() * 1000);
+  }
+
+  public boolean getHighLimit() {
+    return limitHighAngle.get();
+  }
+
+  public boolean getLowLimit() {
+    return limitLowAngle.get();
+  }
+
+  public void zeroAngleRaw() {
+    anglerEncoder.setPosition(0);
   }
 
   /* SHOOTER METHODS */
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Angler Encoder Data", anglerEncoder.getPosition());
+    SmartDashboard.putNumber("Angler Encoder Data", getAngleRaw());
+
+    if(!getHighLimit()) {
+      zeroAngleRaw();
+    }
   }
 }

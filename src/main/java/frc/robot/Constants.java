@@ -193,10 +193,13 @@ public final class Constants {
         public static final double ANGLER_MAX_SPEED = 1.0;
 
         //Angles for the Shooter
-        public static final double TRENCH_ANGLE = 45.0;
-        public static final double SIDE_START_ANGLE = 55.0;
-        public static final double SIDE_MIDDLE_ANGLE = 52.0;
-        public static final double WALL_ANGLE = 68.0;
+        public static final int TRENCH_ANGLE = 1200; // 45
+        public static final int SIDE_START_ANGLE = 1000; // 55
+        public static final int SIDE_MIDDLE_ANGLE = 750; // 52
+        public static final int WALL_ANGLE = 100; // 68
+        
+        public static final int EXTREME_LOW = 2000;
+        public static final int EXTREME_HIGH = 0;
 
 
     }

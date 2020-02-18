@@ -9,6 +9,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -18,6 +20,7 @@ import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveHighTorque;
 import frc.robot.commands.DriveHighSpeed;
 import frc.robot.commands.ShooterLoadOnly;
+import frc.robot.commands.ShooterResetAngleRaw;
 import frc.robot.commands.ShooterShoot;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
@@ -29,6 +32,7 @@ import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
 import frc.robot.commands.MoveLevel;
 import frc.robot.commands.ShooterAngle;
+import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commands.AutoDriveStraight;
 import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commandGroups.AutoDriveOnly;
@@ -44,6 +48,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.JoystickConstants;
@@ -122,8 +127,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kY.value).whenPressed(new IntakeRetract(intake));
 
     //SHOOTER ANGLER AUTO = POV Buttons
-    new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(shooter, Constants.ShooterConstants.WALL_ANGLE));
-    new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(shooter, Constants.ShooterConstants.TRENCH_ANGLE));
+    new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(Constants.ShooterConstants.WALL_ANGLE));
+    new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(Constants.ShooterConstants.TRENCH_ANGLE));
+    new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(Constants.ShooterConstants.SIDE_START_ANGLE));
 
     //SHOOTER LOAD & SHOOT = RIGHT TRIGGER
     new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
@@ -135,6 +141,8 @@ public class RobotContainer {
     // LIFT CLIMB = Left Trigger
     new TriggerButton(operatorController, Hand.kLeft).whenPressed(new LiftClimb(lift));
 
+    // Special Trigger Button
+    //new Trigger(() -> shooter.getHighLimit()).whenActive(new ShooterResetAngleRaw(shooter));
   }
 
 
