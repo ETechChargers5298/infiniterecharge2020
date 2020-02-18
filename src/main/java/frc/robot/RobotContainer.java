@@ -44,6 +44,7 @@ import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -128,6 +129,11 @@ public class RobotContainer {
     // LIFT CLIMB = Left Trigger (See Robot.java)
     new TriggerButton(operatorController, Hand.kLeft).whenPressed(new LiftClimb(lift));
     new Trigger(isActive)
+
+    new POVButton(driveController, 0).whenPressed(new DriveTurnToAngle(0));
+    new POVButton(driveController, 180).whenPressed(new DriveTurnToAngle(180));
+    new POVButton(driveController, 90).whenPressed(new DriveTurnToAngle(22.5));
+    new POVButton(driveController, 270).whenPressed(new DriveTurnToAngle(-22.5));
 
   }
 
