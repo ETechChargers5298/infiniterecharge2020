@@ -26,19 +26,19 @@ public class Shooter extends SubsystemBase {
    */
 
   // Holds Motor That Rotates To Launch Ball
-  private CANSparkMax shooterMotor;
+  private final CANSparkMax shooterMotor;
 
   // Holds Encoder to Measure Velocity of Launcher
-  private CANEncoder shooterEncoder;
+  //private final CANEncoder shooterEncoder;
 
-  //Holds Motor to Angle the Shooter
-  private CANSparkMax anglerMotor;
+  // Holds Motor to Angle the Shooter
+  private final CANSparkMax anglerMotor;
 
-  //Holds Encoder to Measure the Angle of the Angler
-  private CANEncoder anglerEncoder;
+  // Holds Encoder to Measure the Angle of the Angler
+  private final CANEncoder anglerEncoder;
 
   //
-  private CANSparkMax loaderMotor;
+  private final CANSparkMax loaderMotor;
 
   // Holds LimeLight Which Is Used For Aiming
   private LimeLight lime;
@@ -67,7 +67,7 @@ public class Shooter extends SubsystemBase {
     // Constructs a Limelight to Aim
     lime = RobotContainer.limeLight;
   }
-  
+
   // Shoots at Max Power
   public void shootMaxVelocity() {
     shooterMotor.set(ShooterConstants.SHOOTER_MAX_SPEED);
@@ -77,18 +77,16 @@ public class Shooter extends SubsystemBase {
   public void stopShooting() {
     shooterMotor.set(0.0);
   }
-  
+
   // Does the Loader
   public void load() {
     loaderMotor.set(ShooterConstants.LOAD_SPEED);
   }
 
-  //Stops the loader
-  public void stopLoading(){
+  // Stops the loader
+  public void stopLoading() {
     loaderMotor.set(0.0);
   }
-
-
 
   // Change angle of Angler Motor Manually
   /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */
