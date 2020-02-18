@@ -7,10 +7,13 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
@@ -48,7 +51,7 @@ public class Shooter extends SubsystemBase {
     shooterMotor.setInverted(ShooterConstants.SHOOTER_MOTOR_INVERSION);
 
     // Obtains Encoder from SparkMax
-    shooterEncoder = shooterMotor.getEncoder();
+    //shooterEncoder = shooterMotor.getEncoder();
 
     // Constructs Motor for Shooting
     anglerMotor = new CANSparkMax(SparkConstants.MOTOR_ANGLER, MotorType.kBrushed);
@@ -57,7 +60,7 @@ public class Shooter extends SubsystemBase {
     anglerMotor.setInverted(ShooterConstants.ANGLER_MOTOR_INVERSION);
 
     // Obtains Angler Encoder from SparkMax
-    anglerEncoder = shooterMotor.getEncoder();
+    anglerEncoder = anglerMotor.getEncoder(EncoderType.kQuadrature, 8192);
 
     loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
 
@@ -96,8 +99,6 @@ public class Shooter extends SubsystemBase {
   // Change angle of Angler Motor with a PID Loop and Encoder
   /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */
   public void autoAngle(double shotAngle) {
-    
-    
   }
 
   
@@ -107,11 +108,13 @@ public class Shooter extends SubsystemBase {
   public void printData() {
     // Prints LimeLight Values for Shooter
     lime.printData();
+    
   }
 
   /* SHOOTER METHODS */
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Angler Encoder Data", anglerEncoder.getPosition());
   }
 }
