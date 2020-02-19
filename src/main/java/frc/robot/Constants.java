@@ -58,6 +58,8 @@ public final class Constants {
 
     public static final class DriveConstants {
 
+        public static final double RAW_PER_INCH = 1075;
+
         //Angles for the robot to face based on the NavX
         public static final double ANGLE_FORWARD = 0.0;
         public static final double ANGLE_RIGHT = 90.0;

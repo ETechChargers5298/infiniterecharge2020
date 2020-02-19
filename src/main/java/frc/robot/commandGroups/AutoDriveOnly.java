@@ -30,8 +30,8 @@ public class AutoDriveOnly extends SequentialCommandGroup {
     //addCommands(new DriveHighSpeed());
     //addCommands(new LiftClimb(RobotContainer.lift));
 
-    addCommands(new AutoDriveStraight(driveTrain, 0.5, 2));
-    addCommands(new IntakeChomp(RobotContainer.intake));
+    addCommands(new AutoDriveStraight(driveTrain, 0.5, 48.0));
+   // addCommands(new IntakeChomp(RobotContainer.intake));
     
   }
 

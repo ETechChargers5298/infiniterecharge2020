@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.utils.LightStrip;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveHighTorque;
+import frc.robot.commands.DriveInchesReset;
 import frc.robot.commands.DriveHighSpeed;
 import frc.robot.commands.ShooterLoadOnly;
 import frc.robot.commands.ShooterResetAngleRaw;
@@ -51,6 +52,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickConstants;
  
 /**
@@ -76,7 +78,7 @@ public class RobotContainer {
   public final static XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
 
   //Sendable Chooser
-  public SendableChooser<CommandGroupBase> autoChooser;
+  //public SendableChooser<CommandGroupBase> autoChooser;
   public static Command chosenAutoCommand;
 
 
@@ -90,9 +92,14 @@ public class RobotContainer {
 
     configureAxes();
 
-    autoChooser = new SendableChooser<CommandGroupBase>();
-    autoChooser.addOption("Only Drive Straight", new AutoDriveOnly());
-    autoChooser.addOption("Only Shoot", new AutoTripleShot());
+
+    // autoChooser = new SendableChooser<CommandGroupBase>();
+    // autoChooser.addOption("Only Drive Straight", new AutoDriveOnly());
+    // autoChooser.addOption("Only Shoot", new AutoTripleShot());
+    //chosenAutoCommand = autoChooser.getSelected();
+
+    //chosenAutoCommand = new AutoDriveOnly();
+   // SmartDashboard.putData("Autonomous", autoChooser);
 
     // Reset Sensors
     driveTrain.reset();
@@ -140,7 +147,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
     // LIFT CLIMB = Left Trigger
     new TriggerButton(operatorController, Hand.kLeft).whenPressed(new LiftClimb(lift));
-
+    
+    // RESET ENCODER TO 0 = Drive Y
+    new JoystickButton(driveController,Button.kY.value).whenPressed(new DriveInchesReset(driveTrain));
     // Special Trigger Button
     //new Trigger(() -> shooter.getHighLimit()).whenActive(new ShooterResetAngleRaw(shooter));
   }
@@ -174,6 +183,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Whichever command is assigned to chosenAutoCommand will run in autonomous
-    return chosenAutoCommand;
+   // return chosenAutoCommand;
+   return new AutoDriveOnly();
   }
 }

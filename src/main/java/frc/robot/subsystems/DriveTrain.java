@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.SolenoidConstants;
@@ -237,13 +238,19 @@ public class DriveTrain extends SubsystemBase {
 
   // Get Right Encoder Values -JG
   public double getEncoderRightValue() {
-    return encoderRight.getPosition();
+    return -encoderRight.getPosition() * 1000;
   }
 
   // Get Left Encoder Values -JG
   public double getEncoderLeftValue() {
-    return encoderLeft.getPosition();
+    return encoderLeft.getPosition() * 1000;
   }
+
+  public double getInches() {
+    return getEncoderRightValue() / Constants.DriveConstants.RAW_PER_INCH;
+
+  }
+
 
 
   // Gear Shifts to High Torque
@@ -314,8 +321,12 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Encoder Velocity", encoderRight.getVelocity());
 
     // Gives Position From Encoders
-    SmartDashboard.putNumber("Left Encoder Position", -1 * encoderLeft.getPosition() / 33 * 2 * Math.PI * 3.5);
-    SmartDashboard.putNumber("Right Encoder Position", encoderRight.getPosition() / 33 * 2 * Math.PI * 3.5);
+    SmartDashboard.putNumber("Drive Right Encoder", getEncoderRightValue());
+    SmartDashboard.putNumber("Drive Encoder in Inches", getInches());
+
+    // SmartDashboard.putNumber("Left Encoder Position", -1 * encoderLeft.getPosition() / 33 * 2 * Math.PI * 3.5);
+    // SmartDashboard.putNumber("Right Encoder Position", encoderRight.getPosition() / 33 * 2 * Math.PI * 3.5);
+    
   }
 
   // Resets Sensors
@@ -326,6 +337,10 @@ public class DriveTrain extends SubsystemBase {
 
     // Resets NavX
     navX.zeroYaw();
+  }
+
+  public void resetZeroInches() {
+    encoderRight.setPosition(0);
   }
 
   @Override
