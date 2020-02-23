@@ -123,9 +123,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kY.value).whenPressed(new IntakeRetract(intake));
 
     //SHOOTER ANGLER AUTO = POV Buttons
-    new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(Constants.ShooterConstants.WALL_ANGLE));
-    new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(Constants.ShooterConstants.TRENCH_ANGLE));
-    new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(Constants.ShooterConstants.SIDE_START_ANGLE));
+    new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.WALL_ANGLE));
+    new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.TRENCH_ANGLE));
+    new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.SIDE_START_ANGLE));
 
     //SHOOTER LOAD & SHOOT = RIGHT TRIGGER
     new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
