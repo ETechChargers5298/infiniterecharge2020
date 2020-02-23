@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -17,11 +16,13 @@ public class ShooterShoot extends CommandBase {
    * Creates a new Shoot command.
    */
 
-   Shooter shooter;
+  private Shooter shooter;
+  
   public ShooterShoot(Shooter shooter) {
-
     this.shooter = shooter;
-    addRequirements(this.shooter);  // Use addRequirements() here to declare subsystem dependencies.
+
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.shooter);
   
   }
 
@@ -47,10 +48,6 @@ public class ShooterShoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      // Runs Only Once
-      // if(RobotContainer.operatorController.getBumperReleased(GenericHID.Hand.kRight)) {
-      //   return true;
-      // }
       return false;
   }
 }

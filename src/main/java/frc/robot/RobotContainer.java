@@ -9,35 +9,29 @@
 
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.utils.LightStrip;
 import frc.robot.commands.DriveArcade;
-import frc.robot.commands.DriveHighTorque;
-import frc.robot.commands.DriveInchesReset;
-import frc.robot.commands.DriveHighSpeed;
+import frc.robot.commands.DriveShiftTorque;
+import frc.robot.commands.DriveMetersReset;
+import frc.robot.commands.DriveShiftSpeed;
 import frc.robot.commands.ShooterLoadOnly;
-import frc.robot.commands.ShooterResetAngleRaw;
 import frc.robot.commands.ShooterShoot;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.IntakeEat;
 import frc.robot.commands.IntakeSpit;
 import frc.robot.commands.IntakeRetract;
-import frc.robot.commands.Level;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
-import frc.robot.commands.MoveLevel;
+import frc.robot.commands.LevelMove;
 import frc.robot.commands.ShooterAngle;
 import frc.robot.commands.AutoShooterAngle;
-import frc.robot.commands.AutoDriveStraight;
-import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commandGroups.AutoDriveOnly;
-import frc.robot.commandGroups.AutoTripleShot;
+import frc.robot.subsystems.OldDriveTrain;
+import frc.robot.subsystems.Angler;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Leveler;
@@ -46,14 +40,11 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.LightStripConstants;
  
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -69,8 +60,9 @@ public class RobotContainer {
   public final static Shooter shooter = new Shooter();
   public final static Lift lift = new Lift();
   public final static Leveler leveler = new Leveler();
+  public final static Angler angler = new Angler();
 
-  public final static LightStrip led = new LightStrip();
+  public final static LightStrip led = new LightStrip(LightStripConstants.PWM_PORT, LightStripConstants.NUM_PIXELS);
   public final static LimeLight limeLight = new LimeLight();
 
   // Holds the Driver Controller Object
@@ -100,9 +92,6 @@ public class RobotContainer {
 
     //chosenAutoCommand = new AutoDriveOnly();
    // SmartDashboard.putData("Autonomous", autoChooser);
-
-    // Reset Sensors
-    driveTrain.reset();
   }
 
   /**
@@ -115,15 +104,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // DRIVE HIGH SPEED = Right Bumper
-    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveHighSpeed(driveTrain));
+    new JoystickButton(driveController, Button.kBumperRight.value).whenPressed(new DriveShiftSpeed(driveTrain));
     //DRIVE HIGH TORQUE = Right Trigger
-    new TriggerButton(driveController, Hand.kRight).whenPressed(new DriveHighTorque(driveTrain));
+    new TriggerButton(driveController, Hand.kRight).whenPressed(new DriveShiftTorque(driveTrain));
 
     //DRIVE TURN-TO-ANGLE = POV
-    new POVButton(driveController, 0).whenPressed(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_FORWARD));
-    new POVButton(driveController, 180).whenPressed(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_BACKWARDS));
-    new POVButton(driveController, 90).whenPressed(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_SIDE_APPROACH));
-    new POVButton(driveController, 270).whenPressed(new DriveTurnToAngle(Constants.DriveConstants.ANGLE_MIDDLE_APPROACH));
+    new POVButton(driveController, 0).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_FORWARD));
+    new POVButton(driveController, 180).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_BACKWARDS));
+    new POVButton(driveController, 90).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_SIDE_APPROACH));
+    new POVButton(driveController, 270).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_MIDDLE_APPROACH));
 
     // INTAKE EAT & SPIT = B/A buttons
     new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeEat(intake), true);
@@ -149,9 +138,7 @@ public class RobotContainer {
     new TriggerButton(operatorController, Hand.kLeft).whenPressed(new LiftClimb(lift));
     
     // RESET ENCODER TO 0 = Drive Y
-    new JoystickButton(driveController,Button.kY.value).whenPressed(new DriveInchesReset(driveTrain));
-    // Special Trigger Button
-    //new Trigger(() -> shooter.getHighLimit()).whenActive(new ShooterResetAngleRaw(shooter));
+    //new JoystickButton(driveController,Button.kY.value).whenPressed(new DriveInchesReset(driveTrain));
   }
 
 
@@ -159,17 +146,18 @@ public class RobotContainer {
 
     //DRIVE WITH JOYSTICKS
     driveTrain.setDefaultCommand(new DriveArcade(
+      driveTrain,
       () -> (-1.0 * driveController.getY(Hand.kLeft)), 
       () -> driveController.getX(Hand.kLeft)));
     
     //SHOOTER ANGLER MANUAL = Left Y-Axis
     shooter.setDefaultCommand(new ShooterAngle(
-      shooter,
+      angler,
       () -> operatorController.getY(Hand.kLeft)
     ));
 
     // LEVEL = Right X-axis
-    leveler.setDefaultCommand(new MoveLevel(
+    leveler.setDefaultCommand(new LevelMove(
       leveler,
       () -> operatorController.getX(Hand.kRight)
     ));
@@ -184,6 +172,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Whichever command is assigned to chosenAutoCommand will run in autonomous
    // return chosenAutoCommand;
-   return new AutoDriveOnly();
+   return new AutoDriveOnly(driveTrain);
   }
 }

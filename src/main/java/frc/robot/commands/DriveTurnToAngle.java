@@ -9,8 +9,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.TurnToAngleConstants;
+import frc.robot.subsystems.OldDriveTrain;
+import frc.robot.subsystems.DriveTrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,24 +20,27 @@ public class DriveTurnToAngle extends PIDCommand {
   /**
    * Creates a new TurnToAngle.
    */
-
-
-  public DriveTurnToAngle(double targetAngleDegrees) {
+  
+  private DriveTrain driveTrain;
+  
+  public DriveTurnToAngle(DriveTrain driveTrain, double targetAngleDegrees) {
     super(
         // The Controller that the Command will Use
         new PIDController(TurnToAngleConstants.TURN_P, TurnToAngleConstants.TURN_I, TurnToAngleConstants.TURN_D),
         // This should Return the Measurement
-        RobotContainer.driveTrain::getHeading,
+        driveTrain::getAngle,
         // This Should Return the Setpoint
         targetAngleDegrees,
         // This uses the Output
-        output -> RobotContainer.driveTrain.driveSpeed(output, output),
+        output -> driveTrain.powerDrive(output, output),
         // Subsystems that are Used
-        RobotContainer.driveTrain
+        driveTrain
         );
     
+    this.driveTrain = driveTrain;
+
     // These are Required Subsystems
-    addRequirements(RobotContainer.driveTrain);
+    addRequirements(this.driveTrain);
 
     // Instead of Min and Max, PID Knows its can Turn Infinitely
     getController().enableContinuousInput(-180, 180);

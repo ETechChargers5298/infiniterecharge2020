@@ -7,16 +7,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.DriveHighTorque;
-import frc.robot.commands.DriveTurnToAngle;
-import frc.robot.commands.LiftClimb;
-import frc.robot.commands.ShooterLoadOnly;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -103,22 +96,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
-    //  // DRIVE HIGH-GEAR SHIFT = RT
-    // if(RobotContainer.driveController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThresh) {
-    //   new DriveHighTorque(RobotContainer.driveTrain).schedule();
-    // }
-
-
-    // //SHOOTER LOAD = RT
-    // if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kRight) > triggerThresh) {
-    //   new ShooterLoad(RobotContainer.shooter).schedule();
-    // }
-
-    // //LIFT CLIMB = LT
-    // if(RobotContainer.operatorController.getTriggerAxis(GenericHID.Hand.kLeft) > triggerThresh) {
-    //   new LiftClimb(RobotContainer.lift).schedule();
-    // }
   
   }
 

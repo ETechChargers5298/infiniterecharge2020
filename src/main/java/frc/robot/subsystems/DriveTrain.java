@@ -12,342 +12,359 @@ import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.SolenoidConstants;
 import frc.robot.Constants.SparkConstants;
-import frc.robot.utils.LimeLight;
 
+/**
+   * Creates a new DriveTrainAdvanced.
+   */
 public class DriveTrain extends SubsystemBase {
   
-  /* DRIVETRAIN FIELDS */
 
-  // Hold the Left Motors
+  /*DRIVETRAIN ADVANCED FIELDS */
+
+  // Holds the Left Motors
   private CANSparkMax motorLeftA;
   private CANSparkMax motorLeftB;
 
-  // Hold the Right Motors
+  // Holds the Right Motors
   private CANSparkMax motorRightA;
   private CANSparkMax motorRightB;
 
-  // Holds Grouped Motors
+  // Groups Motors Together
   private SpeedControllerGroup motorLeft;
   private SpeedControllerGroup motorRight;
 
-  // PID Controllers for Drive
-  private PIDController leftController;
-  private PIDController rightController;
+  // Holds the Encoders
+  private CANEncoder encoderLeft;
+  private CANEncoder encoderRight;
 
-  // Implements FeedForward Constraint DriveTrain
-  private SimpleMotorFeedforward feedForward;
+  // PID Controllers Use Encoders to Fix Velocity
+  private PIDController speedLeftController;
+  private PIDController speedRightController;
+  private PIDController torqueLeftController;
+  private PIDController torqueRightController;
+
+  // Holds Navigational Board (IMU)
+  private AHRS navX;
+
+  // Uses Motors for Differential Drive
+  private DifferentialDrive diffDrive;
+
+  // Uses Motors for Differential Kinematics
+  private DifferentialDriveKinematics diffKinematics;
+
+  // Uses Gyro and Encoders to Create Pose2D of Robot
+  private DifferentialDriveOdometry diffOdometry;
+
+  // Holds the Current Position of the Robot on Field
+  Pose2d location;
+
+  // Implements FeedForward to Account for Friction
+  private SimpleMotorFeedforward speedFeedforward;
+  private SimpleMotorFeedforward torqueFeedforward;
 
   // Slew Rate Limiters for Joystick
   private SlewRateLimiter speedLimiter;
   private SlewRateLimiter rotLimiter;
 
-  // Uses Motors for Differential Kinematics
-  private DifferentialDrive diffDrive;
-
-  // Uses Motors for Differential Drive 
-  private DifferentialDriveKinematics diffKinematics;
-
-  // Creates a Odometry 
-  private DifferentialDriveOdometry diffOdometry;
-
-  // Holds Two Encoders
-  private CANEncoder encoderLeft;
-  private CANEncoder encoderRight;
-
-  // Holds GearShifting Solenoids
+  // Holds Gear Shifting Solenoids
   private DoubleSolenoid gearShift;
-
-  // Holds Data For Current DriveMode
+  
+  // Holds Data for Current DriveMode
   private boolean isHighTorque;
-
-  // Holds Navigation Board (IMU)
-  private AHRS navX;
-
-  private LimeLight lime = new LimeLight();
+  
+  /* DRIVETRAIN ADVANCED CONSTRUCTOR */
 
   public DriveTrain() {
     // Constructs Left Motors
     motorLeftA = new CANSparkMax(SparkConstants.MOTOR_LEFT_A, MotorType.kBrushless);
     motorLeftB = new CANSparkMax(SparkConstants.MOTOR_LEFT_B, MotorType.kBrushless);
-    
+
     // Constructs Right Motors
     motorRightA = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
     motorRightB = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
-
-    motorLeftA.setInverted(DriveConstants.LEFT_INVERSION); // Test Difference On Impact
-    motorLeftB.setInverted(DriveConstants.LEFT_INVERSION);
-    motorRightA.setInverted(DriveConstants.RIGHT_INVERSION);
-    motorRightB.setInverted(DriveConstants.RIGHT_INVERSION);
 
     // Groups Motors Together for Differential Drive
     motorLeft = new SpeedControllerGroup(motorLeftA, motorLeftB);
     motorRight = new SpeedControllerGroup(motorRightA, motorRightB);
 
     // Inverts Motors
-    //motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
-    //motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
+    motorLeft.setInverted(DriveConstants.LEFT_INVERSION);
+    motorRight.setInverted(DriveConstants.RIGHT_INVERSION);
 
-    // PID Controllers are Initialized
-    leftController = new PIDController(DriveConstants.LEFT_SPEED_DRIVE_P, DriveConstants.LEFT_SPEED_DRIVE_I, DriveConstants.LEFT_SPEED_DRIVE_D);
-    rightController = new PIDController(DriveConstants.RIGHT_SPEED_DRIVE_P, DriveConstants.RIGHT_SPEED_DRIVE_I, DriveConstants.RIGHT_SPEED_DRIVE_D);
+    // Obtains Encoders from Speed Controllers
+    encoderLeft = motorLeftA.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
+    encoderRight = motorRightA.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
 
-    // Implements Feedforward to Account for Physics
-    feedForward = new SimpleMotorFeedforward(DriveConstants.DRIVE_TORQUE_STATIC_GAIN, DriveConstants.DRIVE_TORQUE_VELOCITY_GAIN);
+    // Resets Encoders
+    resetLeftPosition();
+    resetRightPosition();
 
-    // Slew Rate Limitation
-    speedLimiter = new SlewRateLimiter(JoystickConstants.SPEED_LIMIT);
-    rotLimiter = new SlewRateLimiter(JoystickConstants.ROT_LIMIT);
+    // Inverts Encoders if Needed
+    encoderLeft.setInverted(DriveConstants.LEFT_ENCODER_INVERSION);
+    encoderRight.setInverted(DriveConstants.RIGHT_ENCODER_INVERSION);
 
-    // Creates a Differential Kinematics for Chassis
-    diffKinematics = new DifferentialDriveKinematics(DriveConstants.DRIVE_TRACK_WIDTH);
-
-    // Creates a Differential Drive Object Using Grouped Motors
-    diffDrive = new DifferentialDrive(motorLeft, motorRight);
-
-    // Creates Encoder objects
-    //encoderLeft = motorLeft0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
-    //encoderRight = motorRight0.getAlternateEncoder(AlternateEncoderType.kQuadrature, DriveConstants.DRIVE_ENCODER_RESOLUTION);
-    encoderLeft = motorLeftA.getEncoder();
-    encoderRight = motorRightA.getEncoder();
-
-    encoderLeft.setPosition(0);
-    encoderRight.setPosition(0);
-
-    // Sets Factors for Position to Measure in Meters
-    encoderLeft.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
-    encoderRight.setPositionConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
-
-    // Sets Factors for Velocity to Measure in Meters per Second
-    encoderLeft.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
-    encoderRight.setVelocityConversionFactor(Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE));
-
-    // Creates DoubleSolonoid to Shift Gears in GearBox
-    gearShift = new DoubleSolenoid(SolenoidConstants.SHIFTER_PORT_A, SolenoidConstants.SHIFTER_PORT_B);
-
-    // Begins with High Torque Everytime
-    // Updates DriveMode
-    isHighTorque = true;
+    // Initializes PID Controllers for Each Wheel
+    speedLeftController = new PIDController(DriveConstants.LEFT_SPEED_DRIVE_P, DriveConstants.LEFT_SPEED_DRIVE_I, DriveConstants.LEFT_SPEED_DRIVE_D);
+    speedRightController = new PIDController(DriveConstants.RIGHT_SPEED_DRIVE_P, DriveConstants.RIGHT_SPEED_DRIVE_I, DriveConstants.RIGHT_SPEED_DRIVE_D);
+    torqueLeftController = new PIDController(DriveConstants.LEFT_TORQUE_DRIVE_P, DriveConstants.LEFT_TORQUE_DRIVE_I, DriveConstants.LEFT_TORQUE_DRIVE_D);
+    torqueRightController = new PIDController(DriveConstants.RIGHT_TORQUE_DRIVE_P, DriveConstants.RIGHT_TORQUE_DRIVE_I, DriveConstants.RIGHT_TORQUE_DRIVE_D);
 
     // Connects to NavX
     try {
       navX = new AHRS(SPI.Port.kMXP);
     } catch(RuntimeException ex) {
-      // Error Printed to Driver Station
+      // Error Printed if Rio Cannot Connect
       DriverStation.reportError("Error instantiating NavX MXP: " + ex.getMessage(), true);
     }
 
-    // Resets Yaw to Start Heading of Robot During GamePlay
-    navX.reset();
+    // Reset Yaw so Starting Heading is Zero Degrees
+    resetGyro();
 
-    // Sets Up Odometry
-    diffOdometry = new DifferentialDriveOdometry(getAngle());
+    // Constructs a Differential Drive to Move Robot
+    diffDrive = new DifferentialDrive(motorLeft, motorRight);
 
-    //diffDrive.setDeadband(JoystickConstants.DEADBAND);
+    // Constructs Kinematics to Switch Between Wheel Speed and Chassis Speed
+    diffKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(DriveConstants.DRIVE_TRACK_WIDTH));
 
-    this.highSpeed();   //start robot in high-speed mode
-    this.reset();       //set direction of robot to 0 and encoders restart to 0
+    // Constructs Odometry for Tracking Robot on Field
+    diffOdometry = new DifferentialDriveOdometry(getHeading());
+
+    // Location of the Robot on Field
+    location = new Pose2d();
+
+    // Constructs feedForward to Account for Friction
+    speedFeedforward = new SimpleMotorFeedforward(DriveConstants.DRIVE_SPEED_STATIC_GAIN, DriveConstants.DRIVE_SPEED_VELOCITY_GAIN);
+    torqueFeedforward = new SimpleMotorFeedforward(DriveConstants.DRIVE_TORQUE_STATIC_GAIN, DriveConstants.DRIVE_TORQUE_VELOCITY_GAIN);
+
+    // Creates Slew Rate Limitations Which Limits Rate of Change
+    speedLimiter = new SlewRateLimiter(JoystickConstants.SPEED_LIMIT);
+    rotLimiter = new SlewRateLimiter(JoystickConstants.ROT_LIMIT);
+
+    // Sets Deadband for Driving
+    diffDrive.setDeadband(JoystickConstants.DEADBAND);
+
+    // Constructs a DoubleSolenoid to Shift Gears in GearBox
+    gearShift = new DoubleSolenoid(SolenoidConstants.SHIFTER_PORT_A, SolenoidConstants.SHIFTER_PORT_B);
+  
+    // Begins with High Torque at Start of Match
+    highTorque();
   }
 
-
-  /* DRIVETRAIN METHODS */
-
-  // For Arcade Drive Joysticks
-  public void arcadeDrive(double linVelocity, double rotVelocity) {
-    // Changes Speed to Match Sensitivity 
-    //linVelocity = Math.copySign(Math.pow(linVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), linVelocity);
-    //rotVelocity = Math.copySign(Math.pow(rotVelocity, JoystickConstants.JOYSTICK_SENSITIVITY), rotVelocity);
-    // linVelocity = Math.copySign(linVelocity, linVelocity);
-    // rotVelocity = Math.copySign(rotVelocty, rotVelocity);
-
-    // Drives Robot
-    diffDrive.arcadeDrive(linVelocity, rotVelocity);
-  }
-
-  // Test Arcade Drive
-  public void arcadeDrive2(double linVelocity, double rotVelocity) {
-    // Updates Speeds with Limiters
-    var linearVelocity = -speedLimiter.calculate(linVelocity * DriveConstants.MAX_VELOCITY);
-    var rotationVelocity = -rotLimiter.calculate(rotVelocity * DriveConstants.MAX_TURN_VELOCITY);
-
-    // Uses Velocity to Drive
-    drive(linearVelocity, rotationVelocity);
-  }
-
-  // Moves Motors Based on Speed Given
-  public void driveSpeed(double leftSpeed, double rightSpeed) {
-    // Clamps Values to Acceptable Range
+  // Drive Robot Using Power Range from -1 to 1
+  public void powerDrive(double leftSpeed, double rightSpeed) {
+    // Clips Speed to Stay Within Range
     leftSpeed = MathUtil.clamp(leftSpeed, -1 * DriveConstants.MAX_SPEED, DriveConstants.MAX_SPEED);
     rightSpeed = MathUtil.clamp(rightSpeed, -1 * DriveConstants.MAX_SPEED, DriveConstants.MAX_SPEED);
 
-    // Sets Speed Which is Impacted by Speed Multiplier
-    motorLeft.set(leftSpeed);
-    motorRight.set(rightSpeed);
+    // Moves Robot
+    diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
-  // Sets Speed of Motors Using a PID Controller
+  // Drive Robot With FeedForward Implementation
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-    // Feed Forward Calculated for Each Wheel
-    double leftFeedForward = feedForward.calculate(speeds.leftMetersPerSecond);
-    double rightFeedForward = feedForward.calculate(speeds.rightMetersPerSecond);
-    
-    // Calculates Output Needed using PID Controller
-    double leftOutput = leftController.calculate(encoderLeft.getVelocity(), speeds.leftMetersPerSecond);
-    double rightOutput = rightController.calculate(encoderRight.getVelocity(), speeds.rightMetersPerSecond);
+    // Sets Up Variables to Hold Feedforward Calculations
+    double leftFeedforward;
+    double rightFeedforward;
 
-    // Sets Voltage to Run Code
-    motorLeft.setVoltage(leftOutput + leftFeedForward);
-    motorRight.setVoltage(rightOutput + rightFeedForward);
+    // Sets Up Variables to Get Current Speed and Compares to Desired Speed
+    double leftOutput;
+    double rightOutput;
+
+    // Calculate Feedforward and Output Depending on Gear Mode
+    if(isHighTorque) {
+      // Feedforward Calculations
+      leftFeedforward = torqueFeedforward.calculate(speeds.leftMetersPerSecond);
+      rightFeedforward = torqueFeedforward.calculate(speeds.rightMetersPerSecond);
+
+      // Output Calculations
+      leftOutput = torqueLeftController.calculate(getLeftVelocity(), speeds.leftMetersPerSecond);
+      rightOutput = torqueRightController.calculate(getRightVelocity(), speeds.rightMetersPerSecond);
+    }
+    else {
+      // Feedforward Calculations
+      leftFeedforward = speedFeedforward.calculate(speeds.leftMetersPerSecond);
+      rightFeedforward = speedFeedforward.calculate(speeds.rightMetersPerSecond);
+
+      // Output Calculations
+      leftOutput = speedLeftController.calculate(getLeftVelocity(), speeds.leftMetersPerSecond);
+      rightOutput = speedRightController.calculate(getRightVelocity(), speeds.rightMetersPerSecond);
+    }
+
+    // Applys Calculated Voltage to Motors
+    motorLeft.setVoltage(leftOutput + leftFeedforward);
+    motorRight.setVoltage(rightOutput + rightFeedforward);
   }
 
-  // Drive Using PID and Real World Velocity
-  public void drive(double linVelocity, double rotVelocity) {
-    // Converts Real World Velocity to Wheel Power
-    var wheelSpeeds = diffKinematics.toWheelSpeeds(new ChassisSpeeds(linVelocity, 0, rotVelocity));
+  // Drives Using Linear Velocity and Angular Velocity
+  public void velocityDrive(double linear, double rotational) {
+    // Converts Velocity to Wheel Speed
+    var wheelSpeeds = diffKinematics.toWheelSpeeds(new ChassisSpeeds(linear, 0, rotational));
 
-    // Sets Motor Speeds to Move
+    // Sets Converted Wheel Speeds
     setSpeeds(wheelSpeeds);
   }
 
-  // Stops All Motors
+  // Drives Using Arcade Drive from Differencial Drive Class
+  public void arcadeDrive(double lin, double rot) {
+    diffDrive.arcadeDrive(lin, rot);
+  }
+
+  // Moves Motor By Stating the Voltage of the Motors
+  public void voltDrive(double leftVolts, double rightVolts) {
+    motorLeft.set(leftVolts / 12);
+    motorRight.set(rightVolts / 12);
+  }
+
+  // Drives Using Custom Drive Accounting for Friction
+  public void advancedDrive(double linVelocity, double rotVelocity) {
+    // Applies Slew Rate Limiters to Inputs
+    linVelocity = -speedLimiter.calculate(linVelocity) * DriveConstants.MAX_VELOCITY;
+    rotVelocity = -rotLimiter.calculate(rotVelocity) * DriveConstants.MAX_TURN_VELOCITY;
+
+    // Uses Updated Velocities to Drive
+    velocityDrive(linVelocity, rotVelocity);
+  }
+
+  // Stops DriveTrain Motors
   public void stopDrive() {
     diffDrive.stopMotor();
   }
 
-  // Get Right Encoder Values -JG
-  public double getEncoderRightValue() {
-    return -encoderRight.getPosition() * 1000;
+  // Get the Left Wheel Position of the Robot in Meters
+  public double getLeftPosition() {
+    return encoderLeft.getPosition() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE);
   }
 
-  // Get Left Encoder Values -JG
-  public double getEncoderLeftValue() {
-    return encoderLeft.getPosition() * 1000;
+  // Get the Right Wheel Position of the Robot in Meters
+  public double getRightPosition() {
+    return encoderRight.getPosition() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE);
   }
 
-  public double getInches() {
-    return getEncoderRightValue() / Constants.DriveConstants.RAW_PER_INCH;
-
+  // Resets the Left Wheel Position
+  public void resetLeftPosition() {
+    encoderLeft.setPosition(0);
   }
 
+  // Resets the Right Wheel Position
+  public void resetRightPosition() {
+    encoderRight.setPosition(0);
+  }
 
+  // Get the Left Wheel Velocity of the Robot in Meters per Second
+  public double getLeftVelocity() {
+    return encoderLeft.getVelocity() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE) / 60;
+  }
+
+  // Get the Right Wheel Velocity of the Robot in Meters per Second
+  public double getRightVelocity() {
+    return encoderRight.getVelocity() * Units.inchesToMeters(DriveConstants.DRIVE_WHEEL_CIRCUMFERENCE) / 60;
+  }
+
+  public DifferentialDriveWheelSpeeds getSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+  }
+
+  /* DRIVETRAIN ADVANCED METHODS */
+
+  // Resets Gyro Angle
+  public void resetGyro() {
+    navX.reset();
+  }
+
+  // Returns Angle as Rotation2d
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-navX.getAngle());
+  }
+
+  // Returns Angle as Double
+  public double getAngle() {
+    return Math.IEEEremainder(navX.getAngle(), 360);
+  }
+
+  // Returns the PID Controller for Left Wheels (High Speed)
+  public PIDController getLeftSpeedPID() {
+    return speedLeftController;
+  }
+
+  // Returns the PID Controller for Right Wheels (High Speed)
+  public PIDController getRightSpeedPID() {
+    return speedRightController;
+  }
+
+  // Returns the PID Controller for Left Wheels (High Torque)
+  public PIDController getLeftTorquePID() {
+    return torqueLeftController;
+  }
+
+  // Returns the PID Controller for Right Wheel (High Torque)
+  public PIDController getRightTorquePID() {
+    return torqueRightController;
+  }
+
+  // Gets the Feedforward for High Torque
+  public SimpleMotorFeedforward getTorqueFeedforward() {
+    return torqueFeedforward;
+  }
+
+  // Gets the Feedforward for High Speed
+  public SimpleMotorFeedforward getSpeedFeedforward() {
+    return speedFeedforward;
+  }
+
+  // Gets Kinematics of DriveTrain
+  public DifferentialDriveKinematics getKinematics() {
+    return diffKinematics;
+  }
+
+  // Gets Position of Robot
+  public Pose2d getPose() {
+    return location;
+  }
 
   // Gear Shifts to High Torque
   public void highTorque() {
     // Sends Air to High Torque Pipes
     gearShift.set(Value.kForward);
+    
+    // Updates DriveMode
+    isHighTorque = true;
   }
 
   // Gear Shifts to High Speed
   public void highSpeed() {
     // Sends Air to High Speed Pipes
     gearShift.set(Value.kReverse);
-  }
 
-  // Toggles Between Gear Shifts
-  public void toggleDriveMode() {
-    // Alternates Between True and False
-    isHighTorque = !isHighTorque;
-
-    // Calls Method to Match isHighTorque
-    if(isHighTorque) {
-      highTorque();
-    }
-    else {
-      highSpeed();
-    }
-  }
-
-  // Returns the Angle The Robot is Facing
-  public double getHeading() {
-    return Math.IEEEremainder(navX.getAngle(), 360);
-  }
-
-  // Returns 2D Angle
-  public Rotation2d getAngle() {
-    // Returns Angle as a Rotational 2D
-    return Rotation2d.fromDegrees(-navX.getAngle());
-  }
-
-  // Returns the Degrees per Second of Rotation
-  public double getTurnRate() {
-    return navX.getRate();
-  }
-
-  // Updates Odometry
-  public void updateOdometry() {
-    diffOdometry.update(getAngle(), encoderLeft.getPosition(), encoderRight.getPosition());
-  }
-
-  // Prints Out Data Relating to DriveTrain
-  public void printData() {
-    // The Velocities of Our Wheels
-    SmartDashboard.putData("DriveSpeed", diffDrive);
-
-    // The Current DriveMode We are At
-    if(isHighTorque) {
-      SmartDashboard.putString("DriveMode", "Torque");
-    }
-    else {
-      SmartDashboard.putString("DriveMode", "Speed");
-    }
-    
-    // The Gyro from NavX
-    SmartDashboard.putData("Gyro", navX);
-
-    // Gives Velocity From Encoders
-    SmartDashboard.putNumber("Left Encoder Velocity", encoderLeft.getVelocity());
-    SmartDashboard.putNumber("Right Encoder Velocity", encoderRight.getVelocity());
-
-    // Gives Position From Encoders
-    SmartDashboard.putNumber("Drive Right Encoder", getEncoderRightValue());
-    SmartDashboard.putNumber("Drive Encoder in Inches", getInches());
-
-    // SmartDashboard.putNumber("Left Encoder Position", -1 * encoderLeft.getPosition() / 33 * 2 * Math.PI * 3.5);
-    // SmartDashboard.putNumber("Right Encoder Position", encoderRight.getPosition() / 33 * 2 * Math.PI * 3.5);
-    
-  }
-
-  // Resets Sensors
-  public void reset() {
-    // Resets Encoders
-    encoderLeft.setPosition(0);
-    encoderRight.setPosition(0);
-
-    // Resets NavX
-    navX.zeroYaw();
-  }
-
-  public void resetZeroInches() {
-    encoderRight.setPosition(0);
+    // Updates DriveMode
+    isHighTorque = false;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    printData();
-    lime.updateLimeLight();
-    lime.printData();
+    // Updates Odometry Constantly
+    location = diffOdometry.update(getHeading(), getLeftPosition(), getRightPosition());
   }
 }

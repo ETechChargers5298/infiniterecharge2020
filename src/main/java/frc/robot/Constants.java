@@ -16,17 +16,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-    
     public static final class SparkConstants {
         // Holds CAN IDs from SparkMax Speed Controllers
         public static final int MOTOR_LEFT_A = 1;
         public static final int MOTOR_LEFT_B = 2;
-        public static final int MOTOR_LEFT_C = 5;
+        public static final int MOTOR_LEFT_C = 5; // Not Used
         
         public static final int MOTOR_RIGHT_A = 3;
         public static final int MOTOR_RIGHT_B = 4;
-        public static final int MOTOR_RIGHT_C = 6;
+        public static final int MOTOR_RIGHT_C = 6; // Not Used
         
         // For Mechanisms Other than DriveTrain
         public static final int MOTOR_INTAKE = 7;
@@ -35,7 +33,6 @@ public final class Constants {
         public static final int MOTOR_SHOOTER = 10;
         public static final int MOTOR_LEVELER = 11;
     }
-        
 
     public static final class SolenoidConstants {
         // Ball Shifters on Gearbox    
@@ -49,15 +46,11 @@ public final class Constants {
         // Lift Pistons
         public static final int LIFT_PORT_A = 5;
         public static final int LIFT_PORT_B = 4;
-
-        //Angler Piston?
-        public static final int ANGLER_PORT_A = 6;
-        public static final int ANGLER_PORT_B = 7;
     }
-
 
     public static final class DriveConstants {
 
+        // Encoder Raw to Inch Multiplier
         public static final double RAW_PER_INCH = 1075;
 
         //Angles for the robot to face based on the NavX
@@ -68,7 +61,7 @@ public final class Constants {
         public static final double ANGLE_MIDDLE_APPROACH = -22.5;
         public static final double ANGLE_SIDE_APPROACH = 22.5;
 
-        // Holds wheel inversion boolean (One should be true and the other one should be false)
+        // Holds Wheel Inversion
         public static final boolean LEFT_INVERSION = true;
         public static final boolean RIGHT_INVERSION = true;
 
@@ -112,6 +105,10 @@ public final class Constants {
         public static final double DRIVE_SPEED_VELOCITY_GAIN = 3;
         public static final double DRIVE_TORQUE_STATIC_GAIN = 1;
         public static final double DRIVE_TORQUE_VELOCITY_GAIN = 3;
+
+        // Inverts Encoders
+		public static final boolean LEFT_ENCODER_INVERSION = true;
+		public static final boolean RIGHT_ENCODER_INVERSION = false;
     }
 
   
@@ -140,7 +137,6 @@ public final class Constants {
     }
     
     public static final class LevelConstants {
-
         // Max Velocity of Motor
         public static final double MAX_VELOCITY = 0.25;
 
@@ -179,7 +175,6 @@ public final class Constants {
         public static final double INTAKE_MAX_SPEED = 1;
     }
 
-
     public static final class ShooterConstants {
         // Inversion of the Motor
         public static final boolean SHOOTER_MOTOR_INVERSION = false;
@@ -202,8 +197,6 @@ public final class Constants {
         
         public static final int EXTREME_LOW = 2000;
         public static final int EXTREME_HIGH = 0;
-
-
     }
 
     public static final class LightStripConstants {
@@ -213,5 +206,4 @@ public final class Constants {
         // Number of LEDs on Strip
         public static final int NUM_PIXELS = 60;
     }
-
 }

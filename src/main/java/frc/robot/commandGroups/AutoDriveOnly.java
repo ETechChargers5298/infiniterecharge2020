@@ -10,8 +10,10 @@ package frc.robot.commandGroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.OldDriveTrain;
 import frc.robot.commands.AutoDriveStraight;
-import frc.robot.commands.DriveHighSpeed;
+import frc.robot.commands.DriveShiftSpeed;
+import frc.robot.commands.DriveMetersReset;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.LiftClimb;
 
@@ -22,16 +24,21 @@ public class AutoDriveOnly extends SequentialCommandGroup {
 
   private final DriveTrain driveTrain; // Holds DriveTrain Subsystem
 
-  public AutoDriveOnly() {
+  public AutoDriveOnly(DriveTrain driveTrain) {
 
-    this.driveTrain = RobotContainer.driveTrain;
+    this.driveTrain = driveTrain;
 
     // Add Commands here:
     //addCommands(new DriveHighSpeed());
     //addCommands(new LiftClimb(RobotContainer.lift));
-
-    addCommands(new AutoDriveStraight(driveTrain, 0.5, 48.0));
+    new DriveMetersReset(driveTrain);
+    addCommands(new AutoDriveStraight(driveTrain, 0.5, 48.0),
+    new DriveMetersReset(driveTrain),
+    new AutoDriveStraight(driveTrain, 0.5, -5.0)
+    
+    );
    // addCommands(new IntakeChomp(RobotContainer.intake));
+
     
   }
 

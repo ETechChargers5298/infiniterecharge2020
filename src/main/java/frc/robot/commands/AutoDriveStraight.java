@@ -9,65 +9,57 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.OldDriveTrain;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoDriveStraight extends PIDCommand {
   /**
    * Creates a new AutonomousDriveStraight.
    */
   
-  private DriveTrain drive;
+  private DriveTrain driveTrain;
   private double speed;
   private double inchDistance;
   private double startDistance;
   private double rawDistance;
   private boolean finished;
 
-  public AutoDriveStraight(DriveTrain drive, double speed, double distanceInches) {
+  public AutoDriveStraight(DriveTrain driveTrain, double speed, double distanceMeters) {
     super(
         // The controller that the command will use
-        new PIDController(0.005, 0, 0),
+        new PIDController(0.05, 0, 0),
         // This should return the measurement
-        RobotContainer.driveTrain::getInches,
+        driveTrain::getRightPosition,
         // This should return the setpoint (can also be a constant)
-        distanceInches,
+        distanceMeters,
         // This uses the output
-        output -> RobotContainer.driveTrain.drive(speed, 0.0),
+        output -> driveTrain.powerDrive(MathUtil.clamp(output, -speed, speed), -1 * MathUtil.clamp(output, -speed, speed)),
           // Use the output here
-          RobotContainer.driveTrain);
+          driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(100);
+    getController().setTolerance(1.0);
 
-    this.drive = drive;
-    this.speed = speed;
-    this.inchDistance = distanceInches;
-    //this.rawDistance = distanceInches / 25 * 1000;
+    this.driveTrain = driveTrain;
+    this.speed = -speed;
+    this.inchDistance = distanceMeters;
+    driveTrain.resetRightPosition();
+
+    SmartDashboard.putNumber("Target Meters", distanceMeters);
+
+
+    // These are Required Subsystems
+    addRequirements(RobotContainer.driveTrain);
+
+
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    //startDistance = Timer.getFPGATimestamp();
-
-
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    //drive.arcadeDrive(speed, 0.0);
-  }
-
-  // Called once the command ends or is interrupted.
-  //@Override
-  //public void end(boolean interrupted) {
-
-
-
+ 
 
   // Returns true when the command should end.
   @Override

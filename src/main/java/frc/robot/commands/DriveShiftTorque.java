@@ -9,19 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.RobotContainer;
 
-public class DriveGearShift extends CommandBase {
+public class DriveShiftTorque extends CommandBase {
   /**
-   * Creates a new GearShift.
+   * Creates a new DriveHighTorque.
    */
 
-  // Holds the DriveTrain Subsystem
-  private final DriveTrain driveTrain;
+  private DriveTrain driveTrain;
   
-  public DriveGearShift() {
-    // Passes the DriveTrain Subsystem Into the Field
-    this.driveTrain = RobotContainer.driveTrain;
+  public DriveShiftTorque(DriveTrain driveTrain) {
+    this.driveTrain = driveTrain;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.driveTrain);
@@ -35,8 +32,7 @@ public class DriveGearShift extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Toggles Between High Speed and High Torque
-    driveTrain.toggleDriveMode();
+    driveTrain.highTorque();
   }
 
   // Called once the command ends or is interrupted.
@@ -47,7 +43,6 @@ public class DriveGearShift extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Ends After Executing Once
     return true;
   }
 }

@@ -41,7 +41,6 @@ public class LimeLight {
         hasValidTarget = false;
     }
 
-
     /*LIMELIGHT METHODS*/
     
     // Updates Fields LimeLight Values
@@ -68,6 +67,7 @@ public class LimeLight {
         // Prints Area of Target
         SmartDashboard.putNumber("Area of Target", area);
     }
+
     // Getter for if Target is Obtained
     public boolean hasValidTarget() {
         return hasValidTarget;

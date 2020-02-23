@@ -7,21 +7,26 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import java.util.function.DoubleSupplier;
 
-public class DriveHighTorque extends CommandBase {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Leveler;
+
+public class LevelMove extends CommandBase {
   /**
-   * Creates a new DriveHighTorque.
+   * Creates a new MoveLevel.
    */
 
-  private DriveTrain driveTrain;
-  
-  public DriveHighTorque(DriveTrain driveTrain) {
+   private Leveler leveler;
+   private final DoubleSupplier velocity;
+   
+  public LevelMove(Leveler leveler, DoubleSupplier velocity) {
 
-    this.driveTrain = driveTrain;
-    addRequirements(this.driveTrain);     // Use addRequirements() here to declare subsystem dependencies.
-
+    this.leveler = leveler;
+    this.velocity = velocity;
+    
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.leveler);
   }
 
   // Called when the command is initially scheduled.
@@ -32,17 +37,18 @@ public class DriveHighTorque extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.highTorque();
+    leveler.move(velocity.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    leveler.stopMovement();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

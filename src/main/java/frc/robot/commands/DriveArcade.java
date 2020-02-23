@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.OldDriveTrain;
 import frc.robot.subsystems.DriveTrain;
 
 
@@ -19,15 +19,15 @@ public class DriveArcade extends CommandBase {
    */
   
   // Holds the DriveTrain Subsystem
-  private final DriveTrain driveTrain;
+  private DriveTrain driveTrain;
 
   // Holds the Supplier of the Velocities
   private final DoubleSupplier linVelocity;
   private final DoubleSupplier rotVelocity;
 
-  public DriveArcade(DoubleSupplier linVelocity, DoubleSupplier rotVelocity) {
+  public DriveArcade(DriveTrain driveTrain, DoubleSupplier linVelocity, DoubleSupplier rotVelocity) {
     // Passes the DriveTrain Subsystem Into the Field
-    this.driveTrain = RobotContainer.driveTrain;
+    this.driveTrain = driveTrain;
 
     // Uses Joystick as Our Velocity Supplier
     this.linVelocity = linVelocity;

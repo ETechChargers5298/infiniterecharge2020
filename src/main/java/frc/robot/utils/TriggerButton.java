@@ -29,7 +29,6 @@ public class TriggerButton extends Button {
 
 	@Override
 	public boolean get() {
-		SmartDashboard.putString("TriggerButton?"," Triggered" + controller.toString() + hand.toString() + "/t" + controller.getTriggerAxis(hand));
 		return controller.getTriggerAxis(hand) >= 0.5;
 
 	}

@@ -30,23 +30,13 @@ public class Shooter extends SubsystemBase {
   private final CANSparkMax shooterMotor;
 
   // Holds Encoder to Measure Velocity of Launcher
-  //private final CANEncoder shooterEncoder;
-
-  // Holds Motor to Angle the Shooter
-  private final CANSparkMax anglerMotor;
-
-  // Holds Encoder to Measure the Angle of the Angler
-  private final CANEncoder anglerEncoder;
+  private final CANEncoder shooterEncoder;
 
   //
   private final CANSparkMax loaderMotor;
 
   // Holds LimeLight Which Is Used For Aiming
   private LimeLight lime;
-
-  private DigitalInput limitHighAngle;
-
-  private DigitalInput limitLowAngle;
 
   public Shooter() {
     // Constructs Motor for Shooting
@@ -56,27 +46,12 @@ public class Shooter extends SubsystemBase {
     shooterMotor.setInverted(ShooterConstants.SHOOTER_MOTOR_INVERSION);
 
     // Obtains Encoder from SparkMax
-    //shooterEncoder = shooterMotor.getEncoder();
-
-    // Constructs Motor for Shooting
-    anglerMotor = new CANSparkMax(SparkConstants.MOTOR_ANGLER, MotorType.kBrushed);
-
-    // Inverts Motor if Needed
-    anglerMotor.setInverted(ShooterConstants.ANGLER_MOTOR_INVERSION);
-
-    // Obtains Angler Encoder from SparkMax
-    anglerEncoder = anglerMotor.getEncoder(EncoderType.kQuadrature, 8192);
-
-    zeroAngleRaw();
+    shooterEncoder = shooterMotor.getEncoder();
 
     loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
 
     // Constructs a Limelight to Aim
     lime = RobotContainer.limeLight;
-
-    limitHighAngle = new DigitalInput(0);
-
-    limitLowAngle = new DigitalInput(1);
   }
 
   // Shoots at Max Power
@@ -99,47 +74,15 @@ public class Shooter extends SubsystemBase {
     loaderMotor.set(0.0);
   }
 
-  // Change angle of Angler Motor Manually
-  /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */
-  public void moveAngle(double speed) {
-    anglerMotor.set(speed);
-  }
-
-  // Change angle of Angler Motor with a PID Loop and Encoder
-  /* METHOD NEED LIMIT SWITCHES ADDED TO PREVENT BREAKING!!!! */
-  public void autoAngle(double shotAngle) {
-  }
-
   // Prints Data Relating to Shooter
   public void printData() {
     // Prints LimeLight Values for Shooter
     lime.printData(); 
   }
 
-  public int getAngleRaw() {
-    return (int)(anglerEncoder.getPosition() * 1000);
-  }
-
-  public boolean getHighLimit() {
-    return limitHighAngle.get();
-  }
-
-  public boolean getLowLimit() {
-    return limitLowAngle.get();
-  }
-
-  public void zeroAngleRaw() {
-    anglerEncoder.setPosition(0);
-  }
-
   /* SHOOTER METHODS */
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Angler Encoder Data", getAngleRaw());
-
-    if(!getHighLimit()) {
-      zeroAngleRaw();
-    }
   }
 }

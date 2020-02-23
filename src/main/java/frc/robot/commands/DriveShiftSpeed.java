@@ -8,17 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.DriveTrain;
 
-public class ShooterResetAngleRaw extends CommandBase {
+public class DriveShiftSpeed extends CommandBase {
   /**
-   * Creates a new ShooterResetAngle.
+   * Creates a new DriveHighSpeed.
    */
-  private Shooter shooter;
 
-  public ShooterResetAngleRaw(Shooter shooter) {
+  private DriveTrain driveTrain;
+
+  public DriveShiftSpeed(DriveTrain driveTrain) {
+    this.driveTrain = driveTrain;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
+    addRequirements(this.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +32,7 @@ public class ShooterResetAngleRaw extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.zeroAngleRaw();
+    driveTrain.highSpeed();
   }
 
   // Called once the command ends or is interrupted.

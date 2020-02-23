@@ -28,12 +28,12 @@ public class DriveAimToShoot extends CommandBase {
 
 
  //Constructor
-  public DriveAimToShoot() {
+  public DriveAimToShoot(DriveTrain driveTrain) {
     // Updates LimeLight field
     this.limeLight = RobotContainer.limeLight;
 
     // Updates Subsystem Fields
-    this.driveTrain = RobotContainer.driveTrain;
+    this.driveTrain = driveTrain;
 
     // Commands are Zero due to the First Time Command is Called
     leftSpeed = 0;
@@ -68,7 +68,7 @@ public class DriveAimToShoot extends CommandBase {
     rightSpeed -= steeringAdjust;
 
     // Uses Command to Drive Robot
-    driveTrain.driveSpeed(leftSpeed, rightSpeed);
+    driveTrain.powerDrive(leftSpeed, rightSpeed);
   }
 
   // Called once the command ends or is interrupted.

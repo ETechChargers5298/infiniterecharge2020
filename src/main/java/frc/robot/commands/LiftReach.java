@@ -12,7 +12,7 @@ import frc.robot.subsystems.Lift;
 
 public class LiftReach extends CommandBase {
   /**
-   * Creates a new GrabBall.
+   * Creates a new ReachForBar.
    */
 
   // Holds the Intake Subsystem

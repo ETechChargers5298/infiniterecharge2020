@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class IntakeSpit extends CommandBase {
@@ -48,10 +47,6 @@ public class IntakeSpit extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Runs Only Once
-    // if(RobotContainer.operatorController.getAButtonReleased()) {
-    //   return true;
-    // }
     return false;
   }
 }

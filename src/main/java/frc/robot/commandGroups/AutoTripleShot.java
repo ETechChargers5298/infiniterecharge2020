@@ -10,6 +10,7 @@ package frc.robot.commandGroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.OldDriveTrain;
 import frc.robot.commands.AutoDriveStraight;
 
 public class AutoTripleShot extends SequentialCommandGroup {
@@ -19,9 +20,9 @@ public class AutoTripleShot extends SequentialCommandGroup {
 
   private final DriveTrain driveTrain; // Holds DriveTrain Subsystem
 
-  public AutoTripleShot() {
+  public AutoTripleShot(DriveTrain driveTrain) {
 
-    this.driveTrain = RobotContainer.driveTrain;
+    this.driveTrain = driveTrain;
 
     // Add Commands here:
     addCommands(new AutoDriveStraight(driveTrain, 0.5, 2));

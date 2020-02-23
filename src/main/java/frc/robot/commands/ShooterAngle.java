@@ -10,19 +10,22 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Angler;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterAngle extends CommandBase {
   /**
    * Creates a new ShooterAngle.
    */
-  Shooter shooter;
-  final DoubleSupplier angler;
-  public ShooterAngle(Shooter shooter, DoubleSupplier angle) {
+  
+  private Angler angler;
+  private final DoubleSupplier angleSupplier;
+
+  public ShooterAngle(Angler angler, DoubleSupplier angleSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
-    angler = angle;
-    addRequirements(this.shooter);
+    this.angler = angler;
+    this.angleSupplier = angleSupplier;
+    addRequirements(this.angler);
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +36,7 @@ public class ShooterAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.moveAngle(angler.getAsDouble());
+    angler.moveAngle(angleSupplier.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

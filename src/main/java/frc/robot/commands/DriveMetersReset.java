@@ -9,22 +9,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.OldDriveTrain;
 
-public class DriveReset extends CommandBase {
+public class DriveMetersReset extends CommandBase {
+  public DriveTrain driveTrain;
   /**
-   * Creates a new GearShift.
+   * Creates a new DriveInchesReset.
    */
-
-  // Holds the DriveTrain Subsystem
-  private final DriveTrain driveTrain;
-  
-  public DriveReset(DriveTrain driveTrain) {
-    // Passes the DriveTrain Subsystem Into the Field
+  public DriveMetersReset(DriveTrain driveTrain) {
     this.driveTrain = driveTrain;
-
+  
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -35,8 +30,7 @@ public class DriveReset extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Toggles Between High Speed and High Torque
-    driveTrain.reset();
+    driveTrain.resetRightPosition();
   }
 
   // Called once the command ends or is interrupted.
@@ -47,7 +41,6 @@ public class DriveReset extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Ends After Executing Once
     return true;
   }
 }

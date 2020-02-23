@@ -2,22 +2,20 @@ package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import frc.robot.Constants;
 
 //Creating the class, "LightStrip."
 public class LightStrip {
     
     /* LIGHTSTRIP FIELDS */
-    public static AddressableLED ledStrip;
-    public static AddressableLEDBuffer ledStripBuffer;
-    public static int numPixels = Constants.LightStripConstants.NUM_PIXELS;
+    private AddressableLED ledStrip;
+    private AddressableLEDBuffer ledStripBuffer;
+    private int numPixels;
     
     /* LIGHTSTRIP CONSTRUCTOR */
-    public LightStrip()
+    public LightStrip(int port, int length)
     {
-
-        ledStrip = new AddressableLED(Constants.LightStripConstants.PWM_PORT);
-        ledStripBuffer = new AddressableLEDBuffer(numPixels);
+        ledStrip = new AddressableLED(port);
+        ledStripBuffer = new AddressableLEDBuffer(length);
         
         ledStrip.setLength(numPixels);
         ledStrip.setData(ledStripBuffer);
@@ -54,5 +52,7 @@ public class LightStrip {
         
         ledStrip.setData(ledStripBuffer);
     }
+
+    /* Preset Blinkin Plugins */
     
 }
