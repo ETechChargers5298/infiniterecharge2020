@@ -19,6 +19,7 @@ import frc.robot.commands.DriveMetersReset;
 import frc.robot.commands.DriveShiftSpeed;
 import frc.robot.commands.ShooterLoadOnly;
 import frc.robot.commands.ShooterShoot;
+import frc.robot.experimental.PIDShooter;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.IntakeEat;
@@ -30,6 +31,7 @@ import frc.robot.commands.LevelMove;
 import frc.robot.commands.ShooterAngle;
 import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commandGroups.AutoDriveOnly;
+import frc.robot.commandGroups.ShooterGroupLoadShoot;
 import frc.robot.subsystems.OldDriveTrain;
 import frc.robot.subsystems.Angler;
 import frc.robot.subsystems.DriveTrain;
@@ -136,7 +138,7 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
     // LIFT CLIMB = Left Trigger
     new TriggerButton(operatorController, Hand.kLeft).whenPressed(new LiftClimb(lift));
-    
+
     // RESET ENCODER TO 0 = Drive Y
     //new JoystickButton(driveController,Button.kY.value).whenPressed(new DriveInchesReset(driveTrain));
   }

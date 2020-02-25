@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -233,8 +234,8 @@ public class DriveTrain extends SubsystemBase {
 
   // Moves Motor By Stating the Voltage of the Motors
   public void voltDrive(double leftVolts, double rightVolts) {
-    motorLeft.set(leftVolts / 12);
-    motorRight.set(rightVolts / 12);
+    motorLeft.setVoltage(leftVolts);
+    motorRight.setVoltage(rightVolts);
   }
 
   // Drives Using Custom Drive Accounting for Friction

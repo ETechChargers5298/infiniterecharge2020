@@ -183,6 +183,21 @@ public final class Constants {
         public static final double SHOOTER_MAX_SPEED = 1.0;
         public static final double LOAD_SPEED = -1.0;
 
+        // PID for Shooter
+        public static final double SHOOTER_P = 1;
+        public static final double SHOOTER_I = 0;
+        public static final double SHOOTER_D = 0;
+
+        // Tolerance for Shooter PID
+        public static final double SHOOTER_TOLERANCE_RPM = 20;
+
+        // Desired RPM from Shooter
+        public static final double SHOOTER_TARGET_RPM = 4500;
+
+        // FeedForward Constants
+        public static final double SHOOTER_VOLTS = 0.05;
+        public static final double SHOOTER_VOLTS_SECONDS_PER_ROTATION = 12 / 5000; // 12V / Free Shooter RPM
+
         // Inversion of the Angler Motor
         public static final boolean ANGLER_MOTOR_INVERSION = true;
 

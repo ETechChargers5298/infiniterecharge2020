@@ -69,6 +69,15 @@ public class Shooter extends SubsystemBase {
     loaderMotor.set(ShooterConstants.LOAD_SPEED);
   }
 
+  // Gives Shooter a Voltage to Power it
+  public void setShooterVolts(double volts) {
+    shooterMotor.setVoltage(volts);
+  }
+
+  // Returns the Current Velocity of the Shooter in RPM
+  public double getShooterVelocity() {
+    return shooterEncoder.getVelocity();
+  }
   // Stops the loader
   public void stopLoading() {
     loaderMotor.set(0.0);
