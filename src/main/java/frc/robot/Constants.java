@@ -196,7 +196,7 @@ public final class Constants {
 
         // FeedForward Constants
         public static final double SHOOTER_VOLTS = 0.05;
-        public static final double SHOOTER_VOLTS_SECONDS_PER_ROTATION = 12 / 5676; // 12V / Free Shooter RPM
+        public static final double SHOOTER_VOLTS_SECONDS_PER_ROTATION = 12.0 / 5676; // 12V / Free Shooter RPM
 
         // Inversion of the Angler Motor
         public static final boolean ANGLER_MOTOR_INVERSION = true;

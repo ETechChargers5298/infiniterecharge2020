@@ -56,7 +56,7 @@ public class PIDShooter extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    shooterMotor.setVoltage(output);  // + shooterFeedforward.calculate(setpoint));
+    shooterMotor.setVoltage(output+ shooterFeedforward.calculate(setpoint));
   }
 
   @Override
