@@ -10,7 +10,10 @@ package frc.robot.commandGroups;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.ShootPID;
 import frc.robot.experimental.PIDShooter;
+import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,16 +22,11 @@ public class ShooterGroupLoadShoot extends ParallelCommandGroup {
   /**
    * Creates a new ShooterGroupLoadShoot.
    */
-  public ShooterGroupLoadShoot(PIDShooter shooter) {
+  public ShooterGroupLoadShoot(final Shooter shooter) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     super(
-      new InstantCommand(shooter::enable, shooter),
-      new ConditionalCommand(
-        new InstantCommand(shooter::load, shooter), 
-        new InstantCommand(), 
-        shooter::atSetpoint
-      )
+      new ShootPID(shooter)
     );
   }
 }

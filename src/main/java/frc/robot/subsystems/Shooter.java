@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -83,6 +85,15 @@ public class Shooter extends SubsystemBase {
     loaderMotor.set(0.0);
   }
 
+  // At SetPoint
+  public boolean atSetpoint() {
+    return shooterEncoder.getVelocity() > 
+    ShooterConstants.SHOOTER_TARGET_RPM - ShooterConstants.SHOOTER_TOLERANCE_RPM &&
+    shooterEncoder.getVelocity() < 
+    ShooterConstants.SHOOTER_TARGET_RPM + ShooterConstants.SHOOTER_TOLERANCE_RPM;
+
+  }
+
   // Prints Data Relating to Shooter
   public void printData() {
     // Prints LimeLight Values for Shooter
@@ -93,5 +104,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter Velocity", shooterEncoder.getVelocity());
   }
 }

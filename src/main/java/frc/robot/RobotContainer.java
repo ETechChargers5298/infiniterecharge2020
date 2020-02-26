@@ -19,6 +19,7 @@ import frc.robot.commands.DriveMetersReset;
 import frc.robot.commands.DriveShiftSpeed;
 import frc.robot.commands.ShooterLoadOnly;
 import frc.robot.commands.ShooterShoot;
+import frc.robot.commands.ShooterShootPID;
 import frc.robot.experimental.PIDShooter;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
@@ -27,6 +28,7 @@ import frc.robot.commands.IntakeSpit;
 import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
+import frc.robot.commands.ShootPID;
 import frc.robot.commands.LevelMove;
 import frc.robot.commands.ShooterAngle;
 import frc.robot.commands.AutoShooterAngle;
@@ -42,11 +44,20 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utils.LimeLight;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.LightStripConstants;
+
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
  
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -64,7 +75,7 @@ public class RobotContainer {
   public final static Leveler leveler = new Leveler();
   public final static Angler angler = new Angler();
 
-  public final static LightStrip led = new LightStrip(LightStripConstants.PWM_PORT, LightStripConstants.NUM_PIXELS);
+  //public final static LightStrip led = new LightStrip(LightStripConstants.PWM_PORT, LightStripConstants.NUM_PIXELS);
   public final static LimeLight limeLight = new LimeLight();
 
   // Holds the Driver Controller Object
@@ -130,9 +141,11 @@ public class RobotContainer {
     new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.SIDE_START_ANGLE));
 
     //SHOOTER LOAD & SHOOT = RIGHT TRIGGER
-    new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
+    //new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
     //SHOOTER LOAD ONLY = RIGHT BUMPER
-    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter), true);
+    //new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new InstantCommand(shooter::enable, shooter));
+    
+    new TriggerButton(operatorController, Hand.kRight).whenPressed(new ShootPID(shooter).alongWith(new ConditionalCommand(new InstantCommand(shooter::load, shooter), new InstantCommand(), shooter::atSetpoint)));
 
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
@@ -153,7 +166,7 @@ public class RobotContainer {
       () -> driveController.getX(Hand.kLeft)));
     
     //SHOOTER ANGLER MANUAL = Left Y-Axis
-    shooter.setDefaultCommand(new ShooterAngle(
+    angler.setDefaultCommand(new ShooterAngle(
       angler,
       () -> operatorController.getY(Hand.kLeft)
     ));

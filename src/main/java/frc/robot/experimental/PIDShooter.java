@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SparkConstants;
@@ -25,7 +26,6 @@ public class PIDShooter extends PIDSubsystem {
   private CANSparkMax shooterMotor;
   private CANEncoder shooterEncoder;
   private SimpleMotorFeedforward shooterFeedforward;
-
   private CANSparkMax loaderMotor;
 
   public PIDShooter() {
@@ -47,12 +47,16 @@ public class PIDShooter extends PIDSubsystem {
 
         // Contains the Motor Controlling Loading
         loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
+
+        getController().setSetpoint(ShooterConstants.SHOOTER_TARGET_RPM);
+
+        //getController().setTolerance(ShooterConstants.SHOOTER_TOLERANCE_RPM);
   }
 
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    shooterMotor.setVoltage(output + shooterFeedforward.calculate(setpoint));
+    shooterMotor.setVoltage(output);  // + shooterFeedforward.calculate(setpoint));
   }
 
   @Override
