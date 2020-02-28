@@ -46,7 +46,7 @@ public class DriveArcade extends CommandBase {
   @Override
   public void execute() {
     // Uses Joystick Velocity to Implement Arcade Drive
-    driveTrain.arcadeDrive(linVelocity.getAsDouble(), rotVelocity.getAsDouble());
+    driveTrain.slewArcadeDrive(linVelocity.getAsDouble(), rotVelocity.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

@@ -52,8 +52,11 @@ public class Leveler extends SubsystemBase {
 
   public void move(double velocity) {
     // Moves Motor
-    if(velocity > 0.2) {
+    if(Math.abs(velocity) > 0.2) {
       motor.set(velocity);
+    }
+    else {
+      motor.set(0);
     }
   }
 

@@ -9,10 +9,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.utils.LightStrip;
+import frc.robot.utils.LightStripBlinkin;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.DriveShiftTorque;
 import frc.robot.commands.DriveMetersReset;
@@ -75,6 +77,8 @@ public class RobotContainer {
   public final static Leveler leveler = new Leveler();
   public final static Angler angler = new Angler();
 
+  public final static LightStripBlinkin lightStrip = new LightStripBlinkin(9);
+
   //public final static LightStrip led = new LightStrip(LightStripConstants.PWM_PORT, LightStripConstants.NUM_PIXELS);
   public final static LimeLight limeLight = new LimeLight();
 
@@ -92,12 +96,14 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
+    // Starts Camera
+    CameraServer.getInstance().startAutomaticCapture();
     // Configure the Button Bindings
     configureButtonBindings();
 
     configureAxes();
 
-
+    lightStrip.rainbow();
     // autoChooser = new SendableChooser<CommandGroupBase>();
     // autoChooser.addOption("Only Drive Straight", new AutoDriveOnly());
     // autoChooser.addOption("Only Shoot", new AutoTripleShot());
@@ -140,12 +146,10 @@ public class RobotContainer {
     new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.TRENCH_ANGLE));
     new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.SIDE_START_ANGLE));
 
+    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter), true);
     //SHOOTER LOAD & SHOOT = RIGHT TRIGGER
-    //new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
+    new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
     //SHOOTER LOAD ONLY = RIGHT BUMPER
-    //new JoystickButton(operatorController, Button.kBumperRight.value).whenPressed(new InstantCommand(shooter::enable, shooter));
-    
-    new TriggerButton(operatorController, Hand.kRight).whenPressed(new ShootPID(shooter).alongWith(new ConditionalCommand(new InstantCommand(shooter::load, shooter), new InstantCommand(), shooter::atSetpoint)));
 
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));

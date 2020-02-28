@@ -61,7 +61,7 @@ public final class Constants {
         public static final double ANGLE_MIDDLE_APPROACH = -22.5;
         public static final double ANGLE_SIDE_APPROACH = 22.5;
 
-        // Holds Wheel Inversion
+        // Holds Wheel Inversion4
         public static final boolean LEFT_INVERSION = true;
         public static final boolean RIGHT_INVERSION = true;
 
@@ -78,7 +78,7 @@ public final class Constants {
 
         // Max Velocities
         public static final double MAX_VELOCITY = 3.0; // Meters per Second
-        public static final double MAX_TURN_VELOCITY = 2 * Math.PI; // Radians Per Second
+        public static final double MAX_TURN_VELOCITY = 6 * Math.PI; // Radians Per Second
 
         // PID Constants for Left Wheels on High Speed
         public static final double LEFT_SPEED_DRIVE_P = 1;
@@ -115,14 +115,14 @@ public final class Constants {
 
     public static final class JoystickConstants {
         // Deadbands ignore smaller inputs from joystick for smoother driving
-        public static final double DEADBAND = 0.01;
+        public static final double DEADBAND = 0.1;
 
         // Numbers for the 2 Xbox controllers
         public static final int DRIVECONTROLLER = 0;
         public static final int OPERATORCONTROLLER = 1;
 
-        public static final double SPEED_LIMIT = 3; // (1 / Speed_Limit) Seconds from 0 to 1
-        public static final double ROT_LIMIT = 3; // (1 / Rot_Limit) Seconds from 0 to 1
+        public static final double SPEED_LIMIT = 1; // (1 / Speed_Limit) Seconds from 0 to 1
+        public static final double ROT_LIMIT = 2; // (1 / Rot_Limit) Seconds from 0 to 1
     }
 
     public static final class TurnToAngleConstants {

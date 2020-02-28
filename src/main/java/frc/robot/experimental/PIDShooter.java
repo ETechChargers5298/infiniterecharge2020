@@ -50,7 +50,7 @@ public class PIDShooter extends PIDSubsystem {
 
         getController().setSetpoint(ShooterConstants.SHOOTER_TARGET_RPM);
 
-        //getController().setTolerance(ShooterConstants.SHOOTER_TOLERANCE_RPM);
+        getController().setTolerance(ShooterConstants.SHOOTER_TOLERANCE_RPM);
   }
 
   @Override

@@ -19,6 +19,7 @@ public class ShootPID extends PIDCommand {
   /**
    * Creates a new ShootPID.
    */
+  private Shooter shooter;
   public ShootPID(Shooter shooter) {
     super(
         // The controller that the command will use
@@ -32,8 +33,16 @@ public class ShootPID extends PIDCommand {
         // Subsystems that are used
         shooter
         );
+
+        this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    getController().setTolerance(100);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    shooter.setShooterVolts(0);
   }
 
   // Returns true when the command should end.

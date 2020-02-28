@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -230,6 +231,24 @@ public class DriveTrain extends SubsystemBase {
   // Drives Using Arcade Drive from Differencial Drive Class
   public void arcadeDrive(double lin, double rot) {
     diffDrive.arcadeDrive(lin, rot);
+  }
+
+  // Drives Using Arcade Drive with a Slew Rate Limiter
+  public void slewArcadeDrive(double lin, double rot) {
+
+    // Changes Input to Give a Feel of Controlled Acceleration
+    if(Math.abs(lin) > JoystickConstants.DEADBAND) {
+      lin = -speedLimiter.calculate(lin); //* DriveConstants.MAX_VELOCITY;
+    }
+    else {
+      lin = 0;
+    }
+
+    if(Math.abs(rot) <= JoystickConstants.DEADBAND) {
+      rot = 0;
+    }
+
+    diffDrive.arcadeDrive(lin, rot, true);
   }
 
   // Moves Motor By Stating the Voltage of the Motors

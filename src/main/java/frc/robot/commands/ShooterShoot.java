@@ -34,15 +34,15 @@ public class ShooterShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shootMaxVelocity();
-    shooter.load();
+    shooter.setShooterVolts(11);
+    //shooter.load();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shooter.stopShooting();
-    shooter.stopLoading();
+    //shooter.stopLoading();
   }
 
   // Returns true when the command should end.

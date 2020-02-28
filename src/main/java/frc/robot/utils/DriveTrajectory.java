@@ -31,7 +31,7 @@ public class DriveTrajectory {
             )
         );
     }
-
+    
     // Returns a Autonomous Command Using the Trajectory Given for High Speed Mode
     public RamseteCommand trajectorySpeedCommand(DriveTrain driveTrain, Trajectory trajectory) {
         return new RamseteCommand(
