@@ -26,4 +26,14 @@ public class LightStripBlinkin {
     public void rainbow() {
         controller.setSpeed(-0.99);
     }
+
+    //This color is for when the robot ISN'T level on the generator switch.
+    public void twinklesLava() {
+        controller.setSpeed(-0.49);
+    }
+
+    //This color is for when the robot IS level on the generator switch.
+    public void twinklesOcean() {
+        controller.setSpeed(-0.51);
+    }
 }
