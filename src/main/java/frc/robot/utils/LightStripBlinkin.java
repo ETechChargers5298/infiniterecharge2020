@@ -36,4 +36,34 @@ public class LightStripBlinkin {
     public void twinklesOcean() {
         controller.setSpeed(-0.51);
     }
+
+    //This color is for when the robot is MOVING.
+    public void solidGreen() {
+        controller.setSpeed(-0.77);
+    }
+
+    //This color is for when the robot is STILL.
+    public void solidYellow() {
+        controller.setSpeed(0.69);
+    }
+
+    //This color is for when the robot is UNDER the optimal shooting level.
+    public void sinelonOcean() {
+        controller.setSpeed(-0.75);
+    }
+
+    //This color is for when the robot is OVER the optimal shooting level.
+    public void sinelonLava() {
+        controller.setSpeed(-0.73);
+    }
+
+    //This color is for when the robot is AT the optimal shooting level.
+    public void sinelonForest() {
+        controller.setSpeed(-0.71);
+    }
+
+    //This color is for when the intake is UP.
+    public void solidWhite() {
+        controller.setSpeed(0.93);
+    }
 }
