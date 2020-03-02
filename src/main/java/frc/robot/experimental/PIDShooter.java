@@ -13,50 +13,55 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SparkConstants;
 
 public class PIDShooter extends PIDSubsystem {
   /**
-   * Creates a new Shooter.
+   * Creates a new NewPIDShooter.
    */
 
   private CANSparkMax shooterMotor;
+
   private CANEncoder shooterEncoder;
-  private SimpleMotorFeedforward shooterFeedforward;
+
   private CANSparkMax loaderMotor;
+
+  private SimpleMotorFeedforward feedforward;
 
   public PIDShooter() {
     super(
         // The PIDController used by the subsystem
         new PIDController(ShooterConstants.SHOOTER_P, ShooterConstants.SHOOTER_I, ShooterConstants.SHOOTER_D));
 
-        // Creates a Shooter Motor Object
+        // Creates Shooter Motor Object
         shooterMotor = new CANSparkMax(SparkConstants.MOTOR_SHOOTER, MotorType.kBrushless);
 
-        // Inverts Motor
         shooterMotor.setInverted(ShooterConstants.SHOOTER_MOTOR_INVERSION);
 
-        // Obtains Encoder Connected to the Shooter Motor SparkMax
+        // Obtains the Shooter Motor Encoder
         shooterEncoder = shooterMotor.getEncoder();
 
-        // Includes Feedforward for Shooter
-        shooterFeedforward = new SimpleMotorFeedforward(ShooterConstants.SHOOTER_VOLTS, ShooterConstants.SHOOTER_VOLTS_SECONDS_PER_ROTATION);
-
-        // Contains the Motor Controlling Loading
+        // Creates Loader Motor Object
         loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
 
-        getController().setSetpoint(ShooterConstants.SHOOTER_TARGET_RPM);
+        loaderMotor.setInverted(ShooterConstants.LOADER_MOTOR_INVERSION);
 
+        // Creates a Feedforward for the Shooter Motor
+        feedforward = new SimpleMotorFeedforward(ShooterConstants.SHOOTER_VOLTS, ShooterConstants.SHOOTER_VOLTS_SECONDS_PER_ROTATION);
+
+        // Sets Tolerance
         getController().setTolerance(ShooterConstants.SHOOTER_TOLERANCE_RPM);
+
+        // Sets Setpoint of Shooter
+        setSetpoint(ShooterConstants.SHOOTER_TARGET_RPM);
   }
 
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    shooterMotor.setVoltage(output+ shooterFeedforward.calculate(setpoint));
+    shooterMotor.setVoltage(output + feedforward.calculate(setpoint));
   }
 
   @Override
@@ -66,15 +71,16 @@ public class PIDShooter extends PIDSubsystem {
   }
 
   public boolean atSetpoint() {
-    return getController().atSetpoint();
-  }
-
-  public void stopShooter() {
-    shooterMotor.setVoltage(0);
+    // Obtains Controller from Super Field to Check
+    return m_controller.atSetpoint();
   }
 
   public void load() {
-    loaderMotor.set(1);
+    loaderMotor.set(ShooterConstants.LOAD_SPEED);
+  }
+
+  public void unload() {
+    loaderMotor.set(-1 * ShooterConstants.LOAD_SPEED);
   }
 
   public void stopLoading() {

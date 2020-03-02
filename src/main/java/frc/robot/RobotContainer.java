@@ -13,6 +13,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.utils.DriveTrajectory;
 import frc.robot.utils.LightStrip;
 import frc.robot.utils.LightStripBlinkin;
 import frc.robot.commands.DriveArcade;
@@ -21,8 +22,6 @@ import frc.robot.commands.DriveMetersReset;
 import frc.robot.commands.DriveShiftSpeed;
 import frc.robot.commands.ShooterLoadOnly;
 import frc.robot.commands.ShooterShoot;
-import frc.robot.commands.ShooterShootPID;
-import frc.robot.experimental.PIDShooter;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.IntakeEat;
@@ -30,12 +29,11 @@ import frc.robot.commands.IntakeSpit;
 import frc.robot.commands.IntakeRetract;
 import frc.robot.commands.LiftClimb;
 import frc.robot.commands.LiftReach;
-import frc.robot.commands.ShootPID;
 import frc.robot.commands.LevelMove;
 import frc.robot.commands.ShooterAngle;
 import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commandGroups.AutoDriveOnly;
-import frc.robot.commandGroups.ShooterGroupLoadShoot;
+import frc.robot.commandGroups.TrajectoryDrive;
 import frc.robot.subsystems.OldDriveTrain;
 import frc.robot.subsystems.Angler;
 import frc.robot.subsystems.DriveTrain;
@@ -53,6 +51,8 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.LightStripConstants;
 
@@ -78,6 +78,7 @@ public class RobotContainer {
   public final static Angler angler = new Angler();
 
   public final static LightStripBlinkin lightStrip = new LightStripBlinkin(9);
+  public final static DriveTrajectory trajectory = new DriveTrajectory();
 
   //public final static LightStrip led = new LightStrip(LightStripConstants.PWM_PORT, LightStripConstants.NUM_PIXELS);
   public final static LimeLight limeLight = new LimeLight();
@@ -87,7 +88,7 @@ public class RobotContainer {
   public final static XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
 
   //Sendable Chooser
-  //public SendableChooser<CommandGroupBase> autoChooser;
+  public SendableChooser<CommandGroupBase> autoChooser;
   public static Command chosenAutoCommand;
 
 
@@ -104,13 +105,11 @@ public class RobotContainer {
     configureAxes();
 
     lightStrip.rainbow();
-    // autoChooser = new SendableChooser<CommandGroupBase>();
-    // autoChooser.addOption("Only Drive Straight", new AutoDriveOnly());
-    // autoChooser.addOption("Only Shoot", new AutoTripleShot());
-    //chosenAutoCommand = autoChooser.getSelected();
-
-    //chosenAutoCommand = new AutoDriveOnly();
-   // SmartDashboard.putData("Autonomous", autoChooser);
+    
+    autoChooser = new SendableChooser<CommandGroupBase>();
+    SmartDashboard.putData("Autonomous", autoChooser);
+    autoChooser.addOption("Only Drive Straight", new TrajectoryDrive(driveTrain, trajectory));
+    chosenAutoCommand = autoChooser.getSelected(); 
   }
 
   /**

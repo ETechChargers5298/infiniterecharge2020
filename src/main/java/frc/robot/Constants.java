@@ -161,10 +161,23 @@ public final class Constants {
         public static final int SHOOTER_PIPELINE = 0;
 
         // Holds Proportional Constant for Aiming
-        public static final double AIM_P = 1;
+        public static final double AIM_P = 0.1;
+        public static final double DISTANCE_P = 0.1;
 
         // Holds the Minium Power to Move Robot
         public static final double AIM_MIN_SPEED = 0.1;
+
+        // Calibrated Coordinates for Limelight
+        public static final double INITIATION_X = 12;
+        public static final double INITIATION_Y = 12;
+
+        public static final double TRENCH_X = 12;
+        public static final double TRENCH_Y = 15;
+
+        // Arcade PID
+        public static final double STEER_P = 0.03;
+        public static final double DRIVE_P = 0.26;
+        public static final double MAX_SPEED = 0.7;
     }
 
     public static final class IntakeConstants {
@@ -181,7 +194,9 @@ public final class Constants {
 
         // Max Speed of the Motors
         public static final double SHOOTER_MAX_SPEED = 1.0;
-        public static final double LOAD_SPEED = -1.0;
+        public static final double LOAD_SPEED = 1.0;
+
+        public static final boolean LOADER_MOTOR_INVERSION = true;
 
         // PID for Shooter
         public static final double SHOOTER_P = 1;
@@ -189,7 +204,7 @@ public final class Constants {
         public static final double SHOOTER_D = 0;
 
         // Tolerance for Shooter PID
-        public static final double SHOOTER_TOLERANCE_RPM = 20;
+        public static final double SHOOTER_TOLERANCE_RPM = 50;
 
         // Desired RPM from Shooter
         public static final double SHOOTER_TARGET_RPM = 4500;

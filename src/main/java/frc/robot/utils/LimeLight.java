@@ -68,6 +68,11 @@ public class LimeLight {
         SmartDashboard.putNumber("Area of Target", area);
     }
 
+    public void calibrate(double x, double y) {
+        table.getEntry("cx0").setNumber(x);
+        table.getEntry("cy0").setNumber(y);
+    }
+
     // Getter for if Target is Obtained
     public boolean hasValidTarget() {
         return hasValidTarget;

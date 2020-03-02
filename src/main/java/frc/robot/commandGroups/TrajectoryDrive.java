@@ -7,26 +7,20 @@
 
 package frc.robot.commandGroups;
 
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.ShootPID;
-import frc.robot.experimental.PIDShooter;
-import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.DriveTrajectory;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class ShooterGroupLoadShoot extends ParallelCommandGroup {
+public class TrajectoryDrive extends SequentialCommandGroup {
   /**
-   * Creates a new ShooterGroupLoadShoot.
+   * Creates a new TrajectoryDrive.
    */
-  public ShooterGroupLoadShoot(final Shooter shooter) {
+  public TrajectoryDrive(DriveTrain driveTrain, DriveTrajectory trajectory) {
     // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
-    super(
-      new ShootPID(shooter)
-    );
+    // super(new FooCommand(), new BarCommand());
+    super(trajectory.autoForward(driveTrain));
   }
 }

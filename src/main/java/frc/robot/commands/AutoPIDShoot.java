@@ -10,22 +10,27 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.experimental.PIDShooter;
 
-public class ShooterShootPID extends CommandBase {
+public class AutoPIDShoot extends CommandBase {
   /**
-   * Creates a new ShooterShootPID.
+   * Creates a new AutoPIDShoot.
    */
-
   private PIDShooter shooter;
 
-  public ShooterShootPID(PIDShooter shooter) {
+  private int desiredShots;
+  private int shotCounter;
+  private boolean shotCounted;
+  public AutoPIDShoot(PIDShooter shooter, int desiredShots) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
+    this.desiredShots = desiredShots;
+    this.shotCounter = 0;
+    this.shotCounted  = true;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Turns on Shooter PID
+    // Turns on Shooter
     shooter.enable();
   }
 
@@ -34,8 +39,13 @@ public class ShooterShootPID extends CommandBase {
   public void execute() {
     if(shooter.atSetpoint()) {
       shooter.load();
+      shotCounted = false;
     }
     else {
+      if(!shotCounted) {
+        shotCounter++;
+      }
+      shotCounted = true;
       shooter.stopLoading();
     }
   }
@@ -43,7 +53,6 @@ public class ShooterShootPID extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Stops Shooting and Loading
     shooter.disable();
     shooter.stopLoading();
   }
@@ -51,6 +60,9 @@ public class ShooterShootPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(desiredShots == shotCounter) {
+      return true;
+    }
     return false;
   }
 }

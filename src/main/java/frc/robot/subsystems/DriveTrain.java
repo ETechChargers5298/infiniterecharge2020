@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -103,9 +104,16 @@ public class DriveTrain extends SubsystemBase {
     motorLeftA = new CANSparkMax(SparkConstants.MOTOR_LEFT_A, MotorType.kBrushless);
     motorLeftB = new CANSparkMax(SparkConstants.MOTOR_LEFT_B, MotorType.kBrushless);
 
+    // Sets Mode to Coast
+    motorLeftA.setIdleMode(IdleMode.kCoast);
+    motorLeftB.setIdleMode(IdleMode.kCoast);
+
     // Constructs Right Motors
     motorRightA = new CANSparkMax(SparkConstants.MOTOR_RIGHT_A, MotorType.kBrushless);
     motorRightB = new CANSparkMax(SparkConstants.MOTOR_RIGHT_B, MotorType.kBrushless);
+
+    motorRightA.setIdleMode(IdleMode.kCoast);
+    motorRightB.setIdleMode(IdleMode.kCoast);
 
     // Groups Motors Together for Differential Drive
     motorLeft = new SpeedControllerGroup(motorLeftA, motorLeftB);
