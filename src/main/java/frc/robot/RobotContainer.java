@@ -21,7 +21,9 @@ import frc.robot.commands.DriveShiftTorque;
 import frc.robot.commands.DriveMetersReset;
 import frc.robot.commands.DriveShiftSpeed;
 import frc.robot.commands.ShooterLoadOnly;
+import frc.robot.commands.ShooterNewPID;
 import frc.robot.commands.ShooterShoot;
+import frc.robot.experimental.PIDShooter;
 import frc.robot.commands.DriveTurnToAngle;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.IntakeEat;
@@ -105,7 +107,7 @@ public class RobotContainer {
     configureAxes();
 
     lightStrip.rainbow();
-    
+
     autoChooser = new SendableChooser<CommandGroupBase>();
     SmartDashboard.putData("Autonomous", autoChooser);
     autoChooser.addOption("Only Drive Straight", new TrajectoryDrive(driveTrain, trajectory));
@@ -145,11 +147,12 @@ public class RobotContainer {
     new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.TRENCH_ANGLE));
     new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.SIDE_START_ANGLE));
 
-    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter), true);
+    //new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter), true);
     //SHOOTER LOAD & SHOOT = RIGHT TRIGGER
-    new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
+    //new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
     //SHOOTER LOAD ONLY = RIGHT BUMPER
-
+    //new TriggerButton(operatorController, Hand.kRight).whenPressed(new InstantCommand(shooter::enable));
+    new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
     // LIFT CLIMB = Left Trigger
@@ -189,7 +192,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Whichever command is assigned to chosenAutoCommand will run in autonomous
-   // return chosenAutoCommand;
-   return new AutoDriveOnly(driveTrain);
+    return chosenAutoCommand;
+   //return new AutoDriveOnly(driveTrain);
   }
 }

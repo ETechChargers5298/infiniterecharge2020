@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SparkConstants;
 
@@ -65,7 +66,7 @@ public class Leveler extends SubsystemBase {
     motor.stopMotor();
   }
 
-  public double getRoll() {
+  public double getAngle() {
     // Returns Roll of the Gyro Sensor
     return navX.getRoll();
   }
@@ -73,6 +74,14 @@ public class Leveler extends SubsystemBase {
   public double rotationVelocity() {
     // Returns Rotation per Second of Motors
     return encoder.getVelocity();
+  }
+
+  public void printData() {
+    // The Angle of the Leveler
+    SmartDashboard.putNumber("Level Angle", getAngle());
+
+    // Is it Leveled?
+    SmartDashboard.putBoolean("Leveled", getAngle() < 8 && getAngle() > -8);
   }
 
   @Override

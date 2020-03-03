@@ -33,7 +33,7 @@ public class Level extends ProfiledPIDCommand {
             // The motion profile constraints
             new TrapezoidProfile.Constraints(LevelConstants.MAX_VELOCITY, LevelConstants.MAX_ACCELERATION)),
         // This should return the measurement
-        leveler::getRoll,
+        leveler::getAngle,
         // This should return the goal
         LevelConstants.GOAL,
         // This uses the output

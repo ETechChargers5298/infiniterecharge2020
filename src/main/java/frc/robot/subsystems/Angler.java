@@ -71,10 +71,14 @@ public class Angler extends SubsystemBase {
     anglerEncoder.setPosition(0);
   }
 
+  public void printData() {
+    SmartDashboard.putNumber("Angler Raw", getAngleRaw());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Angler Encoder Data", getAngleRaw());
+    SmartDashboard.putNumber("Angler Raw", getAngleRaw());
 
     if(!getHighLimit()) {
       zeroAngleRaw();

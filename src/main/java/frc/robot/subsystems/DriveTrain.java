@@ -389,6 +389,29 @@ public class DriveTrain extends SubsystemBase {
     isHighTorque = false;
   }
 
+  public void printData() {
+    // Wheel Speeds
+    SmartDashboard.putData("Wheel Velocity", diffDrive);
+
+    // Drive Mode
+    if(isHighTorque) {
+      SmartDashboard.putString("DriveMode", "Torque");
+    }
+    else {
+      SmartDashboard.putString("DriveMode", "Speed");
+    }
+
+    // Gyro Heading
+    SmartDashboard.putData("Gyro", navX);
+
+    // Encoder Position
+    SmartDashboard.putNumber("Left Position", getLeftPosition());
+    SmartDashboard.putNumber("Right Position", getRightPosition());
+
+    // Location
+    SmartDashboard.putString("Odometry", location.toString());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

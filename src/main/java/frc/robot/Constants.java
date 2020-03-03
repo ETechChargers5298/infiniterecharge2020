@@ -22,8 +22,8 @@ public final class Constants {
         public static final int MOTOR_LEFT_B = 2;
         public static final int MOTOR_LEFT_C = 5; // Not Used
         
-        public static final int MOTOR_RIGHT_A = 3;
-        public static final int MOTOR_RIGHT_B = 4;
+        public static final int MOTOR_RIGHT_A = 4;
+        public static final int MOTOR_RIGHT_B = 3;
         public static final int MOTOR_RIGHT_C = 6; // Not Used
         
         // For Mechanisms Other than DriveTrain
@@ -199,24 +199,25 @@ public final class Constants {
         public static final boolean LOADER_MOTOR_INVERSION = true;
 
         // PID for Shooter
-        public static final double SHOOTER_P = 1;
+        public static final double SHOOTER_P = 0.025;
         public static final double SHOOTER_I = 0;
-        public static final double SHOOTER_D = 0;
+        public static final double SHOOTER_D = 0; 
 
         // Tolerance for Shooter PID
-        public static final double SHOOTER_TOLERANCE_RPM = 50;
+        public static final double SHOOTER_TOLERANCE_RPM = 200;
 
         // Desired RPM from Shooter
-        public static final double SHOOTER_TARGET_RPM = 4500;
+        public static final double SHOOTER_TARGET_RPM = 4700;
 
         // FeedForward Constants
-        public static final double SHOOTER_VOLTS = 0.05;
-        public static final double SHOOTER_VOLTS_SECONDS_PER_ROTATION = 12.0 / 5676; // 12V / Free Shooter RPM
+        public static final double SHOOTER_VOLTS = 0.4;
+        public static final double SHOOTER_VOLTS_SECONDS_PER_ROTATION = 12.0 / 5000; // 12V / Free Shooter RPM
 
         // Inversion of the Angler Motor
         public static final boolean ANGLER_MOTOR_INVERSION = true;
 
         // Max Speed of the Angler Motor
+
         public static final double ANGLER_MAX_SPEED = 1.0;
 
         //Angles for the Shooter

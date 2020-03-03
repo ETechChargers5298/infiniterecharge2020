@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SparkConstants;
@@ -29,6 +30,9 @@ public class PIDShooter extends PIDSubsystem {
   private CANSparkMax loaderMotor;
 
   private SimpleMotorFeedforward feedforward;
+
+  private Boolean loaderOn;
+  private Boolean loaderLoading;
 
   public PIDShooter() {
     super(
@@ -56,6 +60,10 @@ public class PIDShooter extends PIDSubsystem {
 
         // Sets Setpoint of Shooter
         setSetpoint(ShooterConstants.SHOOTER_TARGET_RPM);
+
+        // Loader is Off at Start
+        loaderOn = false;
+        loaderLoading = false;
   }
 
   @Override
@@ -67,6 +75,7 @@ public class PIDShooter extends PIDSubsystem {
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
+    SmartDashboard.putNumber("Shooter Velocity", shooterEncoder.getVelocity());
     return shooterEncoder.getVelocity();
   }
 
@@ -76,14 +85,27 @@ public class PIDShooter extends PIDSubsystem {
   }
 
   public void load() {
+    loaderOn = true;
+    loaderLoading = true;
     loaderMotor.set(ShooterConstants.LOAD_SPEED);
   }
 
   public void unload() {
+    loaderOn = true;
+    loaderLoading = false;
     loaderMotor.set(-1 * ShooterConstants.LOAD_SPEED);
   }
 
   public void stopLoading() {
+    loaderOn = false;
+    loaderLoading = false;
     loaderMotor.set(0);
+  }
+  
+  public void printData() {
+    SmartDashboard.putNumber("Shooter Velocity", getMeasurement());
+    SmartDashboard.putBoolean("Shooter Setpoint", atSetpoint());
+    SmartDashboard.putBoolean("Loader On", loaderOn);
+    SmartDashboard.putBoolean("Loader Loading", loaderLoading);
   }
 }

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SolenoidConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends SubsystemBase {
   /**
@@ -22,6 +23,8 @@ public class Lift extends SubsystemBase {
   // Holds Solenoid that Powers Lifts
   private DoubleSolenoid lifterSolenoid;
 
+  private Boolean isReaching;
+
   /* LIFT CONSTRUCTOR */
   public Lift() {
     // Constructs a Solenoid Object for Lifter
@@ -29,18 +32,30 @@ public class Lift extends SubsystemBase {
     SolenoidConstants.LIFT_PORT_B);
 
     robotPull();
+
+    isReaching = false;
   }
 
   // Elevator Goes Up to Reach for Generator Switch Bar
   public void robotReach(){
+    isReaching = true;
     lifterSolenoid.set(Value.kReverse);
   }
 
   // Elevator Goes Down to Pull The Robot on the Bar
   public void robotPull(){
+    isReaching = false;
     lifterSolenoid.set(Value.kForward);
   }
 
+  public void printData() {
+    if(isReaching) {
+      SmartDashboard.putString("Lift State", "Reach");
+    }
+    else {
+      SmartDashboard.putString("Lift State", "Climb");
+    }
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
