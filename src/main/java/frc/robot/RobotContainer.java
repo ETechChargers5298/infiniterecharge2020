@@ -185,6 +185,10 @@ public class RobotContainer {
 
   }
 
+  public void setStripYellow() {
+    lightStrip.solidYellow();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

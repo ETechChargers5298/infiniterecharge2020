@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    //change the color to Yellow 0.69
+    
   }
 
   @Override
