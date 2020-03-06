@@ -32,7 +32,7 @@ public class DriveTurnToAngle extends PIDCommand {
         // This Should Return the Setpoint
         targetAngleDegrees,
         // This uses the Output
-        output -> driveTrain.powerDrive(output, output),
+        output -> driveTrain.powerDrive(-output, output),
         // Subsystems that are Used
         driveTrain
         );

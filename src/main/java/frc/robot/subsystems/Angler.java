@@ -83,5 +83,9 @@ public class Angler extends SubsystemBase {
     if(!getHighLimit()) {
       zeroAngleRaw();
     }
+
+    if(Math.abs(getAngleRaw()) < 8) {
+
   }
+}
 }

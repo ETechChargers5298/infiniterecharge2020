@@ -52,6 +52,8 @@ public class Shooter extends SubsystemBase {
 
     loaderMotor = new CANSparkMax(SparkConstants.MOTOR_LOADER, MotorType.kBrushless);
 
+    loaderMotor.setInverted(ShooterConstants.LOADER_MOTOR_INVERSION);
+
     // Constructs a Limelight to Aim
     lime = RobotContainer.limeLight;
   }
