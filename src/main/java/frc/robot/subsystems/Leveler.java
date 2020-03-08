@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SparkConstants;
+import frc.robot.utils.LightStripBlinkin;
 
 public class Leveler extends SubsystemBase {
   /**
@@ -87,5 +88,9 @@ public class Leveler extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    if(Math.abs(getAngle()) < 8) {
+        LightStripBlinkin.twinklesOcean();
+    }
   }
 }
