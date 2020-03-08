@@ -35,6 +35,8 @@ import frc.robot.commands.LevelMove;
 import frc.robot.commands.ShooterAngle;
 import frc.robot.commands.AutoShooterAngle;
 import frc.robot.commandGroups.AutoDriveOnly;
+import frc.robot.commandGroups.AutoTripleShot;
+import frc.robot.commandGroups.AutoTripleTrench;
 import frc.robot.commandGroups.TrajectoryDrive;
 import frc.robot.subsystems.OldDriveTrain;
 import frc.robot.subsystems.Angler;
@@ -84,7 +86,6 @@ public class RobotContainer {
 
   //public final static LightStrip led = new LightStrip(LightStripConstants.PWM_PORT, LightStripConstants.NUM_PIXELS);
   public final static LimeLight limeLight = new LimeLight();
-
   // Holds the Driver Controller Object
   public final static XboxController driveController = new XboxController(JoystickConstants.DRIVECONTROLLER);
   public final static XboxController operatorController = new XboxController(JoystickConstants.OPERATORCONTROLLER);
@@ -111,6 +112,8 @@ public class RobotContainer {
     autoChooser = new SendableChooser<CommandGroupBase>();
     SmartDashboard.putData("Autonomous", autoChooser);
     autoChooser.addOption("Only Drive Straight", new TrajectoryDrive(driveTrain, trajectory));
+    autoChooser.addOption("Only Load and Shoot", new AutoTripleShot(shooter, intake));
+    autoChooser.addOption("TripleTrench", new AutoTripleTrench(shooter, driveTrain, intake));
     chosenAutoCommand = autoChooser.getSelected(); 
   }
 
@@ -135,8 +138,8 @@ public class RobotContainer {
     new POVButton(driveController, 270).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_MIDDLE_APPROACH));
 
     // INTAKE EAT & SPIT = B/A buttons
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeEat(intake), true);
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(new IntakeSpit(intake), true);
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(new IntakeEat(intake), true);
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(new IntakeSpit(intake), true);
 
     // INTAKE CHOMP & RETRACT = X/Y buttons
     new JoystickButton(operatorController, Button.kX.value).whenPressed(new IntakeChomp(intake));
@@ -196,7 +199,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Whichever command is assigned to chosenAutoCommand will run in autonomous
-    return chosenAutoCommand;
+    //return chosenAutoCommand;
    //return new AutoDriveOnly(driveTrain);
+   return new AutoTripleTrench(shooter, driveTrain, intake);
   }
 }

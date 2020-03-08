@@ -10,32 +10,38 @@ package frc.robot.commandGroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OldDriveTrain;
+import frc.robot.subsystems.Shooter;
 import frc.robot.commands.AutoDriveStraight;
 import frc.robot.commands.DriveShiftSpeed;
 import frc.robot.commands.DriveMetersReset;
 import frc.robot.commands.IntakeChomp;
 import frc.robot.commands.LiftClimb;
 
-public class AutoDriveOnly extends SequentialCommandGroup {
+public class AutoTripleTrench extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
 
+   private final Shooter shooter;
   private final DriveTrain driveTrain; // Holds DriveTrain Subsystem
+  private final Intake intake;
 
-  public AutoDriveOnly(DriveTrain driveTrain) {
+  public AutoTripleTrench(Shooter shooter, DriveTrain driveTrain,Intake intake) {
 
+    this.shooter = shooter;
     this.driveTrain = driveTrain;
+    this.intake = intake;
 
     // Add Commands here:
     //addCommands(new DriveHighSpeed());
     //addCommands(new LiftClimb(RobotContainer.lift));
-    new DriveMetersReset(driveTrain);
-    addCommands(new AutoDriveStraight(driveTrain, 0.5, 194.0),
-    new DriveMetersReset(driveTrain),
-    new AutoDriveStraight(driveTrain, 0.5, -5.0)
-    
+
+    addCommands(
+      new AutoTripleShot(shooter, intake),
+      new AutoDriveEatTrench(driveTrain, intake)
+          
     );
    // addCommands(new IntakeChomp(RobotContainer.intake));
 

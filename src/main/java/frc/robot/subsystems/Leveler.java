@@ -90,7 +90,7 @@ public class Leveler extends SubsystemBase {
     // This method will be called once per scheduler run
     
     if(Math.abs(getAngle()) < 8) {
-        LightStripBlinkin.twinklesOcean();
+        //LightStripBlinkin.twinklesOcean();
     }
   }
 }

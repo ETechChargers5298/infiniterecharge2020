@@ -74,7 +74,7 @@ public class Intake extends SubsystemBase {
   // Axle Moves in One Direction to Grab Balls
   public void eatBall() {
     // Moves Motor
-    intakeMotor.set(IntakeConstants.INTAKE_MAX_SPEED);
+    intakeMotor.set(-1 * IntakeConstants.INTAKE_MAX_SPEED);
 
     // Updates Robot State
     isGrabbing = true;
@@ -84,7 +84,7 @@ public class Intake extends SubsystemBase {
   // Axle Moves in Opposite Direction to Drop Balls
   public void spitBall() {
     // Moves Motor
-    intakeMotor.set(-1 * IntakeConstants.INTAKE_MAX_SPEED);
+    intakeMotor.set(IntakeConstants.INTAKE_MAX_SPEED);
 
     // Updates Robot State
     isGrabbing = false;

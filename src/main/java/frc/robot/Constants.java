@@ -39,9 +39,9 @@ public final class Constants {
         public static final int SHIFTER_PORT_A = 0;
         public static final int SHIFTER_PORT_B = 1;
 
-        // Intake Pistons
-        public static final int INTAKE_PORT_A = 3;
-        public static final int INTAKE_PORT_B = 2;
+        // Intake Pistons  (flii )
+        public static final int INTAKE_PORT_A = 2;
+        public static final int INTAKE_PORT_B = 3;
 
         // Lift Pistons
         public static final int LIFT_PORT_A = 5;

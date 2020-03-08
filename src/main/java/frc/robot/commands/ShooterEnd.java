@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterShoot extends CommandBase {
+public class ShooterEnd extends CommandBase {
   
   /**
    * Creates a new Shoot command.
@@ -20,7 +20,7 @@ public class ShooterShoot extends CommandBase {
 
   private Shooter shooter;
   
-  public ShooterShoot(Shooter shooter) {
+  public ShooterEnd(Shooter shooter) {
     this.shooter = shooter;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,28 +31,15 @@ public class ShooterShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    shooter.setShooterVolts(11);
+    shooter.stopShooting();
+    shooter.stopLoading();
+    //shooter.setShooterVolts(11);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    int velocity = (int) shooter.getShooterVelocity();
-    int maximum = (int) (ShooterConstants.SHOOTER_TARGET_RPM + ShooterConstants.SHOOTER_TOLERANCE_RPM);
-    int minimum = (int) (ShooterConstants.SHOOTER_TARGET_RPM - ShooterConstants.SHOOTER_TOLERANCE_RPM);
-
-    SmartDashboard.putNumber("Maximum", ShooterConstants.SHOOTER_TARGET_RPM + ShooterConstants.SHOOTER_TOLERANCE_RPM);
-    SmartDashboard.putNumber("Minimum", ShooterConstants.SHOOTER_TARGET_RPM - ShooterConstants.SHOOTER_TOLERANCE_RPM);
-    SmartDashboard.putNumber("Velocity", shooter.getShooterVelocity());
-
-
-    if(velocity < maximum && velocity > minimum) {
-      shooter.load();
-    }
-    else {
-      shooter.stopLoading();
-    }
+    SmartDashboard.putNumber("Velocity End", -5);
   }
 
   // Called once the command ends or is interrupted.
@@ -65,6 +52,6 @@ public class ShooterShoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      return false;
+      return true;
   }
 }

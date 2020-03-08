@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SparkConstants;
@@ -39,6 +40,9 @@ public class Shooter extends SubsystemBase {
 
   // Holds LimeLight Which Is Used For Aiming
   private LimeLight lime;
+
+  private int numShots = 0;
+  private boolean isShooting = false;
 
   public Shooter() {
     // Constructs Motor for Shooting
@@ -107,5 +111,27 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Velocity", shooterEncoder.getVelocity());
+  }
+
+  public void addShot() {
+    numShots++;
+  }
+
+
+  public int shotCount() {
+    return numShots;
+  }
+
+  public void checkShot() {
+
+    double thresh = Constants.ShooterConstants.SHOOTER_TARGET_RPM - Constants.ShooterConstants.SHOOTER_TOLERANCE_RPM/2;
+
+    if(getShooterVelocity()>thresh) {
+      isShooting = true;
+    } else if(isShooting && getShooterVelocity()<thresh) {
+      addShot();
+      isShooting = false;
+    }
+
   }
 }

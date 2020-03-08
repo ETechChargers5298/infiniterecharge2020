@@ -11,21 +11,29 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.OldDriveTrain;
-import frc.robot.commands.AutoDriveStraight;
+import frc.robot.subsystems.Shooter;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 public class AutoTripleShot extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
 
-  private final DriveTrain driveTrain; // Holds DriveTrain Subsystem
+ 
+  private final Shooter shooter; //Holds Shooter subsystem
+  private final Intake intake; 
 
-  public AutoTripleShot(DriveTrain driveTrain) {
+  public AutoTripleShot(Shooter shooter, Intake intake) {
 
-    this.driveTrain = driveTrain;
+    this.shooter = shooter;
+    this.intake = intake;
 
     // Add Commands here:
-    addCommands(new AutoDriveStraight(driveTrain, 0.5, 2));
+   // addCommands(new AutoDriveStraight(driveTrain, 0.5, 2));
+    addCommands(
+      new ShooterTimed(shooter, intake, 5.0)
+    );
     
   }
 
