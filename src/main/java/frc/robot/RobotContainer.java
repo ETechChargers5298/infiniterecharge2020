@@ -132,10 +132,10 @@ public class RobotContainer {
     new TriggerButton(driveController, Hand.kRight).whenPressed(new DriveShiftTorque(driveTrain));
 
     //DRIVE TURN-TO-ANGLE = POV
-    new POVButton(driveController, 0).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_FORWARD));
-    new POVButton(driveController, 180).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_BACKWARDS));
-    new POVButton(driveController, 90).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_SIDE_APPROACH));
-    new POVButton(driveController, 270).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_MIDDLE_APPROACH));
+    //new POVButton(driveController, 0).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_FORWARD));
+    //new POVButton(driveController, 180).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_BACKWARDS));
+    //new POVButton(driveController, 90).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_SIDE_APPROACH));
+    //new POVButton(driveController, 270).whenPressed(new DriveTurnToAngle(driveTrain, Constants.DriveConstants.ANGLE_MIDDLE_APPROACH));
 
     // INTAKE EAT & SPIT = B/A buttons
     new JoystickButton(operatorController, Button.kA.value).whileHeld(new IntakeEat(intake), true);
@@ -146,9 +146,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kY.value).whenPressed(new IntakeRetract(intake));
 
     //SHOOTER ANGLER AUTO = POV Buttons
-    new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.WALL_ANGLE));
-    new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.TRENCH_ANGLE));
-    new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.SIDE_START_ANGLE));
+    //new POVButton(operatorController, 0).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.WALL_ANGLE));
+    //new POVButton(operatorController, 180).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.TRENCH_ANGLE));
+    //new POVButton(operatorController, 270).whenPressed(new AutoShooterAngle(angler, Constants.ShooterConstants.SIDE_START_ANGLE));
 
     //new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter), true);
     //SHOOTER LOAD & SHOOT = RIGHT TRIGGER
@@ -156,6 +156,7 @@ public class RobotContainer {
     //SHOOTER LOAD ONLY = RIGHT BUMPER
     //new TriggerButton(operatorController, Hand.kRight).whenPressed(new InstantCommand(shooter::enable));
     new TriggerButton(operatorController, Hand.kRight).whileHeld(new ShooterShoot(shooter), true);
+    new JoystickButton(operatorController, Button.kBumperRight.value).whileHeld(new ShooterLoadOnly(shooter));
     // LIFT REACH = LB button
     new JoystickButton(operatorController, Button.kBumperLeft.value).whenPressed(new LiftReach(lift));
     // LIFT CLIMB = Left Trigger

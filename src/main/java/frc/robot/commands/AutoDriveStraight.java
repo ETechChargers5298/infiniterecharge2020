@@ -38,7 +38,7 @@ public class AutoDriveStraight extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         distanceMeters,
         // This uses the output
-        output -> driveTrain.powerDrive(MathUtil.clamp(output, -speed, speed), -1 * MathUtil.clamp(output, -speed, speed)),
+        output -> driveTrain.powerDrive(MathUtil.clamp(output, -speed, speed),  -1 * MathUtil.clamp(output, -speed, speed)),
           // Use the output here
           driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.
